@@ -1,3 +1,11 @@
-<sebm-google-map [latitude]="lat" [longitude]="lng" [zoom]="12">
-  <sebm-google-map-marker [latitude]="lat" [longitude]="lng"></sebm-google-map-marker>
-</sebm-google-map>
+<div class = "container-fluid">
+  <div class = "center-block">
+    <!-- Iterate through array of markers and place them on the map-->
+    <sebm-google-map [latitude]="lat" [longitude]="lng" [zoom]="10">
+      <sebm-google-map-marker
+        *ngFor="let m of markers" [latitude]="m.lat" [longitude]="m.lng">
+        <sebm-google-map-info-window>{{m.label}}</sebm-google-map-info-window>
+      </sebm-google-map-marker>
+    </sebm-google-map>
+  </div>
+</div>
