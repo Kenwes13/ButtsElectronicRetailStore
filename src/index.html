@@ -41,7 +41,7 @@
 				<li><a href="#">Home</a></li>
 				<li><a href="#">Products</a></li>
 				<li><a href="#">Deals</a></li>
-				<li><a href="#/maps">Stores</a></li>
+				<li><a href="#maps">Stores</a></li>
 				<li><a href="#">Contacts</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
@@ -89,7 +89,7 @@
 </div>
 
 
-<div class="page" ng-view="">
+<div class="page">
   <!-- Page Content -->
   <div class="container">
     <div class="row">
@@ -276,11 +276,10 @@
     });
     main.config(function($routeProvider) {
       $routeProvider
-        .when('#/maps', {
-          templateUrl: 'maps.html',
+        .when('/maps', {
+          templateUrl: '../resources/HTMLs/maps.html',
           controller: 'MapCtrl'
         })
-      .otherwise({'/index.html'});
     });
 
 	</script>
