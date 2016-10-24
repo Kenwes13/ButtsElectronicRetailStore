@@ -12,8 +12,7 @@
   <meta name="keywords" content="ng-map,AngularJS,center">
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-	<script src ="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
-	<script src = "/ButtsElectronicRetailStore/src/resources/js/mainController.js"></script>
+	<script src ="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-route.js"></script>
   <script src="https://code.angularjs.org/1.3.15/angular.js"></script>
   <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places&key=AIzaSyBFH2S9Cc2jAlala-UA6YXVEt50cEz1TTc"></script>
@@ -224,14 +223,25 @@
         google.maps.event.trigger(selectedMarker, 'click');
       }
 
-    });
+    })
+      .controller("MainController", function($scope, $http){
+          $scope.displayData = function(){
+            $http.get("select.php").success(function(result){
+                $scope.data = result;
+                console.log($scope.data);
+
+            })
+          }
+      });
     app.config(function($routeProvider) {
       $routeProvider
         .when("/", {
-          templateUrl: "main.html"
+          templateUrl: "main.html",
+          controller: "MainController"
         })
         .when("/home", {
-          templateUrl: "main.html"
+          templateUrl: "main.html",
+          controller: "MainController"
         })
         .when("/cart", {
           templateUrl: "shoppingcart.html"
