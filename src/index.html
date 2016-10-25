@@ -54,6 +54,8 @@
   </nav>
 </div>
   <div ng-view></div>
+
+
   <!-- Modal -->
   <div class="modal fade bs-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
@@ -146,6 +148,24 @@
 
     ];
 
+
+      $(document).ready(function(){
+        $("#confirmsignup").click(function(){
+          $.ajax({
+            type: "POST",
+            url:"insertdb.php",
+            data: {
+              "email": $("#email").val(),
+              "username": $("#userid").val(),
+              "password":$("#password").val()
+            }
+          })
+        });
+        });
+
+
+
+
     //Client Side validation for signing up
 		$(document).ready(function(){
 			$("#login").click(function(){
@@ -158,7 +178,11 @@
         rules: {
           email: {
             required: true,
-            email: true
+            email: true,
+            remote: {
+              url: "checkcredentials.php",
+              type: "post"
+            }
           },
           password:{
             required: true,
@@ -180,7 +204,8 @@
           },
           email: {
             required:"Please enter an email address.",
-            email:"Please enter a valid email address"
+            email:"Please enter a valid email address",
+            remote:"This email is already in use."
           },
           password:{
             required:"Please enter a password.",
