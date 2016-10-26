@@ -47,7 +47,7 @@
         <li><a href="#">Contacts</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a ng-click="open()"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
+        <li><a href="#login" ng-click="open()"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
         <li><a href="#cart"><span class="glyphicon glyphicon-log-in"></span> Cart</a></li>
       </ul>
     </div>
@@ -149,7 +149,6 @@
     var app = angular.module("myApp", ["ngMap","ngRoute","ui.bootstrap"]);
     app.controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
 
-        //$scope.items = ['item1', 'item2', 'item3'];
 
         $scope.open = function () {
 
@@ -157,9 +156,7 @@
             templateUrl: 'loginModal.html',
             controller: ModalInstanceCtrl,
             resolve: {
-//              items: function () {
-//                return $scope.items;
-//              }
+
             }
           });
 
@@ -173,13 +170,8 @@
 
       var ModalInstanceCtrl = function ($scope, $uibModalInstance) {
 
-        //$scope.items = items;
-//        $scope.selected = {
-//          item: $scope.items[0]
-//        };
 
         $scope.ok = function () {
-          //$modalInstance.close($scope.selected.item);
           $uibModalInstance.close();
         };
 
@@ -232,6 +224,7 @@
 
             })
           }
+
       });
     app.config(function($routeProvider) {
       $routeProvider
@@ -244,10 +237,15 @@
           controller: "MainController"
         })
         .when("/cart", {
-          templateUrl: "shoppingcart.html"
+          templateUrl: "shoppingcart.html",
+          controller: "MainController"
         })
         .when("/maps", {
-          templateUrl: "maps.html"
+          templateUrl: "maps.html",
+          controller: "MainController"
+        })
+        .otherwise({
+          redirectTo: '/'
         })
     });
 
