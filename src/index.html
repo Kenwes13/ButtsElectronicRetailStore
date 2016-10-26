@@ -55,6 +55,9 @@
 </div>
   <div ng-view></div>
 
+
+
+
 	<script>
     var locations = [
       {lat:37.655508 , lng:-122.070641, label:"25453 Mission Blvd, Hayward, CA 94544"},
@@ -70,12 +73,40 @@
 
     ];
 
+      $(document).ready(function(){
+        $("#confirmsignup").click(function(){
+          $.ajax({
+            type: "POST",
+            url:"insertdb.php",
+            data: {
+              "email": $("#email").val(),
+              "username": $("#userid").val(),
+              "password":$("#password").val()
+            }
+          })
+        });
+        });
+
+
+
+
+    //Client Side validation for signing up
+		$(document).ready(function(){
+			$("#login").click(function(){
+				$("#myModal").modal();
+			});
+		});
+
     $().ready(function (){
       $("#signup-form").validate({
         rules: {
           email: {
             required: true,
-            email: true
+            email: true,
+            remote: {
+              url: "checkcredentials.php",
+              type: "post"
+            }
           },
           password:{
             required: true,
@@ -97,7 +128,8 @@
           },
           email: {
             required:"Please enter an email address.",
-            email:"Please enter a valid email address"
+            email:"Please enter a valid email address",
+            remote:"This email is already in use."
           },
           password:{
             required:"Please enter a password.",
