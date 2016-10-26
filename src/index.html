@@ -18,7 +18,7 @@
   <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places&key=AIzaSyBFH2S9Cc2jAlala-UA6YXVEt50cEz1TTc"></script>
   <script src="https://rawgit.com/allenhwkim/angularjs-google-maps/master/build/scripts/ng-map.js"></script>
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.js"></script>
-
+  <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -33,7 +33,7 @@
 
 <body ng-app="myApp">
 
-<div class = "navlog">
+<div class = "navlog" ng-controller="ModalDemoCtrl">
   <nav class="navbar navbar-inverse">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -47,122 +47,13 @@
         <li><a href="#">Contacts</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a id="login" href="#login"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
+        <li><a ng-click="open()"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
         <li><a href="#cart"><span class="glyphicon glyphicon-log-in"></span> Cart</a></li>
       </ul>
     </div>
   </nav>
 </div>
   <div ng-view></div>
-  <!-- Modal -->
-  <div class="modal fade bs-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <br>
-        <div class="bs-example bs-example-tabs">
-          <ul id="myTab" class="nav nav-tabs">
-            <li class="active"><a href="#signin" data-toggle="tab">Sign In</a></li>
-            <li class=""><a href="#signup" data-toggle="tab">Register</a></li>
-            <li class=""><a href="#why" data-toggle="tab">Policy</a></li>
-          </ul>
-        </div>
-        <div class="modal-body">
-          <div id="myTabContent" class="tab-content">
-            <div class="tab-pane fade in" id="why">
-              <p>Some Customer Policy</p>
-            </div>
-            <div class="tab-pane fade active in" id="signin">
-              <form class="form-horizontal">
-                <fieldset>
-                  <!-- Sign In Form -->
-                  <!-- Text input-->
-                  <div class="control-group">
-                    <label class="control-label" for="userid">Username:</label>
-                    <div class="controls">
-                      <input required="" id="userid" name="userid" type="text" class="form-control" placeholder="Username" class="input-medium" required="">
-                    </div>
-                  </div>
-
-                  <!-- Password input-->
-                  <div class="control-group">
-                    <label class="control-label" for="passwordinput">Password:</label>
-                    <div class="controls">
-                      <input required="" id="passwordinput" name="passwordinput" class="form-control" type="password" placeholder="********" class="input-medium">
-                    </div>
-                  </div>
-
-                  <!-- Multiple Checkboxes (inline) -->
-
-
-                  <!-- Button -->
-                  <div class="control-group">
-                    <label class="control-label" for="signin"></label>
-                    <div class="controls">
-                      <button id="signin" name="signin" class="btn btn-success">Sign In</button>
-                    </div>
-                  </div>
-                </fieldset>
-              </form>
-            </div>
-
-
-            <div class="tab-pane fade" id="signup">
-              <form id = "signup-form" class="form-horizontal">
-                <fieldset>
-                  <!-- Sign Up Form -->
-                  <!-- Text input-->
-                  <div class="control-group">
-                    <label class="control-label" for="email">Email:</label>
-                    <div class="controls">
-                      <input id="email" name="email" class="form-control" type="text" placeholder="e.g abc@sjsu.com" class="input-large" required>
-                    </div>
-                  </div>
-
-                  <!-- Text input-->
-                  <div class="control-group">
-                    <label class="control-label" for="userid">Username:</label>
-                    <div class="controls">
-                      <input id="userid" name="userid" class="form-control" type="text" placeholder="Username" class="input-large" required>
-                    </div>
-                  </div>
-
-                  <!-- Password input-->
-                  <div class="control-group">
-                    <label class="control-label" for="password">Password:</label>
-                    <div class="controls">
-                      <input id="password" name="password" class="form-control" type="password" placeholder="********" class="input-large" required>
-                    </div>
-                  </div>
-
-                  <!-- Text input-->
-                  <div class="control-group">
-                    <label class="control-label" for="reenterpassword">Re-Enter Password:</label>
-                    <div class="controls">
-                      <input id="reenterpassword" class="form-control" name="reenterpassword" type="password" placeholder="********" class="input-large" required>
-                    </div>
-                  </div>
-
-                  <!-- Button -->
-                  <div class="control-group">
-                    <label class="control-label" for="confirmsignup"></label>
-                    <div class="controls">
-                      <button id="confirmsignup" name="confirmsignup" class="btn btn-success">Sign Up</button>
-                    </div>
-                  </div>
-                </fieldset>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal-footer">
-          <center>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </center>
-        </div>
-      </div>
-    </div>
-  </div>
 
 	<script>
     var locations = [
@@ -178,13 +69,6 @@
       {lat:37.737660, lng:-122.475911,label:"2699 19th Ave San Francisco, CA 94116"}
 
     ];
-
-    //Client Side validation for signing up
-		$(document).ready(function(){
-			$("#login").click(function(){
-				$("#myModal").modal();
-			});
-		});
 
     $().ready(function (){
       $("#signup-form").validate({
@@ -230,7 +114,49 @@
 
 
 
-    var app = angular.module("myApp", ["ngMap","ngRoute"]);
+    var app = angular.module("myApp", ["ngMap","ngRoute","ui.bootstrap"]);
+    app.controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
+
+        //$scope.items = ['item1', 'item2', 'item3'];
+
+        $scope.open = function () {
+
+          var modalInstance = $uibModal.open({
+            templateUrl: 'loginModal.html',
+            controller: ModalInstanceCtrl,
+            resolve: {
+//              items: function () {
+//                return $scope.items;
+//              }
+            }
+          });
+
+          modalInstance.result.then(function () {
+            //$scope.selected = selectedItem;
+          }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+          });
+
+      };
+
+      var ModalInstanceCtrl = function ($scope, $uibModalInstance) {
+
+        //$scope.items = items;
+//        $scope.selected = {
+//          item: $scope.items[0]
+//        };
+
+        $scope.ok = function () {
+          //$modalInstance.close($scope.selected.item);
+          $uibModalInstance.close();
+        };
+
+        $scope.cancel = function () {
+          $uibModalInstance.dismiss('cancel');
+        };
+      };
+        });
+
     app.controller('MapCtrl', function ($scope) {
 
       var mapOptions = {
