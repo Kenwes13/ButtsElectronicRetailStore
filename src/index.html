@@ -217,10 +217,19 @@
 
     })
       .controller("MainController", function($scope, $http){
+          //display products
           $scope.displayData = function(){
             $http.get("select.php").success(function(result){
                 $scope.data = result;
                 console.log($scope.data);
+
+            })
+          }
+          //inserting products 
+          $scope.insertProduct=function(){
+          $http.post("addProduct.php",{'pName':$scope.productName,'price':$scope.price, 'cate':$scope.category}).success(function(data){
+                console.log(data);
+                $scope.msg = data;
 
             })
           }
@@ -242,6 +251,10 @@
         })
         .when("/maps", {
           templateUrl: "maps.html",
+          controller: "MainController"
+        })
+        .when("/employee", {
+          templateUrl: "employee.html",
           controller: "MainController"
         })
         .otherwise({
