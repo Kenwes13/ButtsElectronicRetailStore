@@ -1,0 +1,272 @@
+<!doctype html>
+
+<html lang="en">
+
+
+<head>
+	<title>EMQ Retail</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+  <meta name="description" content="Simple Map">
+  <meta name="keywords" content="ng-map,AngularJS,center">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src ="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-route.js"></script>
+  <script src="https://code.angularjs.org/1.3.15/angular.js"></script>
+  <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places&key=AIzaSyBFH2S9Cc2jAlala-UA6YXVEt50cEz1TTc"></script>
+  <script src="https://rawgit.com/allenhwkim/angularjs-google-maps/master/build/scripts/ng-map.js"></script>
+  <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.js"></script>
+  <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+</head>
+
+<body ng-app="myApp">
+
+<div class = "navlog" ng-controller="ModalDemoCtrl">
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand">EMQ Electronic Store</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">Deals</a></li>
+        <li><a href="#maps">Stores</a></li>
+        <li><a href="#">Contacts</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a ng-click="open()"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
+        <li><a href="#cart"><span class="glyphicon glyphicon-log-in"></span> Cart</a></li>
+      </ul>
+    </div>
+  </nav>
+</div>
+  <div ng-view></div>
+
+
+
+
+	<script>
+    var locations = [
+      {lat:37.655508 , lng:-122.070641, label:"25453 Mission Blvd, Hayward, CA 94544"},
+      {lat: 37.815671, lng:-122.287572, label:"2107 Poplar St, Oakland, CA 94607"},
+      {lat:38.005712 ,lng:-122.089431 ,label:"4596 Pacheco Blvd, Martinez, CA 94553"},
+      {lat:37.978347,lng:-122.322537, label:"3139 Garrity Way, Richmond, CA 94806"},
+      {lat:37.292759,lng:-121.851698, label:"Goble Lane San Jose, CA 95111"},
+      {lat:37.388079,lng:-121.967919, label:"2386 Mission College Blvd Santa Clara, CA 95054"},
+      {lat:37.545165,lng:-122.295469 ,label:"Across from 900 Yates Way San Mateo, CA 94403"},
+      {lat:37.655331,lng:-122.429529 ,label:"Across from 816 Antoinette Ln South San Francisco, CA 94080"},
+      {lat:37.770352,lng:-122.419098 ,label:"1695 Mission St San Francisco, CA 94103"},
+      {lat:37.737660, lng:-122.475911,label:"2699 19th Ave San Francisco, CA 94116"}
+    ];
+/*
+          $(document).ready(function(){
+        $("#addProduct").click(function(){
+          $.ajax({
+            type: "POST",
+            url: "addProduct.php",
+            data: {
+              "productName": $("#productName").val(),
+              "price":$("#price").val(),
+              "category":$("#category").val(),
+              "image":$("#image").val(),
+
+            }
+          })
+        });
+      });
+*/
+      $(document).ready(function(){
+        $("#confirmsignup").click(function(){
+          $.ajax({
+            type: "POST",
+            url:"insertdb.php",
+            data: {
+              "email": $("#email").val(),
+              "username": $("#userid").val(),
+              "password":$("#password").val()
+            }
+          })
+        });
+        });
+    //Client Side validation for signing up
+		$(document).ready(function(){
+			$("#login").click(function(){
+				$("#myModal").modal();
+			});
+		});
+    $().ready(function (){
+      $("#signup-form").validate({
+        rules: {
+          email: {
+            required: true,
+            email: true,
+            remote: {
+              url: "checkcredentials.php",
+              type: "post"
+            }
+          },
+          password:{
+            required: true,
+            minlength: 6
+          },
+          reenterpassword:{
+            required:true,
+            equalTo: "#password"
+          },
+          userid: {
+            required: true,
+            minlength: 5
+          }
+        },
+        messages: {
+          username:{
+            required:"Please enter a username.",
+            minlength: "Your username must consist of at least 5 characters"
+          },
+          email: {
+            required:"Please enter an email address.",
+            email:"Please enter a valid email address",
+            remote:"This email is already in use."
+          },
+          password:{
+            required:"Please enter a password.",
+            minlength:"Your password must consist of at least 6 characters"
+          },
+          reenterpassword:{
+            required: "Please enter your password again.",
+            equalTo:"Your password does not match"
+          }
+        }
+      });
+    });
+    var app = angular.module("myApp", ["ngMap","ngRoute","ui.bootstrap"]);
+    app.controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
+        //$scope.items = ['item1', 'item2', 'item3'];
+        $scope.open = function () {
+          var modalInstance = $uibModal.open({
+            templateUrl: 'loginModal.html',
+            controller: ModalInstanceCtrl,
+            resolve: {
+//              items: function () {
+//                return $scope.items;
+//              }
+            }
+          });
+          modalInstance.result.then(function () {
+            //$scope.selected = selectedItem;
+          }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+          });
+      };
+      var ModalInstanceCtrl = function ($scope, $uibModalInstance) {
+        //$scope.items = items;
+//        $scope.selected = {
+//          item: $scope.items[0]
+//        };
+        $scope.ok = function () {
+          //$modalInstance.close($scope.selected.item);
+          $uibModalInstance.close();
+        };
+        $scope.cancel = function () {
+          $uibModalInstance.dismiss('cancel');
+        };
+      };
+        });
+    app.controller('MapCtrl', function ($scope) {
+      var mapOptions = {
+        zoom: 8,
+        center: new google.maps.LatLng(37.5655688, -122.0693672)
+      }
+      $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+      $scope.markers = [];
+      var infoWindow = new google.maps.InfoWindow();
+      var createMarker = function (info){
+        var marker = new google.maps.Marker({
+          map: $scope.map,
+          position: new google.maps.LatLng(info.lat, info.lng)
+        });
+        marker.content = '<div class="infoWindowContent">' + info.label + '</div>';
+        google.maps.event.addListener(marker, 'click', function(){
+          infoWindow.setContent('<h2>' + marker.title + '</h2>' + marker.content);
+          infoWindow.open($scope.map, marker);
+        });
+        $scope.markers.push(marker);
+      }
+      for (i = 0; i < locations.length; i++){
+        createMarker(locations[i]);
+      }
+      $scope.openInfoWindow = function(e, selectedMarker){
+        e.preventDefault();
+        google.maps.event.trigger(selectedMarker, 'click');
+      }
+    })
+      app.controller("MainController", function($scope, $http){
+          $scope.displayData = function(){
+            $http.get("select.php").success(function(result){
+                $scope.data = result;
+                console.log($scope.data);
+            })
+          }
+          $scope.insertProduct=function(){
+          $http.post("addProduct.php",{'pName':$scope.productName,'price':$scope.price, 'cate':$scope.category}).success(function(data){
+                console.log(data);
+                $scope.msg = data;
+
+            })
+          }
+
+      });
+    app.config(function($routeProvider) {
+      $routeProvider
+        .when("/", {
+          templateUrl: "main.html",
+          controller: "MainController"
+        })
+        .when("/home", {
+          templateUrl: "main.html",
+          controller: "MainController"
+        })
+        .when("/employee", {
+          templateUrl: "employee.html",
+          controller: "MainController"
+        })
+        .when("/cart", {
+          templateUrl: "shoppingcart.html"
+        })
+        .when("/maps", {
+          templateUrl: "maps.html"
+        })
+        
+    });
+	</script>
+<style>
+  #map {
+    height:600px;
+    width:100%;
+  }
+  .infoWindowContent {
+    font-size:  14px !important;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+  }
+  h2 {
+    margin-bottom:0;
+    margin-top: 0;
+  }
+</style>
+</body>
+
+</html>
