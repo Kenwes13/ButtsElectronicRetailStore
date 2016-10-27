@@ -22,7 +22,7 @@
                 <div class="control-group">
                   <label class="control-label" for="userid">Username:</label>
                   <div class="controls">
-                    <input required="" id="userid" name="userid" type="text" class="form-control" placeholder="Username" class="input-medium" required="">
+                    <input ng-model="username" required="" id="userid" name="userid" type="text" class="form-control" placeholder="Username" class="input-medium" required="">
                   </div>
                 </div>
 
@@ -30,7 +30,7 @@
                 <div class="control-group">
                   <label class="control-label" for="passwordinput">Password:</label>
                   <div class="controls">
-                    <input required="" id="passwordinput" name="passwordinput" class="form-control" type="password" placeholder="********" class="input-medium">
+                    <input ng-model="password" required="" id="passwordinput" name="passwordinput" class="form-control" type="password" placeholder="********" class="input-medium">
                   </div>
                 </div>
 
@@ -41,7 +41,7 @@
                 <div class="control-group">
                   <label class="control-label" for="signin"></label>
                   <div class="controls">
-                    <button id="signin" name="signin" class="btn btn-success">Sign In</button>
+                    <button ng-click = "verifyCustomer()" id="signin" name="signin" class="btn btn-success">Sign In</button>
                   </div>
                 </div>
               </fieldset>
@@ -57,15 +57,21 @@
                 <div class="control-group">
                   <label class="control-label" for="email">Email:</label>
                   <div class="controls">
-                    <input id="email" name="email" class="form-control" type="text" placeholder="e.g abc@sjsu.com" class="input-large" required>
+                    <input ng-model="email" id="email" name="email" class="form-control" type="text" placeholder="e.g abc@sjsu.com" class="input-large" required>
                   </div>
                 </div>
 
+                <div class="control-group">
+                  <label class="control-label" for="address">Address:</label>
+                  <div class="controls">
+                    <input ng-model="address" id="address" name="address" class="form-control" type="text" class="input-large" required>
+                  </div>
+                </div>
                 <!-- Text input-->
                 <div class="control-group">
                   <label class="control-label" for="userid">Username:</label>
                   <div class="controls">
-                    <input id="userid" name="userid" class="form-control" type="text" placeholder="Username" class="input-large" required>
+                    <input  ng-model="username" id="userid" name="userid" class="form-control" type="text" placeholder="Username" class="input-large" required>
                   </div>
                 </div>
 
@@ -73,7 +79,7 @@
                 <div class="control-group">
                   <label class="control-label" for="password">Password:</label>
                   <div class="controls">
-                    <input id="password" name="password" class="form-control" type="password" placeholder="********" class="input-large" required>
+                    <input  ng-model="password" id="password" name="password" class="form-control" type="password" placeholder="********" class="input-large" required>
                   </div>
                 </div>
 
@@ -81,7 +87,7 @@
                 <div class="control-group">
                   <label class="control-label" for="reenterpassword">Re-Enter Password:</label>
                   <div class="controls">
-                    <input id="reenterpassword" class="form-control" name="reenterpassword" type="password" placeholder="********" class="input-large" required>
+                    <input ng-model ="reenterpassword" id="reenterpassword" class="form-control" name="reenterpassword" type="password" placeholder="********" class="input-large" required>
                   </div>
                 </div>
 
@@ -89,7 +95,7 @@
                 <div class="control-group">
                   <label class="control-label" for="confirmsignup"></label>
                   <div class="controls">
-                    <button id="confirmsignup" name="confirmsignup" class="btn btn-success">Sign Up</button>
+                    <button ng-click="addCustomer()" id="confirmsignup" name="confirmsignup" class="btn btn-success">Sign Up</button>
                   </div>
                 </div>
               </fieldset>

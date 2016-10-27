@@ -178,6 +178,9 @@
         $scope.cancel = function () {
           $uibModalInstance.dismiss('cancel');
         };
+        $scope.addCustomer = function(){
+          $http.post("addCustomer.php", {''})
+        };
       };
         });
 
