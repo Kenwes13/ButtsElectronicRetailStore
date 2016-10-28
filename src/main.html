@@ -2,6 +2,37 @@
 <!-- Page Content -->
 <div class="container">
   <div class="row">
+    <div class="col-md-12">
+      <div class="jumbotron text-center">
+        <h1>E  M  Q</h1>
+        <form>
+          <div class="col-xs-8 col-xs-offset-2">
+            <div class="input-group">
+              <div class="input-group-btn search-panel">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                  <span id="search_concept">Filter by</span> <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a id="#name">Product Name</a></li>
+                  <li><a id="#Category">Category</a></li>
+                </ul>
+              </div>
+              <input type="hidden" name="search_param" value="all" id="search_param">
+              <input type="text" class="form-control" name="x" placeholder="Search term...">
+              <span class="input-group-btn">
+                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                </span>
+            </div>
+          </div>
+        </form>
+        <br><br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
     <div class="col-md-3">
       <p class="lead">Shop Name</p>
       <div class="list-group">
@@ -47,7 +78,7 @@
             <img src="http://placehold.it/320x150" alt="">
             <div class="caption">
               <h4 class="pull-right">${{product.Price}}</h4>
-              <h4><a href="#">{{product.ProductName}}</a>
+              <h4><a href="#productDetails">{{product.ProductName}}</a>
               </h4>
               <p>Product Description Here.</p>
             </div>
@@ -68,3 +99,14 @@
 
     </div>
   </div>
+<script>
+  $(document).ready(function(e){
+    $('.search-panel .dropdown-menu').find('a').click(function(e) {
+      e.preventDefault();
+      var param = $(this).attr("id").replace("#","");
+      var concept = $(this).text();
+      $('.search-panel span#search_concept').text(concept);
+      $('.input-group #search_param').val(param);
+    });
+  });
+  </script>
