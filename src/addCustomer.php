@@ -19,6 +19,9 @@ if(!empty($row)){
 
 echo "username already taken";
 }
+else if(){
+	
+}
 else{
 	echo "success";
 }
