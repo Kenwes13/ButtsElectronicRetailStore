@@ -10,7 +10,7 @@
 </head>
 <body>
 
-
+<div ng-controller="ProductPageController">
 <br>
 <br>
 <div class="row">
@@ -32,7 +32,7 @@
 </div>
 </div>
 <div class="medium-6 large-5 columns">
-<h3>My Awesome Product</h3>
+<h3>{{name}}</h3>
 <p>Nunc eu ullamcorper orci. Quisque eget odio ac lectus vestibulum faucibus eget in metus. In pellentesque faucibus vestibulum. Nulla at nulla justo, eget luctus tortor. Nulla facilisi. Duis aliquet egestas purus in.</p>
 <label>Size
 <select>
@@ -50,8 +50,8 @@
 <input type="text" id="middle-label" value = "1">
 </div>
 </div>
-<a href="#" class="button large expanded">Add To Cart</a>
-
+<a href="#cart" class="button large expanded">Add To Cart</a>
+</div>
 
 </body>
 </html>

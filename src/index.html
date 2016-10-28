@@ -79,8 +79,24 @@
       {lat:37.770352,lng:-122.419098 ,label:"1695 Mission St San Francisco, CA 94103"},
       {lat:37.737660, lng:-122.475911,label:"2699 19th Ave San Francisco, CA 94116"}
     ];
-      
+
     var app = angular.module("myApp", ["ngMap","ngRoute","ui.bootstrap"]);
+
+    app.factory('myService', function(){
+        var datatopass = {};
+        function set(data){
+            datatopass = data;
+        }
+        function get() {
+          return datatopass;
+        }
+
+        return{
+          set:set,
+          get:get
+        }
+
+    });
     app.controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
         $scope.open = function () {
           var modalInstance = $uibModal.open({
@@ -142,7 +158,7 @@
         google.maps.event.trigger(selectedMarker, 'click');
       }
     })
-      .controller("MainController", function($scope, $http){
+      .controller("MainController", function($scope, $http, myService){
           //display products
           $scope.displayData = function(){
             $http.get("select.php").success(function(result){
@@ -157,7 +173,26 @@
                 $scope.msg = data;
             })
           }
-      });
+        var product = {};
+        $scope.getProduct = function(prodNames) {
+          product = prodNames;
+          myService.set(product);
+        }
+
+      })
+      .controller("ProductPageController", function($scope, myService) {
+        $scope.name = myService.get();
+        console.log($scope.name);
+        $scope.displayDetails = function() {
+          $http.post("productpage.php",{
+              'name': $scope.name
+          }).success(function(data){
+            console.log(data);
+          })
+        }
+  })
+
+
     app.config(function($routeProvider) {
       $routeProvider
         .when("/", {
