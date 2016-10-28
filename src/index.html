@@ -41,10 +41,9 @@
       </div>
       <ul class="nav navbar-nav">
         <li><a href="#home">Home</a></li>
-        <li><a href="#">Products</a></li>
-        <li><a href="#">Deals</a></li>
+        <li><a href="#products">Products</a></li>
         <li><a href="#maps">Stores</a></li>
-        <li><a href="#">Contacts</a></li>
+        <li><a href="#contacts">Contacts</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#login" ng-click="open()"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
@@ -59,6 +58,15 @@
 
 
 	<script>
+//    $(document).ready(function(e){
+//      $('.search-panel .dropdown-menu').find('a').click(function(e) {
+//        e.preventDefault();
+//        var param = $(this).attr("id").replace("#","");
+//        var concept = $(this).text();
+//        $('.search-panel span#search_concept').text(concept);
+//        $('.input-group #search_param').val(param);
+//      });
+//    });
     var locations = [
       {lat:37.655508 , lng:-122.070641, label:"25453 Mission Blvd, Hayward, CA 94544"},
       {lat: 37.815671, lng:-122.287572, label:"2107 Poplar St, Oakland, CA 94607"},
@@ -229,10 +237,14 @@
     app.config(function($routeProvider) {
       $routeProvider
         .when("/", {
-          templateUrl: "main.html",
+          templateUrl: "home.html",
           controller: "MainController"
         })
         .when("/home", {
+          templateUrl: "home.html",
+          controller: "MainController"
+        })
+        .when("/products", {
           templateUrl: "main.html",
           controller: "MainController"
         })
@@ -265,8 +277,37 @@
     margin-top: 0;
   }
 
+  /* Remove the navbar's default margin-bottom and rounded borders */
+  .navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+  }
+
+  /* Add a gray background color and some padding to the footer */
+  footer {
+    background-color: #f2f2f2;
+    padding: 25px;
+  }
+
+  .carousel-inner img {
+    width: 100%; /* Set width to 100% */
+    margin: auto;
+    min-height:200px;
+  }
+
+  /* Hide the carousel text when the screen is less than 600 pixels wide */
+  @media (max-width: 600px) {
+    .carousel-caption {
+      display: none;
+    }
+  }
+
 
 </style>
+<footer class="container-fluid text-center">
+  <p>Footer Text</p>
+</footer>
+
 </body>
 
 </html>
