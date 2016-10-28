@@ -168,7 +168,7 @@
 
       };
 
-      var ModalInstanceCtrl = function ($scope, $uibModalInstance) {
+      var ModalInstanceCtrl = function ($scope, $http,$uibModalInstance) {
 
 
         $scope.ok = function () {
@@ -179,8 +179,15 @@
           $uibModalInstance.dismiss('cancel');
         };
         $scope.addCustomer = function(){
-          $http.post("addCustomer.php", {''})
+         $http.post("addCustomer.php", {'email':$scope.email,'address':$scope.address,'username':$scope.username,'password':$scope.password,'reenterpassword':$scope.reenterpassword}).success(function(data){
+          $scope.msg=data;
+         });
         };
+        $scope.verifyCustomer =function(){
+          $http.post("verifyCustomer.php",{'uName':$scope.username,'pWord':$scope.password}).success(function(data){
+            $scope.msg=data;
+          })
+        }
       };
         });
 
