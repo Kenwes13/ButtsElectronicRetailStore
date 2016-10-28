@@ -112,3 +112,51 @@
     </div>
   </div>
 </div>
+<script >
+    
+    $().ready(function (){
+      $("#signup-form").validate({
+        rules: {
+          email: {
+            required: true,
+            email: true,
+            remote: {
+              url: "checkcredentials.php",
+              type: "post"
+            }
+          },
+          password:{
+            required: true,
+            minlength: 6
+          },
+          reenterpassword:{
+            required:true,
+            equalTo: "#password"
+          },
+          userid: {
+            required: true,
+            minlength: 5
+          }
+        },
+        messages: {
+          username:{
+            required:"Please enter a username.",
+            minlength: "Your username must consist of at least 5 characters"
+          },
+          email: {
+            required:"Please enter an email address.",
+            email:"Please enter a valid email address",
+            remote:"This email is already in use."
+          },
+          password:{
+            required:"Please enter a password.",
+            minlength:"Your password must consist of at least 6 characters"
+          },
+          reenterpassword:{
+            required: "Please enter your password again.",
+            equalTo:"Your password does not match"
+          }
+        }
+      });
+    });
+</script>

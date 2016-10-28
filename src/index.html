@@ -79,70 +79,7 @@
       {lat:37.770352,lng:-122.419098 ,label:"1695 Mission St San Francisco, CA 94103"},
       {lat:37.737660, lng:-122.475911,label:"2699 19th Ave San Francisco, CA 94116"}
     ];
-      $(document).ready(function(){
-        $("#confirmsignup").click(function(){
-          $.ajax({
-            type: "POST",
-            url:"insertdb.php",
-            data: {
-              "email": $("#email").val(),
-              "username": $("#userid").val(),
-              "password":$("#password").val()
-            }
-          })
-        });
-        });
-    //Client Side validation for signing up
-    $(document).ready(function(){
-      $("#login").click(function(){
-        $("#myModal").modal();
-      });
-    });
-    $().ready(function (){
-      $("#signup-form").validate({
-        rules: {
-          email: {
-            required: true,
-            email: true,
-            remote: {
-              url: "checkcredentials.php",
-              type: "post"
-            }
-          },
-          password:{
-            required: true,
-            minlength: 6
-          },
-          reenterpassword:{
-            required:true,
-            equalTo: "#password"
-          },
-          userid: {
-            required: true,
-            minlength: 5
-          }
-        },
-        messages: {
-          username:{
-            required:"Please enter a username.",
-            minlength: "Your username must consist of at least 5 characters"
-          },
-          email: {
-            required:"Please enter an email address.",
-            email:"Please enter a valid email address",
-            remote:"This email is already in use."
-          },
-          password:{
-            required:"Please enter a password.",
-            minlength:"Your password must consist of at least 6 characters"
-          },
-          reenterpassword:{
-            required: "Please enter your password again.",
-            equalTo:"Your password does not match"
-          }
-        }
-      });
-    });
+      
     var app = angular.module("myApp", ["ngMap","ngRoute","ui.bootstrap"]);
     app.controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
         $scope.open = function () {
