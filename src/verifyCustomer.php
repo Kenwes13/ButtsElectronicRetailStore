@@ -8,7 +8,7 @@ $password = mysqli_real_escape_string($conn,$data->pWord);
 
 
 
-$query= "SELECT * FROM Customer WHERE CustomerName ='".$username."'";
+$query= "SELECT * FROM Customer WHERE Password = '".$password."' and CustomerName ='".$username."'";
 $result = mysqli_query($conn, $query);
 
 $row=mysqli_fetch_array($result);

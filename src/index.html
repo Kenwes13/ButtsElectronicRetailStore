@@ -170,6 +170,11 @@
           $scope.msg=data;
          });
         };
+        $scope.verifyCustomer =function(){
+          $http.post("verifyCustomer.php",{'uName':$scope.username,'pWord':$scope.password}).success(function(data){
+            $scope.msg=data;
+          });
+        }
       };
         });
     app.controller('MapCtrl', function ($scope) {
