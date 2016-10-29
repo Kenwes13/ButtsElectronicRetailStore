@@ -24,7 +24,7 @@ else{
 	echo "success";
 }
 
-mysqli_query($conn,"INSERT INTO Customer(CustomerName, Address, Email, Password) VALUES ('".$username."','".$address."','".$email."','".$password."')");
+mysqli_query($conn,"INSERT INTO Customer(CustomerName, Address, `E-mail`, Password) VALUES ('".$username."','".$address."','".$email."','".$password."')");
 
 
 ?>

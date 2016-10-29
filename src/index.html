@@ -182,12 +182,15 @@
       })
       .controller("ProductPageController", function($scope, myService) {
         $scope.name = myService.get();
-        console.log($scope.name);
         $scope.displayDetails = function() {
           $http.post("productpage.php",{
               'name': $scope.name
           }).success(function(data){
             console.log(data);
+          })
+          $http.get("productpage.php").success(function(result){
+              $scope.productData = result;
+            alert($scope.productData);
           })
         }
   })
