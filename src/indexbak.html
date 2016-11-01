@@ -41,13 +41,12 @@
       </div>
       <ul class="nav navbar-nav">
         <li><a href="#home">Home</a></li>
-        <li><a href="#">Products</a></li>
-        <li><a href="#">Deals</a></li>
+        <li><a href="#products">Products</a></li>
         <li><a href="#maps">Stores</a></li>
-        <li><a href="#">Contacts</a></li>
+        <li><a href="#contacts">Contacts</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a ng-click="open()"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
+        <li><a href="#login" ng-click="open()"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
         <li><a href="#cart"><span class="glyphicon glyphicon-log-in"></span> Cart</a></li>
       </ul>
     </div>
@@ -59,6 +58,15 @@
 
 
 	<script>
+//    $(document).ready(function(e){
+//      $('.search-panel .dropdown-menu').find('a').click(function(e) {
+//        e.preventDefault();
+//        var param = $(this).attr("id").replace("#","");
+//        var concept = $(this).text();
+//        $('.search-panel span#search_concept').text(concept);
+//        $('.input-group #search_param').val(param);
+//      });
+//    });
     var locations = [
       {lat:37.655508 , lng:-122.070641, label:"25453 Mission Blvd, Hayward, CA 94544"},
       {lat: 37.815671, lng:-122.287572, label:"2107 Poplar St, Oakland, CA 94607"},
@@ -70,24 +78,9 @@
       {lat:37.655331,lng:-122.429529 ,label:"Across from 816 Antoinette Ln South San Francisco, CA 94080"},
       {lat:37.770352,lng:-122.419098 ,label:"1695 Mission St San Francisco, CA 94103"},
       {lat:37.737660, lng:-122.475911,label:"2699 19th Ave San Francisco, CA 94116"}
-    ];
-/*
-          $(document).ready(function(){
-        $("#addProduct").click(function(){
-          $.ajax({
-            type: "POST",
-            url: "addProduct.php",
-            data: {
-              "productName": $("#productName").val(),
-              "price":$("#price").val(),
-              "category":$("#category").val(),
-              "image":$("#image").val(),
 
-            }
-          })
-        });
-      });
-*/
+    ];
+
       $(document).ready(function(){
         $("#confirmsignup").click(function(){
           $.ajax({
@@ -101,12 +94,17 @@
           })
         });
         });
+
+
+
+
     //Client Side validation for signing up
 		$(document).ready(function(){
 			$("#login").click(function(){
 				$("#myModal").modal();
 			});
 		});
+
     $().ready(function (){
       $("#signup-form").validate({
         rules: {
@@ -152,46 +150,69 @@
         }
       });
     });
+
+
+
+
     var app = angular.module("myApp", ["ngMap","ngRoute","ui.bootstrap"]);
     app.controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
-        //$scope.items = ['item1', 'item2', 'item3'];
+
+
         $scope.open = function () {
+
           var modalInstance = $uibModal.open({
             templateUrl: 'loginModal.html',
             controller: ModalInstanceCtrl,
             resolve: {
-//              items: function () {
-//                return $scope.items;
-//              }
+
             }
           });
+
           modalInstance.result.then(function () {
             //$scope.selected = selectedItem;
           }, function () {
             $log.info('Modal dismissed at: ' + new Date());
           });
+
       };
-      var ModalInstanceCtrl = function ($scope, $uibModalInstance) {
-        //$scope.items = items;
-//        $scope.selected = {
-//          item: $scope.items[0]
-//        };
+
+      var ModalInstanceCtrl = function ($scope, $http,$uibModalInstance) {
+
+
         $scope.ok = function () {
-          //$modalInstance.close($scope.selected.item);
           $uibModalInstance.close();
         };
+
         $scope.cancel = function () {
           $uibModalInstance.dismiss('cancel');
         };
+        $scope.addCustomer = function(){
+<<<<<<< HEAD
+         $http.post("addCustomer.php", {'email':$scope.email,'address':$scope.address,'username':$scope.username,'password':$scope.password,'reenterpassword':$scope.reenterpassword}).success(function(data){
+          $scope.msg=data;
+         });
+=======
+          //$http.post("addCustomer.php", {''})
+>>>>>>> 907a8acbb5335950574c1605db549e8018fcd11f
+        };
+        $scope.verifyCustomer =function(){
+          $http.post("verifyCustomer.php",{'uName':$scope.username,'pWord':$scope.password}).success(function(data){
+            $scope.msg=data;
+          });
+        }
       };
         });
+
     app.controller('MapCtrl', function ($scope) {
+
       var mapOptions = {
         zoom: 8,
         center: new google.maps.LatLng(37.5655688, -122.0693672)
       }
+
       $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
       $scope.markers = [];
+
       var infoWindow = new google.maps.InfoWindow();
       var createMarker = function (info){
         var marker = new google.maps.Marker({
@@ -204,22 +225,29 @@
           infoWindow.open($scope.map, marker);
         });
         $scope.markers.push(marker);
+
       }
+
       for (i = 0; i < locations.length; i++){
         createMarker(locations[i]);
       }
+
       $scope.openInfoWindow = function(e, selectedMarker){
         e.preventDefault();
         google.maps.event.trigger(selectedMarker, 'click');
       }
+
     })
-      app.controller("MainController", function($scope, $http){
+      .controller("MainController", function($scope, $http){
+          //display products
           $scope.displayData = function(){
             $http.get("select.php").success(function(result){
                 $scope.data = result;
                 console.log($scope.data);
+
             })
           }
+          //inserting products
           $scope.insertProduct=function(){
           $http.post("addProduct.php",{'pName':$scope.productName,'price':$scope.price, 'cate':$scope.category}).success(function(data){
                 console.log(data);
@@ -232,25 +260,37 @@
     app.config(function($routeProvider) {
       $routeProvider
         .when("/", {
-          templateUrl: "main.html",
+          templateUrl: "home.html",
           controller: "MainController"
         })
         .when("/home", {
+          templateUrl: "home.html",
+          controller: "MainController"
+        })
+        .when("/products", {
           templateUrl: "main.html",
+          controller: "MainController"
+        })
+        .when("/cart", {
+          templateUrl: "shoppingcart.html",
+          controller: "MainController"
+        })
+        .when("/maps", {
+          templateUrl: "maps.html",
           controller: "MainController"
         })
         .when("/employee", {
           templateUrl: "employee.html",
           controller: "MainController"
         })
-        .when("/cart", {
-          templateUrl: "shoppingcart.html"
+        .when("/productDetails", {
+          templateUrl: "Product-page.html"
         })
-        .when("/maps", {
-          templateUrl: "maps.html"
+        .otherwise({
+          redirectTo: '/'
         })
-        
     });
+
 	</script>
 <style>
   #map {
@@ -266,7 +306,38 @@
     margin-bottom:0;
     margin-top: 0;
   }
+
+  /* Remove the navbar's default margin-bottom and rounded borders */
+  .navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+  }
+
+  /* Add a gray background color and some padding to the footer */
+  footer {
+    background-color: #f2f2f2;
+    padding: 25px;
+  }
+
+  .carousel-inner img {
+    width: 100%; /* Set width to 100% */
+    margin: auto;
+    min-height:200px;
+  }
+
+  /* Hide the carousel text when the screen is less than 600 pixels wide */
+  @media (max-width: 600px) {
+    .carousel-caption {
+      display: none;
+    }
+  }
+
+
 </style>
+<footer class="container-fluid text-center">
+  <p>Footer Text</p>
+</footer>
+
 </body>
 
 </html>
