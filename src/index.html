@@ -79,9 +79,7 @@
       {lat:37.770352,lng:-122.419098 ,label:"1695 Mission St San Francisco, CA 94103", phone:"418-555-5554", gm:"Hawkgirl"},
       {lat:37.737660, lng:-122.475911,label:"2699 19th Ave San Francisco, CA 94116", phone:"418-555-5553", gm:"Martian Manhunter"}
     ];
-
     var app = angular.module("myApp", ["ngMap","ngRoute","ui.bootstrap"]);
-
     app.factory('myService', function(){
         var datatopass = {};
         function set(data){
@@ -90,12 +88,10 @@
         function get() {
           return datatopass;
         }
-
         return{
           set:set,
           get:get
         }
-
     });
     app.controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
         $scope.open = function () {
@@ -181,24 +177,19 @@
           product = prodNames;
           myService.set(product);
         }
-
       })
-      .controller("ProductPageController", function($scope, myService) {
+      .controller("ProductPageController", function($scope, myService,$http) {
         $scope.name = myService.get();
         $scope.displayDetails = function() {
           $http.post("productpage.php",{
               'name': $scope.name
           }).success(function(data){
             console.log(data);
+            $scope.product = data;
           })
-          $http.get("productpage.php").success(function(result){
-              $scope.productData = result;
-            alert($scope.productData);
-          })
+        
         }
   })
-
-
     app.config(function($routeProvider) {
       $routeProvider
         .when("/", {
