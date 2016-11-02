@@ -19,6 +19,7 @@
   <script src="https://rawgit.com/allenhwkim/angularjs-google-maps/master/build/scripts/ng-map.js"></script>
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.js"></script>
   <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
+  <script src="../node_modules/angular-local-storage/src/angular-local-storage.js"></script>
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -79,7 +80,7 @@
       {lat:37.770352,lng:-122.419098 ,label:"1695 Mission St San Francisco, CA 94103", phone:"418-555-5554", gm:"Hawkgirl"},
       {lat:37.737660, lng:-122.475911,label:"2699 19th Ave San Francisco, CA 94116", phone:"418-555-5553", gm:"Martian Manhunter"}
     ];
-    var app = angular.module("myApp", ["ngMap","ngRoute","ui.bootstrap"]);
+    var app = angular.module("myApp", ["ngMap","ngRoute","ui.bootstrap", "LocalStorageModule"]);
     app.factory('myService', function(){
         var datatopass = {};
         function set(data){
@@ -157,7 +158,7 @@
         google.maps.event.trigger(selectedMarker, 'click');
       }
     })
-      .controller("MainController", function($scope, $http, myService){
+      .controller("MainController", function($scope, $http, myService, localStorageService){
           //display products
           $scope.displayData = function(){
             $http.get("select.php").success(function(result){
@@ -176,13 +177,16 @@
         $scope.getProduct = function(prodNames) {
           product = prodNames;
           myService.set(product);
+          return localStorageService.set("prod", product);
         }
       })
-      .controller("ProductPageController", function($scope, myService,$http) {
+      .controller("ProductPageController", function($scope, myService,$http, localStorageService) {
         $scope.name = myService.get();
+        $scope.prod = localStorageService.get("prod");
+        console.log($scope.prod);
         $scope.displayDetails = function() {
           $http.post("productpage.php",{
-              'name': $scope.name
+              'name': $scope.prod
           }).success(function(data){
             console.log(data);
             $scope.product = data;
