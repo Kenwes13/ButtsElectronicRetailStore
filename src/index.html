@@ -207,8 +207,23 @@
             $scope.displayCart = function() {
             $http.post("retrieveCart.php").success(function(result){
               $scope.cartData = result;
+              $scope.total = 0;
+              for(var i = 0; i<result; i++) {
+                console.log(result[i].Price);
+                $scope.total += parseInt(result[i].Price) * parseInt(result[i].Quantity);
+                console.log($scope.total); 
+              }
               console.log($scope.cartData);
           })
+            $scope.deleteItem = function($scope, $http, itemToDelete) {
+                var delQuery = "DELETE FROM CART WHERE ProductName ='" + itemToDelete +"'";
+                console.log(delQuery);
+                $http.post("addToCart.php", {
+                    'query': delQuery
+                }).sucess(function(result){
+                    location.reload();
+                })
+            }
         }
       })
     app.config(function($routeProvider) {
