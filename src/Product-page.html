@@ -40,10 +40,10 @@
 <label for="middle-label" class="middle">Quantity</label>
 </div>
 <div class="small-9 columns">
-<input type="text" id="middle-label" value = "1">
+<input type="text" id="middle-label" ng-model ="quantity" ng-init="quantity = '1'">
 </div>
 </div>
-<a href="#cart" class="button large expanded">Add To Cart</a>
+<a href="#cart" ng-click ="addToCart()" class="button large expanded" >Add To Cart</a>
 </div>
 
 </body>

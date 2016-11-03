@@ -118,7 +118,7 @@
         $scope.addCustomer = function(){
           $http.post("addCustomer.php", {'email':$scope.email,'address':$scope.address,'username':$scope.username,'password':$scope.password,'reenterpassword':$scope.reenterpassword}).success(function(data){
           $scope.msg=data;
-         });
+         }); 
         };
         $scope.verifyCustomer =function(){
           $http.post("verifyCustomer.php",{'uName':$scope.username,'pWord':$scope.password}).success(function(data){
@@ -181,19 +181,36 @@
         }
       })
       .controller("ProductPageController", function($scope, myService,$http, localStorageService) {
-        $scope.name = myService.get();
-        $scope.prod = localStorageService.get("prod");
-        console.log($scope.prod);
+        //$scope.name = myService.get();
+        $scope.name = localStorageService.get("prod");
+        //console.log($scope.prod);
         $scope.displayDetails = function() {
           $http.post("productpage.php",{
-              'name': $scope.prod
+              'name': $scope.name
           }).success(function(data){
             console.log(data);
             $scope.product = data;
           })
-        
         }
-  })
+        $scope.addToCart = function(){
+            var query = "INSERT INTO Cart(ProductName, Quantity) VALUES ('"+".$pName."+"', '"+".$quantity."+"')";
+            $http.post("addtoCart.php", {
+              'pName': $scope.name,
+              'quantity': $scope.quantity,
+              'query': query
+            }).success(function(data){
+                console.log(data);
+            });
+        };
+      })
+      .controller("CartController", function($scope, $http) {
+            $scope.displayCart = function() {
+            $http.post("retrieveCart.php").success(function(result){
+              $scope.cartData = result;
+              console.log($scope.cartData);
+          })
+        }
+      })
     app.config(function($routeProvider) {
       $routeProvider
         .when("/", {
@@ -206,22 +223,23 @@
         })
         .when("/products", {
           templateUrl: "main.html",
-          controller: "MainController"
+          controller: "ProductPageController"
         })
         .when("/cart", {
           templateUrl: "shoppingcart.html",
-          controller: "MainController"
+          controller: "CartController"
         })
         .when("/maps", {
           templateUrl: "maps.html",
-          controller: "MainController"
+          controller: "MapCtrl"
         })
         .when("/employee", {
           templateUrl: "employee.html",
           controller: "MainController"
         })
         .when("/productDetails", {
-          templateUrl: "Product-page.html"
+          templateUrl: "Product-page.html",
+          controller: "ProductPageController"
         })
         .otherwise({
           redirectTo: '/'
