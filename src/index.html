@@ -106,6 +106,7 @@
           console.log($cookies.get('username').toString());
         }
         $scope.logOut = function(){
+          $cookies.remove('username');
           $scope.isLoggedIn = false;
           location.reload();
         }
