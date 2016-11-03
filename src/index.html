@@ -30,6 +30,7 @@
 
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <link rel = "stylesheet" type="text/css" href= "resources/css/styles.css">
 
 
 </head>
@@ -49,6 +50,8 @@
         <li><a href="#contacts">Contacts</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li ng-show="isLoggedIn"><a ng-click="logOut()" ><span class="glyphicon glyphicon-user"></span> Log Out</a></li>
+
         <li><a href="#login" ng-click="open()"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
         <li><a href="#cart"><span class="glyphicon glyphicon-log-in"></span> Cart</a></li>
       </ul>
@@ -96,7 +99,16 @@
           get:get
         }
     });
-    app.controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
+    app.controller('ModalDemoCtrl', function ($scope, $uibModal, $log,$cookies) {
+       if($cookies.get('username')!=undefined){
+          $scope.isLoggedIn = true;
+          console.log("ran");
+          console.log($cookies.get('username').toString());
+        }
+        $scope.logOut = function(){
+          $scope.isLoggedIn = false;
+          location.reload();
+        }
         $scope.open = function () {
           var modalInstance = $uibModal.open({
             templateUrl: 'loginModal.html',
@@ -125,8 +137,10 @@
         $scope.verifyCustomer =function(){
           $http.post("verifyCustomer.php",{'uName':$scope.username,'pWord':$scope.password}).success(function(data){
              $scope.msg=data;
-            if(data =="success"){
+           if(data =="success"){
+               $scope.isLoggedIn = true;
               $cookies.put('username', $scope.username);
+              location.reload();
               console.log($cookies.get('username').toString());
             }
           });

@@ -18,8 +18,7 @@ echo "Username or password incorrect";
 }
 else{
 	echo "success";
-	session_start();
-	echo $_SESSION['currentCustomer'] = $username;
+	
 }
 
 
