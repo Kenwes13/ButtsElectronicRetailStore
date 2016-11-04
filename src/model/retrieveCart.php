@@ -13,11 +13,9 @@ $query = "SELECT * FROM Cart, Product WHERE Cart.ProductName = Product.ProductNa
 $result = mysqli_query($conn, $query);
 
 while($row=mysqli_fetch_array($result)){
-	file_put_contents("errors.txt", $row);
 	$dataResult[] = $row;
 }
 
-file_put_contents("errors.txt", $data);
 
 echo json_encode($dataResult);
 ?>

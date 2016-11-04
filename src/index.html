@@ -261,6 +261,7 @@
               console.log($scope.cartData);
           })
             $scope.deleteItem = function($scope, $http, itemToDelete) {
+              /*
                 var delQuery = "DELETE FROM CART WHERE ProductName ='" + itemToDelete +"'";
                 console.log(delQuery);
                 $http.post("./model/addToCart.php", {
@@ -268,6 +269,7 @@
                 }).sucess(function(result){
                     location.reload();
                 })
+                */
             }
         }
       })
