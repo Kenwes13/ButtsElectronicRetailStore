@@ -1,12 +1,13 @@
 <?php
 include "connectdb.php";
-$data = json_decode(file_get_contents("php://input"));
+$input = json_decode(file_get_contents("php://input"));
 
-$search = mysqli_real_escape_string($conn,$data->search);
-$category = mysqli_real_escape_string($conn,$data->category);
+$name = mysqli_real_escape_string($conn,$input->name);
+$category = mysqli_real_escape_string($conn,$input->category);
 
 
-$query= "SELECT * FROM Product WHERE Category=".$category." AND Name LIKE '%".$search."%' LIMIT 20";
+$query= "SELECT * FROM Product WHERE Category='".$category."' AND ProductName LIKE '%".$name."%' LIMIT 20";
+//$query= "SELECT * FROM Product WHERE ProductName='".$name."' LIMIT 20";
 $result = mysqli_query($conn, $query);
 
 while($row=mysqli_fetch_array($result)){
