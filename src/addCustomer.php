@@ -1,7 +1,7 @@
 <?php
 include "connectdb.php";
 
-//$data = json_decode(file_get_contents("php://input"));
+$data = json_decode(file_get_contents("php://input"));
 
 $email = mysqli_real_escape_string($conn,$data->email);
 $address = mysqli_real_escape_string($conn,$data->address);

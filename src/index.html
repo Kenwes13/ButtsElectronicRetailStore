@@ -220,11 +220,10 @@
           })
         }
         $scope.addToCart = function(){
-            var query = "INSERT INTO Cart(ProductName, Quantity) VALUES ('"+".$pName."+"', '"+".$quantity."+"')";
+            //var query = "INSERT INTO Cart(ProductName, Quantity) VALUES ('"+".$pName."+"', '"+".$quantity."+"')";
             $http.post("addtoCart.php", {
               'pName': $scope.name,
               'quantity': $scope.quantity,
-              'query': query
             }).success(function(data){
                 console.log(data);
             });
