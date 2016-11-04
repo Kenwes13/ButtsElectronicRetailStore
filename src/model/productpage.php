@@ -4,11 +4,11 @@ $data = json_decode(file_get_contents("php://input"));
 
 $productName = mysqli_real_escape_string($conn,$data->name);
 
-$query= "SELECT * FROM Product WHERE ProductName = '$productName'";
+$query= "SELECT * FROM Product WHERE ProductName = '".$productName."'";
 $result = mysqli_query($conn, $query);
 
 while($row=mysqli_fetch_array($result)){
-	$data[] = $row;
+	$dataResult = $row;
 }
-echo json_encode($data);
+echo json_encode($dataResult);
 ?>

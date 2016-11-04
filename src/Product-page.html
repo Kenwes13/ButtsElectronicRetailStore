@@ -43,7 +43,8 @@
 <input type="text" id="middle-label" ng-model ="quantity" ng-init="quantity = 1">
 </div>
 </div>
-<a href="#cart" ng-click ="addToCart()" class="button large expanded" >Add To Cart</a>
+<a ng-show="isLoggedIn" href="#cart" ng-click ="addToCart()" class="button large expanded" >Add To Cart</a>
+<a ng-hide="isLoggedIn" onclick = "swal('You must log in before you add to cart')" class="button large expanded" >Add To Cart</a>
 </div>
 
 </body>

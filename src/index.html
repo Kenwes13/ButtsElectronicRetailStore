@@ -30,6 +30,8 @@
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <link rel = "stylesheet" type="text/css" href= "resources/css/styles.css">
+  <script src="resources/css/dist/sweetalert.min.js"></script> 
+  <link rel="stylesheet" type="text/css" href="resources/css/dist/sweetalert.css">
 
 
 </head>
@@ -52,7 +54,8 @@
         <li ng-show="isLoggedIn"><a ng-click="logOut()" ><span class="glyphicon glyphicon-user"></span> Log Out</a></li>
 
         <li><a href="#login" ng-click="open()"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
-        <li><a href="#cart"><span class="glyphicon glyphicon-log-in"></span> Cart</a></li>
+        <li><a ng-show = "isLoggedIn" href="#cart"><span class="glyphicon glyphicon-log-in"></span> Cart</a></li>
+        <li><a ng-hide = "isLoggedIn" onclick="swal('Please log in to view your shopping cart')"><span class="glyphicon glyphicon-log-in"></span> Cart</a></li>
       </ul>
     </div>
   </nav>
@@ -134,12 +137,12 @@
           $uibModalInstance.dismiss('cancel');
         };
         $scope.addCustomer = function(){
-          $http.post("addCustomer.php", {'email':$scope.email,'address':$scope.address,'username':$scope.username,'password':$scope.password,'reenterpassword':$scope.reenterpassword}).success(function(data){
+          $http.post("./model/addCustomer.php", {'email':$scope.email,'address':$scope.address,'username':$scope.username,'password':$scope.password,'reenterpassword':$scope.reenterpassword}).success(function(data){
             $scope.msg=data;
           });
         };
         $scope.verifyCustomer =function(){
-          $http.post("verifyCustomer.php",{'uName':$scope.username,'pWord':$scope.password}).success(function(data){
+          $http.post("./model/verifyCustomer.php",{'uName':$scope.username,'pWord':$scope.password}).success(function(data){
            $scope.msg=data;
            if(data =="success"){
             $cookies.put('isLoggedIn', true);
@@ -150,14 +153,14 @@
         });    
         }   
         $scope.getCustomer = function(){    
-          $http.post("getCustomer.php", {'uName':$cookies.get('username')}).success(function(data){   
+          $http.post("./model/getCustomer.php", {'uName':$cookies.get('username')}).success(function(data){   
             $scope.customer = data;   
 
           });
         }
       };
     });
-    app.controller('MapCtrl', function ($scope) {
+    app.controller('MapCtrl', function ($scope,$cookies) {
       $scope.isLoggedIn = $cookies.get('isLoggedIn');
       var mapOptions = {
         zoom: 8,
@@ -193,7 +196,7 @@
         $scope.isLoggedIn = $cookies.get('isLoggedIn');
           //display products
           $scope.displayData = function(){
-            $http.get("select.php").success(function(result){
+            $http.get("./model/select.php").success(function(result){
                 $scope.data = result;
                 console.log($scope.data);
             })
@@ -206,7 +209,7 @@
 //          }
           //inserting products
           $scope.insertProduct=function(){
-           $http.post("addProduct.php",{'pName':$scope.productName,'price':$scope.price, 'cate':$scope.category, 'desc':$scope.description}).success(function(data){
+           $http.post("./model/addProduct.php",{'pName':$scope.productName,'price':$scope.price, 'cate':$scope.category, 'desc':$scope.description}).success(function(data){
                 console.log(data);
                 $scope.msg = data;
             })
@@ -223,8 +226,10 @@
         //$scope.name = myService.get();
         $scope.name = localStorageService.get("prod");
         //console.log($scope.prod);
+
+
         $scope.displayDetails = function() {
-          $http.post("productpage.php",{
+          $http.post("./model/productpage.php",{
               'name': $scope.name
           }).success(function(data){
             console.log(data);
@@ -233,7 +238,7 @@
         }
         $scope.addToCart = function(){
             //var query = "INSERT INTO Cart(ProductName, Quantity) VALUES ('"+".$pName."+"', '"+".$quantity."+"')";
-            $http.post("addToCart.php", {
+            $http.post("./model/addToCart.php", {
               'pName': $scope.name,
                 'cName': $cookies.get('username'),
                'quantity': $scope.quantity
@@ -245,7 +250,7 @@
         .controller("CartController", function($scope, $http,$cookies) {
           $scope.isLoggedIn = $cookies.get('isLoggedIn');
             $scope.displayCart = function() {
-             $http.post("retrieveCart.php",{'cName':$cookies.get('username')}).success(function(result){
+             $http.post("./model/retrieveCart.php",{'cName':$cookies.get('username')}).success(function(result){
               $scope.cartData = result;
               $scope.total = 0;
                 for(var i = 0; i<result.length; i++) {
@@ -258,7 +263,7 @@
             $scope.deleteItem = function($scope, $http, itemToDelete) {
                 var delQuery = "DELETE FROM CART WHERE ProductName ='" + itemToDelete +"'";
                 console.log(delQuery);
-                $http.post("addToCart.php", {
+                $http.post("./model/addToCart.php", {
                     'query': delQuery
                 }).sucess(function(result){
                     location.reload();
@@ -299,9 +304,7 @@
         .when("/checkout", {
           templateUrl: "checkout.html"
         })
-           .when("/checkout", {
-          templateUrl: "checkout.html"
-        })
+          
         .otherwise({
           redirectTo: '/'
         })
