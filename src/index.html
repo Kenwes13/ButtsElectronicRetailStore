@@ -282,6 +282,9 @@
           templateUrl: "Product-page.html",
           controller: "ProductPageController"
         })
+        .when("/checkout", {
+          templateUrl: "checkout.html"
+        })
         .otherwise({
           redirectTo: '/'
         })
