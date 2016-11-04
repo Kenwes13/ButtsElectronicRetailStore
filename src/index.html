@@ -208,9 +208,33 @@
           }).success(function(data){
             console.log(data);
           })
+
           $http.get("productpage.php").success(function(result){
               $scope.productData = result;
             alert($scope.productData);
+
+        }
+        $scope.addToCart = function(){
+            //var query = "INSERT INTO Cart(ProductName, Quantity) VALUES ('"+".$pName."+"', '"+".$quantity."+"')";
+            $http.post("addtoCart.php", {
+              'pName': $scope.name,
+              'quantity': $scope.quantity,
+            }).success(function(data){
+                console.log(data);
+            });
+        };
+      })
+      .controller("CartController", function($scope, $http) {
+            $scope.displayCart = function() {
+            $http.post("retrieveCart.php").success(function(result){
+              $scope.cartData = result;
+              $scope.total = 0;
+              for(var i = 0; i<result; i++) {
+                console.log(result[i].Price);
+                $scope.total += parseInt(result[i].Price) * parseInt(result[i].Quantity);
+                console.log($scope.total); 
+              }
+              console.log($scope.cartData);
           })
         }
   })
