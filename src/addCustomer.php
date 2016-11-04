@@ -9,8 +9,6 @@ $username = mysqli_real_escape_string($conn,$data->username);
 $password = mysqli_real_escape_string($conn,$data->password);
 $reenterpassword = mysqli_real_escape_string($conn,$data->reenterpassword);
 
-
-
 $query= "SELECT * FROM Customer WHERE CustomerName ='".$username."'";
 $result = mysqli_query($conn, $query);
 
@@ -21,10 +19,11 @@ echo "username already taken";
 }
 
 else{
+
 	echo "success";
 }
+	mysqli_query($conn,"INSERT INTO Customer(CustomerName, Address, Email, Password) VALUES ('".$username."','".$address."','".$email."','".$password."')");
 
-mysqli_query($conn,"INSERT INTO Customer(CustomerName, Address, `E-mail`, Password) VALUES ('".$username."','".$address."','".$email."','".$password."')");
 
 
 ?>
