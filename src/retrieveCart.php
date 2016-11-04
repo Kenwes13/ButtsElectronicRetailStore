@@ -1,11 +1,23 @@
 <?php
 include "connectdb.php";
+$data = json_decode(file_get_contents("php://input"));
 
-$query = "SELECT * FROM Cart, Product WHERE Cart.ProductName = Product.ProductName";
+$cName = mysqli_real_escape_string($conn,$data->cName);
+
+$query= "SELECT * FROM Customer WHERE CustomerName = '".$cName."'";
+$result = mysqli_query($conn, $query);
+$row = mysqli_fetch_array($result ,MYSQLI_ASSOC);
+$Customerid = $row["Customerid"];
+
+$query = "SELECT * FROM Cart, Product WHERE Cart.ProductName = Product.ProductName AND Cart.Customerid = ".$Customerid."";
 $result = mysqli_query($conn, $query);
 
 while($row=mysqli_fetch_array($result)){
-	$data[] = $row;
+	file_put_contents("errors.txt", $row);
+	$dataResult[] = $row;
 }
-echo json_encode($data);
+
+file_put_contents("errors.txt", $data);
+
+echo json_encode($dataResult);
 ?>

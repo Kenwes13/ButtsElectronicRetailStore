@@ -5,6 +5,7 @@ $data = json_decode(file_get_contents("php://input"));
 $productName = mysqli_real_escape_string($conn,$data->pName);
 $price = mysqli_real_escape_string($conn,$data->price);
 $category = mysqli_real_escape_string($conn,$data->cate);
+$description = mysqli_real_escape_string($conn,$data->desc);
 $imageDirectory ="test";
 /*
 $productName = $_POST['productName'];
@@ -47,8 +48,7 @@ $imageDirectory "Testing";
 		
 */
 
-$query = "INSERT INTO Product(ProductName,Price, Category, ImageDirectory, CreatedAt) VALUES ('".$productName."',".$price.", '".$category."','".$imageDirectory."',NOW())";
+$query = "INSERT INTO Product(ProductName,Price,Description, Category, ImageDirectory, CreatedAt) VALUES ('".$productName."',".$price." , '".$description."', '".$category."','".$imageDirectory."',NOW())";
 $result = mysqli_query($conn, $query);
 echo ($result);
-file_put_contents("test.txt",$category);
 ?>

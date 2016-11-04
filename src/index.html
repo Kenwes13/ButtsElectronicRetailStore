@@ -16,7 +16,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-route.js"></script>
      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-cookies.js"></script>
 
-  <script src="https://code.angularjs.org/1.3.15/angular.js"></script>
   <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places&key=AIzaSyBFH2S9Cc2jAlala-UA6YXVEt50cEz1TTc"></script>
   <script src="https://rawgit.com/allenhwkim/angularjs-google-maps/master/build/scripts/ng-map.js"></script>
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.js"></script>
@@ -100,15 +99,18 @@
         }
     });
     app.controller('ModalDemoCtrl', function ($scope, $uibModal, $log,$cookies) {
+       $scope.isLoggedIn = $cookies.get('isLoggedIn');
        if($cookies.get('username')!=undefined){
-          $scope.isLoggedIn = true;
+           $cookies.put('isLoggedIn', true);
           console.log("ran");
           console.log($cookies.get('username').toString());
         }
         $scope.logOut = function(){
           $cookies.remove('username');
-          $scope.isLoggedIn = false;
+          $cookies.remove('isLoggedIn');
           location.reload();
+          location.href="#home";
+
         }
         $scope.open = function () {
           var modalInstance = $uibModal.open({
@@ -124,6 +126,7 @@
           });
       };
       var ModalInstanceCtrl = function ($scope,$http, $uibModalInstance, $cookies) {
+        $scope.isLoggedIn = $cookies.get('isLoggedIn');
         $scope.ok = function () {
           $uibModalInstance.close();
         };
@@ -132,23 +135,30 @@
         };
         $scope.addCustomer = function(){
           $http.post("addCustomer.php", {'email':$scope.email,'address':$scope.address,'username':$scope.username,'password':$scope.password,'reenterpassword':$scope.reenterpassword}).success(function(data){
-          $scope.msg=data;
-         });
+            $scope.msg=data;
+          });
         };
         $scope.verifyCustomer =function(){
           $http.post("verifyCustomer.php",{'uName':$scope.username,'pWord':$scope.password}).success(function(data){
-             $scope.msg=data;
+           $scope.msg=data;
            if(data =="success"){
-               $scope.isLoggedIn = true;
-              $cookies.put('username', $scope.username);
-              location.reload();
-              console.log($cookies.get('username').toString());
-            }
+            $cookies.put('isLoggedIn', true);
+            $cookies.put('username', $scope.username);
+            location.reload();
+            console.log($cookies.get('username').toString());
+          }
+        });    
+        }   
+        $scope.getCustomer = function(){    
+          $http.post("getCustomer.php", {'uName':$cookies.get('username')}).success(function(data){   
+            $scope.customer = data;   
+
           });
         }
       };
-        });
+    });
     app.controller('MapCtrl', function ($scope) {
+      $scope.isLoggedIn = $cookies.get('isLoggedIn');
       var mapOptions = {
         zoom: 8,
         center: new google.maps.LatLng(37.5655688, -122.0693672)
@@ -179,7 +189,8 @@
         google.maps.event.trigger(selectedMarker, 'click');
       }
     })
-      .controller("MainController", function($scope, $http, myService, localStorageService){
+      .controller("MainController", function($scope, $http, myService, localStorageService,$cookies){
+        $scope.isLoggedIn = $cookies.get('isLoggedIn');
           //display products
           $scope.displayData = function(){
             $http.get("select.php").success(function(result){
@@ -195,7 +206,7 @@
 //          }
           //inserting products
           $scope.insertProduct=function(){
-          $http.post("addProduct.php",{'pName':$scope.productName,'price':$scope.price, 'cate':$scope.category}).success(function(data){
+           $http.post("addProduct.php",{'pName':$scope.productName,'price':$scope.price, 'cate':$scope.category, 'desc':$scope.description}).success(function(data){
                 console.log(data);
                 $scope.msg = data;
             })
@@ -207,7 +218,8 @@
           return localStorageService.set("prod", product);
         }
       })
-      .controller("ProductPageController", function($scope, myService,$http, localStorageService) {
+        .controller("ProductPageController", function($scope, myService,$http, localStorageService,$cookies) {
+          $scope.isLoggedIn = $cookies.get('isLoggedIn');
         //$scope.name = myService.get();
         $scope.name = localStorageService.get("prod");
         //console.log($scope.prod);
@@ -223,21 +235,23 @@
             //var query = "INSERT INTO Cart(ProductName, Quantity) VALUES ('"+".$pName."+"', '"+".$quantity."+"')";
             $http.post("addToCart.php", {
               'pName': $scope.name,
-              'quantity': $scope.quantity,
+                'cName': $cookies.get('username'),
+               'quantity': $scope.quantity
             }).success(function(data){
                 console.log(data);
             });
         };
       })
-      .controller("CartController", function($scope, $http) {
+        .controller("CartController", function($scope, $http,$cookies) {
+          $scope.isLoggedIn = $cookies.get('isLoggedIn');
             $scope.displayCart = function() {
-            $http.post("retrieveCart.php").success(function(result){
+             $http.post("retrieveCart.php",{'cName':$cookies.get('username')}).success(function(result){
               $scope.cartData = result;
               $scope.total = 0;
-              for(var i = 0; i<result; i++) {
+                for(var i = 0; i<result.length; i++) {
                 console.log(result[i].Price);
                 $scope.total += parseInt(result[i].Price) * parseInt(result[i].Quantity);
-                console.log($scope.total);
+                  console.log($scope.total); 
               }
               console.log($scope.cartData);
           })
@@ -283,6 +297,9 @@
           controller: "ProductPageController"
         })
         .when("/checkout", {
+          templateUrl: "checkout.html"
+        })
+           .when("/checkout", {
           templateUrl: "checkout.html"
         })
         .otherwise({

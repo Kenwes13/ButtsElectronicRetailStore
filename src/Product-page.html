@@ -32,25 +32,18 @@
 </div>
 </div>
 <div class="medium-6 large-5 columns">
-<h3>{{productData}}</h3>
-<p>Nunc eu ullamcorper orci. Quisque eget odio ac lectus vestibulum faucibus eget in metus. In pellentesque faucibus vestibulum. Nulla at nulla justo, eget luctus tortor. Nulla facilisi. Duis aliquet egestas purus in.</p>
-<label>Size
-<select>
-<option value="husker">Small</option>
-<option value="starbuck">Medium</option>
-<option value="hotdog">Large</option>
-<option value="apollo">Yeti</option>
-</select>
-</label>
+<h3>{{product.ProductName}}</h3>
+<h5>${{product.Price}}</h5>
+<p>{{product.Description}}</p>
 <div class="row">
 <div class="small-3 columns">
 <label for="middle-label" class="middle">Quantity</label>
 </div>
 <div class="small-9 columns">
-<input type="text" id="middle-label" value = "1">
+<input type="text" id="middle-label" ng-model ="quantity" ng-init="quantity = 1">
 </div>
 </div>
-<a href="#cart" class="button large expanded">Add To Cart</a>
+<a href="#cart" ng-click ="addToCart()" class="button large expanded" >Add To Cart</a>
 </div>
 
 </body>
