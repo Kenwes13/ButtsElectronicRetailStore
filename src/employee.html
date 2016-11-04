@@ -1,0 +1,25 @@
+<form>
+<div class= "form-group">
+    <label>product name</label><input class = "form-control" type="text" ng-model="productName" >
+    </div>
+<div class= "form-group">
+
+    <label>price</label><input class = "form-control" type="number" ng-model="price" >
+    </div>
+<div class= "form-group">
+
+    <label>category</label><select class = "form-control" type="text" ng-model="category" >
+    	<option value = "laptops">Laptops</option>
+    	<option value = "PCs">PCs</option>
+    	<option value = "Consoles">Consoles</option>
+    	<option value = "TVs">TVs</option>
+    </select>
+    </div>
+<div class= "form-group">
+
+    <label>image<input class = "form-control" type = "file" ng-model = "image"></label>
+    </div>
+    <input type = "button" value = "submit" ng-click="insertProduct()">
+    {{msg}}
+</form>
+{{msg}}
