@@ -16,6 +16,5 @@ while($row=mysqli_fetch_array($result)){
 	$dataResult[] = $row;
 }
 
-
 echo json_encode($dataResult);
 ?>

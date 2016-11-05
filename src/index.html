@@ -260,17 +260,20 @@
               }
               console.log($scope.cartData);
           })
-            $scope.deleteItem = function($scope, $http, itemToDelete) {
-              /*
-                var delQuery = "DELETE FROM CART WHERE ProductName ='" + itemToDelete +"'";
+            $scope.deleteItem = function(itemToDelete) {
+              
+                var delQuery = "DELETE FROM CART WHERE ProductName =";
+                var item = "'"+itemToDelete+"'";
                 console.log(delQuery);
-                $http.post("./model/addToCart.php", {
-                    'query': delQuery
-                }).sucess(function(result){
+                $http.post("./model/updateCart.php", {
+                    'query': delQuery,
+                    'item' : itemToDelete
+                }).success(function(result){
                     location.reload();
-                })
-                */
-            }
+                    
+                });
+                
+            };
         }
       })
     app.config(function($routeProvider) {
