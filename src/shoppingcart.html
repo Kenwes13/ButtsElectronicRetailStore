@@ -11,6 +11,7 @@
             </tr>
           </thead>
           <tbody>
+          <div  ng-if="cartData === 'undefined' ">
             <tr ng-repeat ="cart in cartData track by $index">
               <td data-th="Product">
                 <div class="row">
@@ -29,6 +30,7 @@
                 <button class="btn btn-danger btn-sm" ng-click ="deleteItem(cart.ProductName)"><i class="fa fa-trash-o"></i></button> 
               </td>
             </tr>
+            </div>
           </tbody>
           <tfoot>
             <tr class="visible-xs">

@@ -155,7 +155,6 @@
         $scope.getCustomer = function(){    
           $http.post("./model/getCustomer.php", {'uName':$cookies.get('username')}).success(function(data){   
             $scope.customer = data;   
-
           });
         }
       };
@@ -269,13 +268,26 @@
                     'query': delQuery,
                     'item' : itemToDelete
                 }).success(function(result){
-                    location.reload();
-                    
+                    location.reload();               
                 });
                 
             };
         }
       })
+        .controller("CheckoutController", function($http, $scope, $cookies){
+          $scope.displayCart = function() {
+             $http.post("./model/retrieveCart.php",{'cName':$cookies.get('username')}).success(function(result){
+              $scope.cartData = result;
+              $scope.total = 0;
+                for(var i = 0; i<result.length; i++) {
+                console.log(result[i].Price);
+                $scope.total += parseInt(result[i].Price) * parseInt(result[i].Quantity);
+                  console.log($scope.total); 
+              }
+              console.log($scope.cartData);
+          })
+           }
+        })
     app.config(function($routeProvider) {
       $routeProvider
         .when("/", {
