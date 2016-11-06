@@ -30,7 +30,7 @@
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <link rel = "stylesheet" type="text/css" href= "resources/css/styles.css">
-  <script src="resources/css/dist/sweetalert.min.js"></script> 
+  <script src="resources/css/dist/sweetalert.min.js"></script>
   <link rel="stylesheet" type="text/css" href="resources/css/dist/sweetalert.css">
 
 
@@ -150,16 +150,18 @@
             location.reload();
             console.log($cookies.get('username').toString());
           }
-        });    
-        }   
-        $scope.getCustomer = function(){    
-          $http.post("./model/getCustomer.php", {'uName':$cookies.get('username')}).success(function(data){   
-            $scope.customer = data;   
+        });
+        }
+        $scope.getCustomer = function(){
+          $http.post("./model/getCustomer.php", {'uName':$cookies.get('username')}).success(function(data){
+            $scope.customer = data;
 
           });
         }
       };
     });
+
+
     app.controller('MapCtrl', function ($scope,$cookies) {
       $scope.isLoggedIn = $cookies.get('isLoggedIn');
       var mapOptions = {
@@ -194,6 +196,17 @@
     })
       .controller("MainController", function($scope, $http, myService, localStorageService,$cookies){
         $scope.isLoggedIn = $cookies.get('isLoggedIn');
+        //main.page search box dropdown
+        $scope.subjects = ['PCs', 'Consoles', 'TVs', 'Laptops'];
+        $scope.selectedItem;
+        $scope.dropboxitemselected = function (item) {
+
+          $scope.selectedItem = item;
+
+        }
+
+
+
           //display products
           $scope.displayData = function(){
             $http.get("./model/select.php").success(function(result){
@@ -201,12 +214,14 @@
                 console.log($scope.data);
             })
           }
-//          $scope.displaySearchData = function(){
-//          $http.get("search.php").success(function(result){
-//              $scope.data = result;
-//              console.log($scope.data);
-//            })
-//          }
+          $scope.displaySearchData = function(){
+          $http.post("./model/search.php",{'name':$scope.searchbyname, 'category':$scope.selectedItem}).success(function(result,data){
+              $scope.data = result;
+              $scope.msg = data;
+              console.log(data);
+              console.log($scope.data);
+            })
+          }
           //inserting products
           $scope.insertProduct=function(){
            $http.post("./model/addProduct.php",{'pName':$scope.productName,'price':$scope.price, 'cate':$scope.category, 'desc':$scope.description}).success(function(data){
@@ -256,7 +271,7 @@
                 for(var i = 0; i<result.length; i++) {
                 console.log(result[i].Price);
                 $scope.total += parseInt(result[i].Price) * parseInt(result[i].Quantity);
-                  console.log($scope.total); 
+                  console.log($scope.total);
               }
               console.log($scope.cartData);
           })
@@ -306,7 +321,7 @@
         .when("/checkout", {
           templateUrl: "checkout.html"
         })
-          
+
         .otherwise({
           redirectTo: '/'
         })
