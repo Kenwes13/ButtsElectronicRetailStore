@@ -66,15 +66,7 @@
 
 
   <script>
-//    $(document).ready(function(e){
-//      $('.search-panel .dropdown-menu').find('a').click(function(e) {
-//        e.preventDefault();
-//        var param = $(this).attr("id").replace("#","");
-//        var concept = $(this).text();
-//        $('.search-panel span#search_concept').text(concept);
-//        $('.input-group #search_param').val(param);
-//      });
-//    });
+
     var locations = [
       {lat:37.655508 , lng:-122.070641, label:"25453 Mission Blvd, Hayward, CA 94544", phone:"510-555-5555", gm:"Batman"},
       {lat: 37.815671, lng:-122.287572, label:"2107 Poplar St, Oakland, CA 94607", phone:"510-555-5556", gm:"Superman"},
@@ -150,6 +142,7 @@
             location.reload();
             console.log($cookies.get('username').toString());
           }
+
         });
         }
         $scope.getCustomer = function(){
@@ -275,19 +268,35 @@
               }
               console.log($scope.cartData);
           })
-            $scope.deleteItem = function($scope, $http, itemToDelete) {
-              /*
-                var delQuery = "DELETE FROM CART WHERE ProductName ='" + itemToDelete +"'";
+            $scope.deleteItem = function(itemToDelete) {
+
+                var delQuery = "DELETE FROM CART WHERE ProductName =";
+                var item = "'"+itemToDelete+"'";
                 console.log(delQuery);
-                $http.post("./model/addToCart.php", {
-                    'query': delQuery
-                }).sucess(function(result){
+                $http.post("./model/updateCart.php", {
+                    'query': delQuery,
+                    'item' : itemToDelete
+                }).success(function(result){
                     location.reload();
-                })
-                */
-            }
+                });
+
+            };
         }
       })
+        .controller("CheckoutController", function($http, $scope, $cookies){
+          $scope.displayCart = function() {
+             $http.post("./model/retrieveCart.php",{'cName':$cookies.get('username')}).success(function(result){
+              $scope.cartData = result;
+              $scope.total = 0;
+                for(var i = 0; i<result.length; i++) {
+                console.log(result[i].Price);
+                $scope.total += parseInt(result[i].Price) * parseInt(result[i].Quantity);
+                  console.log($scope.total);
+              }
+              console.log($scope.cartData);
+          })
+           }
+        })
     app.config(function($routeProvider) {
       $routeProvider
         .when("/", {
