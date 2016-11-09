@@ -319,6 +319,72 @@
           });
         }
       })
+        .controller("TrackingController", function($http, $scope, $cookies) {
+          var user = $cookies.get('username');
+          var geocoder = new google.maps.Geocoder();
+          var myLatLng = new google.maps.LatLng(37.799993,-122.4087077);
+          var end = new google.maps.LatLng(37.292759,-121.851698);
+          $scope.tmap = new google.maps.Map(document.getElementById("tmap"), {
+            zoom: 14,
+            center: new google.maps.LatLng(37.799993,-122.4087077),
+          });
+          getDirections($scope.tmap);
+
+
+          /*$http.post(".model/getCustomer.php", {
+            'user': user
+          }.success(function (result){
+
+          }));*/
+
+          function moveMarker(map, marker, latlng) {
+              marker.setPosition(latlng);
+              map.panTo(latlng);
+          }
+
+          function autoRefresh(map, pathCoords) {
+              var i, route, marker;
+              
+              route = new google.maps.Polyline({
+                  path: [],
+                  geodesic : true,
+                  strokeColor: '#FF0000',
+                  strokeOpacity: 1.0,
+                  strokeWeight: 2,
+                  editable: false,
+                  map:map
+              });
+              
+              var marker=new google.maps.Marker({map:$scope.tmap, icon:"http://maps.google.com/mapfiles/ms/micons/blue.png"});
+              for (i = 0; i < pathCoords.length; i++) {                
+                  setTimeout(function(coords) {
+                      route.getPath().push(coords);
+                      moveMarker(map, marker, coords);
+                      console.log(pathCoords.length);
+                  }, 100 * i, pathCoords[i]);
+              }
+          }
+
+          function getDirections(map) {
+              var directionsService = new google.maps.DirectionsService();
+             directionsDisplay = new google.maps.DirectionsRenderer({
+                  map: $scope.tmap
+                  });
+              var request = {
+                  origin: myLatLng,
+                  destination: end,
+                  travelMode: google.maps.TravelMode.DRIVING,
+              };
+              directionsService.route(request, function(result, status) {
+                  if (status == google.maps.DirectionsStatus.OK) {
+                      directionsDisplay.setDirections(result);
+                      autoRefresh(map, result.routes[0].overview_path);
+                  }
+              });
+          }
+            
+
+        })        
     app.config(function($routeProvider) {
       $routeProvider
         .when("/", {
@@ -352,7 +418,10 @@
         .when("/checkout", {
           templateUrl: "checkout.html"
         })
-
+        .when("/tracking", {
+          templateUrl: "tracking.html",
+          controller: "TrackingController"
+        })
         .otherwise({
           redirectTo: '/'
         })
