@@ -29,7 +29,7 @@ $query = "INSERT INTO Cart(ProductName, Customerid , Quantity) VALUES ('".$pName
 $result = mysqli_query($conn, $query);
 }
 
-file_put_contents("errors.txt", "test ".$row["Customerid"].mysqli_error($conn));
+//file_put_contents("errors.txt", "test ".$row["Customerid"].mysqli_error($conn));
 
 
 echo($result);

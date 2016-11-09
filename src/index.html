@@ -270,8 +270,8 @@
           })
             $scope.deleteItem = function(itemToDelete) {
 
-                var delQuery = "DELETE FROM CART WHERE ProductName =";
-                var item = "'"+itemToDelete+"'";
+                var delQuery = "DELETE FROM Cart WHERE ProductName =";
+                
                 console.log(delQuery);
                 $http.post("./model/updateCart.php", {
                     'query': delQuery,
@@ -284,19 +284,26 @@
         }
       })
         .controller("CheckoutController", function($http, $scope, $cookies){
+          $scope.isLoggedIn = $cookies.get('isLoggedIn');
+
           $scope.displayCart = function() {
-             $http.post("./model/retrieveCart.php",{'cName':$cookies.get('username')}).success(function(result){
-              $scope.cartData = result;
-              $scope.total = 0;
-                for(var i = 0; i<result.length; i++) {
-                console.log(result[i].Price);
-                $scope.total += parseInt(result[i].Price) * parseInt(result[i].Quantity);
-                  console.log($scope.total);
-              }
-              console.log($scope.cartData);
+           $http.post("./model/retrieveCart.php",{'cName':$cookies.get('username')}).success(function(result){
+            $scope.cartData = result;
+            $scope.total = 0;
+            for(var i = 0; i<result.length; i++) {
+              console.log(result[i].Price);
+              $scope.total += parseInt(result[i].Price) * parseInt(result[i].Quantity);
+              console.log($scope.total);
+            }
+            console.log($scope.cartData);
           })
-           }
-        })
+         }
+         $scope.placeOrder = function(){
+          $http.post("./model/placeOrder.php",{'country':$scope.country,'firstName':$scope.firstName,'lastName':$scope.lastName,'address':$scope.address,'city':$scope.city,'state':$scope.state,'zipCode':$scope.zipCode,'phoneNumber':$scope.phoneNumber,'email':$scope.email,'totalCost':$scope.total + 8.99,'cID':$cookies.get('username')}).success(function(data){
+
+          });
+        }
+      })
     app.config(function($routeProvider) {
       $routeProvider
         .when("/", {

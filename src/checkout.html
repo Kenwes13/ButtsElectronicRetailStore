@@ -6,7 +6,7 @@
       </div>
       <div class="row">
         <div style="display: table; margin: auto;">
-          <span class="step step_complete"> <a href="#" class="check-bc">Cart</a> <span class="step_line step_complete"> </span> <span class="step_line backline"> </span> </span>
+          <span class="step step_complete"> <a href="#cart" class="check-bc">Cart</a> <span class="step_line step_complete"> </span> <span class="step_line backline"> </span> </span>
           <span class="step_thankyou check-bc step_complete">Thank you!</span>
         </div>
       </div>
@@ -30,7 +30,7 @@
               </div>
               <div class="col-sm-6 col-xs-6">
                 <div class="col-xs-12">{{cart.ProductName}}</div>
-                <div class="col-xs-12"><small>Quantity:<span>1</span></small></div>
+                <div class="col-xs-12"><small>Quantity:<span>{{cart.Quantity}}</span></small></div>
               </div>
               <div class="col-sm-3 col-xs-3 text-right">
                 <h6><span>$</span>{{cart.Price | number :2}}</h6>
@@ -70,7 +70,7 @@
             <div class="form-group">
               <div class="col-md-12"><strong>Country:</strong></div>
               <div class="col-md-12">
-                <select class="form-control" name="">
+                <select ng-model = "country" class="form-control" name="">
                   <option value="US">United States</option>
                 </select> 
               </div>
@@ -78,30 +78,30 @@
             <div class="form-group">
               <div class="col-md-6 col-xs-12">
                 <strong>First Name:</strong>
-                <input type="text" name="first_name" class="form-control" value="" />
+                <input ng-model = "firstName" type="text" name="first_name" class="form-control" value="" />
               </div>
               <div class="span1"></div>
               <div class="col-md-6 col-xs-12">
                 <strong>Last Name:</strong>
-                <input type="text" name="last_name" class="form-control" value="" />
+                <input ng-model = "lastName" type="text" name="last_name" class="form-control" value="" />
               </div>
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>Address:</strong></div>
               <div class="col-md-12">
-                <input type="text" name="address" class="form-control" value="" />
+                <input  ng-model = "address" type="text" name="address" class="form-control" value="" />
               </div>
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>City:</strong></div>
               <div class="col-md-12">
-                <input type="text" name="city" class="form-control" value="" />
+                <input  ng-model = "city" type="text" name="city" class="form-control" value="" />
               </div>
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>State:</strong></div>
               <div class="col-md-12">
-                <select class="form-control" name="">
+                <select  ng-model = "state" class="form-control" name="">
                   <option value="CA">California</option>
                 </select> 
               </div>
@@ -109,16 +109,16 @@
             <div class="form-group">
               <div class="col-md-12"><strong>Zip / Postal Code:</strong></div>
               <div class="col-md-12">
-                <input type="text" name="zip_code" class="form-control" value="" />
+                <input  ng-model = "zipCode" type="text" name="zip_code" class="form-control" value="" />
               </div>
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>Phone Number:</strong></div>
-              <div class="col-md-12"><input type="text" name="phone_number" class="form-control" value="" /></div>
+              <div class="col-md-12"><input  ng-model = "phoneNumber" type="text" name="phone_number" class="form-control" value="" /></div>
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>Email Address:</strong></div>
-              <div class="col-md-12"><input type="text" name="email_address" class="form-control" value="" /></div>
+              <div class="col-md-12"><input  ng-model = "email" type="text" name="email_address" class="form-control" value="" /></div>
             </div>
           </div>
         </div>
@@ -263,7 +263,7 @@
             </div>
             <div class="form-group">
               <div class="col-md-6 col-sm-6 col-xs-12">
-                <button type="submit" class="btn btn-primary btn-submit-fix">Place Order</button>
+                <button ng-click = "placeOrder()" type="submit" class="btn btn-primary btn-submit-fix">Place Order</button>
               </div>
             </div>
           </div>
