@@ -11,8 +11,8 @@
             </tr>
           </thead>
           <tbody>
-          <div  ng-if="cartData === 'undefined' ">
-            <tr ng-repeat ="cart in cartData track by $index">
+          <div  >
+            <tr ng-hide="cartData.fail" ng-repeat ="cart in cartData track by $index">
               <td data-th="Product">
                 <div class="row">
                   <div class="col-sm-2 hidden-xs"><img src="http://placehold.it/100x100" alt="..." class="img-responsive"/></div>

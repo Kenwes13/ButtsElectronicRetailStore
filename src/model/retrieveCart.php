@@ -15,6 +15,13 @@ $result = mysqli_query($conn, $query);
 while($row=mysqli_fetch_array($result)){
 	$dataResult[] = $row;
 }
+if(empty($dataResult)){
+	$dataResult["fail"] = true;
+echo json_encode($dataResult);
+}
+else{
 
 echo json_encode($dataResult);
+}
+
 ?>

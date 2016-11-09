@@ -67,7 +67,8 @@
         </div>
       </div>
 
-      <div class="row">
+
+      <div ng-hide="data.fail" class="row">
         <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="product in data track by $index">
           <div class="thumbnail">
             <img ng-src="{{product.ImageDirectory}}" alt="">
