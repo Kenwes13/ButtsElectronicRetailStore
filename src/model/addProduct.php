@@ -6,7 +6,7 @@ $productName = mysqli_real_escape_string($conn,$data->pName);
 $price = mysqli_real_escape_string($conn,$data->price);
 $category = mysqli_real_escape_string($conn,$data->cate);
 $description = mysqli_real_escape_string($conn,$data->desc);
-$imageDirectory ="test";
+$imageDirectory =mysqli_real_escape_string($conn,$data->imgdir);
 /*
 $productName = $_POST['productName'];
 $price = $_POST['price'];
@@ -19,8 +19,8 @@ $imageDirectory "Testing";
 
 	$check = getimagesize($_FILES["image"]["tmp_name"]);
 		if($check !== false){
-		
-		$uploadCheck = 1; 
+
+		$uploadCheck = 1;
 		}
 		else{
 		return "File is not an image.";
@@ -40,12 +40,12 @@ $imageDirectory "Testing";
     	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $fileDirectory)) {
     	$imageDirectory = "/resources/images/".basename($_FILES["fileToUpload"]["name"]);
         return "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
-    	} 
+    	}
     	else {
         return "Sorry, there was an error uploading your file.";
     	}
 	}
-		
+
 */
 
 $query = "INSERT INTO Product(ProductName,Price,Description, Category, ImageDirectory, CreatedAt) VALUES ('".$productName."',".$price." , '".$description."', '".$category."','".$imageDirectory."',NOW())";

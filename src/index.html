@@ -21,6 +21,8 @@
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.js"></script>
   <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
   <script src="../node_modules/angular-local-storage/src/angular-local-storage.js"></script>
+  <script src="../node_modules/ng-file-upload/dist/ng-file-upload-shim.js"></script> <!-- for no html5 browsers support -->
+  <script src="../node_modules/ng-file-upload/dist/ng-file-upload.js"></script>
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -79,7 +81,7 @@
       {lat:37.770352,lng:-122.419098 ,label:"1695 Mission St San Francisco, CA 94103", phone:"418-555-5554", gm:"Hawkgirl"},
       {lat:37.737660, lng:-122.475911,label:"2699 19th Ave San Francisco, CA 94116", phone:"418-555-5553", gm:"Martian Manhunter"}
     ];
-    var app = angular.module("myApp", ["ngMap","ngRoute","ui.bootstrap", "LocalStorageModule","ngCookies"]);
+    var app = angular.module("myApp", ["ngMap","ngRoute","ui.bootstrap", "LocalStorageModule","ngCookies","ngFileUpload"]);
     app.factory('myService', function(){
         var datatopass = {};
         function set(data){
@@ -187,7 +189,7 @@
         google.maps.event.trigger(selectedMarker, 'click');
       }
     })
-      .controller("MainController", function($scope, $http, myService, localStorageService,$cookies){
+      .controller("MainController", function($scope, $http, myService, localStorageService,$cookies,Upload){
         $scope.isLoggedIn = $cookies.get('isLoggedIn');
         //main.page search box dropdown
         $scope.subjects = ['PCs', 'Consoles', 'TVs', 'Laptops'];
@@ -215,9 +217,22 @@
               console.log($scope.data);
             })
           }
+          //upload images
+        var imageURL;
+        $scope.onFileSelect = function(file) {
+          if (!file) return;
+          Upload.upload({
+            url: './model/uploadImage.php',
+            data: {file: file}
+          }).then(function(resp) {
+            // file is uploaded successfully
+            imageURL=resp.data;
+            console.log(resp.data);
+          });
+        };
           //inserting products
           $scope.insertProduct=function(){
-           $http.post("./model/addProduct.php",{'pName':$scope.productName,'price':$scope.price, 'cate':$scope.category, 'desc':$scope.description}).success(function(data){
+           $http.post("./model/addProduct.php",{'pName':$scope.productName,'price':$scope.price, 'cate':$scope.category, 'desc':$scope.description, 'imgdir':imageURL}).success(function(data){
                 console.log(data);
                 $scope.msg = data;
             })
