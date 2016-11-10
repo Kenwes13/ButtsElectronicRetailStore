@@ -321,6 +321,7 @@
       })
         .controller("TrackingController", function($http, $scope, $cookies) {
           var user = $cookies.get('username');
+          var address;
           var geocoder = new google.maps.Geocoder();
           var myLatLng = new google.maps.LatLng(37.799993,-122.4087077);
           var end = new google.maps.LatLng(37.292759,-121.851698);
@@ -328,15 +329,23 @@
             zoom: 14,
             center: new google.maps.LatLng(37.799993,-122.4087077),
           });
-          getDirections($scope.tmap);
+          
 
-
-          /*$http.post(".model/getCustomer.php", {
-            'user': user
-          }.success(function (result){
-
-          }));*/
-
+          $http.post("./model/getCustomer.php", {
+                'uName': $cookies.get('username')
+            }).success(function(data){
+                address = "434 Green Street San Francisco, CA 94133";
+                codeAddress(address);
+                getDirections($scope.tmap, address);
+            });
+            
+           //Find shortest distance to a store 
+          /*for(var i = 0; i < locations.length; i++) {
+            if(google.maps.geometry.spherical.computeDistanceBetween(myLatLng, new google.maps.LatLng(locations[i].lat, locations[i].lng)) < shortestDistance) {
+              shortestDistance = google.maps.geometry.spherical.computeDistanceBetween(myLatLng, new google.maps.LatLng(locations[i].lat, locations[i].lng));
+              index = i;
+            }
+          }*/
           function moveMarker(map, marker, latlng) {
               marker.setPosition(latlng);
               map.panTo(latlng);
@@ -365,14 +374,54 @@
               }
           }
 
-          function getDirections(map) {
+          function codeAddress(address) {
+            geocoder.geocode( { 'address': address}, function(results, status) {
+              if (status == 'OK') {
+                $scope.tmap.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                    map: $scope.tmap,
+                    position: results[0].geometry.location
+                });
+              } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+              }
+            });
+          }
+
+
+          function getDirections(map, address) {
+              var service = new google.maps.DistanceMatrixService();
+              service.getDistanceMatrix({
+                origins : [end],
+                destinations: [address],
+                travelMode: 'DRIVING',
+                avoidHighways: false 
+              }, callback);
+          function callback(response, status) {
+            if (status == 'OK') {
+              var origins = response.originAddresses;
+              var destinations = response.destinationAddresses;
+
+              for (var i = 0; i < origins.length; i++) {
+                var results = response.rows[i].elements;
+                for (var j = 0; j < results.length; j++) {
+                  var element = results[j];
+                  var distance = element.distance.text;
+                  var duration = element.duration.text;
+                  console.log(duration);
+                  var from = origins[i];
+                  var to = destinations[j];
+                }
+              }
+            }
+          }
               var directionsService = new google.maps.DirectionsService();
              directionsDisplay = new google.maps.DirectionsRenderer({
                   map: $scope.tmap
                   });
               var request = {
-                  origin: myLatLng,
-                  destination: end,
+                  origin: end ,
+                  destination: address,
                   travelMode: google.maps.TravelMode.DRIVING,
               };
               directionsService.route(request, function(result, status) {
