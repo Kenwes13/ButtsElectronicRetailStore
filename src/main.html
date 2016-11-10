@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class="jumbotron text-center">
         <h1>E  M  Q</h1>
-        <form method="post" action="./model/search.php"  id="searchform">
+        <form method="post"   id="searchform">
           <div class="col-xs-8 col-xs-offset-2">
             <div class="input-group">
               <div class="input-group-btn search-panel">
@@ -48,13 +48,13 @@
             </ol>
             <div class="carousel-inner">
               <div class="item active">
-                <img class="slide-image" src="http://placehold.it/800x300" alt="">
+                <img class="slide-image" src="https://flipkartstories.blob.core.windows.net/stories/2016/07/smarttvguide_inside41.jpg" alt="">
               </div>
               <div class="item">
-                <img class="slide-image" src="http://placehold.it/800x300" alt="">
+                <img class="slide-image" src="http://cdn.techgyd.com/int-2.jpg" alt="">
               </div>
               <div class="item">
-                <img class="slide-image" src="http://placehold.it/800x300" alt="">
+                <img class="slide-image" src="https://i.kinja-img.com/gawker-media/image/upload/s--IjvN5_OW--/c_scale,fl_progressive,q_80,w_800/czxlqvu1euytfjdimmut.png" alt="">
               </div>
             </div>
             <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
@@ -76,7 +76,7 @@
               <h4 class="pull-right">${{product.Price}}</h4>
               <h4><a href="#productDetails" ng-click = "getProduct(product.ProductName)">{{product.ProductName}}</a>
               </h4>
-              <p>Product Description Here.</p>
+              <p>{{product.Description}}</p>
             </div>
             <div class="ratings">
               <p class="pull-right">{{product.Category}}</p>

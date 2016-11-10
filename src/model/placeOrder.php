@@ -3,27 +3,32 @@ include "connectdb.php";
 
 $data = json_decode(file_get_contents("php://input"));
 
-$email = mysqli_real_escape_string($conn,$data->email);
+if(isset($data->country)&&isset($data->firstName)&&isset($data->lastName)&&isset($data->address)&&isset($data->city)&&isset($data->state)&&isset($data->zipCode)&&isset($data->phoneNumber)&&isset($data->email)&&isset($data->totalCost)&&isset($data->cName)){
+
+$country = mysqli_real_escape_string($conn,$data->country);
+$firstName = mysqli_real_escape_string($conn,$data->firstName);
+$lastName = mysqli_real_escape_string($conn,$data->lastName);
 $address = mysqli_real_escape_string($conn,$data->address);
-$username = mysqli_real_escape_string($conn,$data->username);
-$password = mysqli_real_escape_string($conn,$data->password);
-$reenterpassword = mysqli_real_escape_string($conn,$data->reenterpassword);
+$city = mysqli_real_escape_string($conn,$data->city);
+$state = mysqli_real_escape_string($conn,$data->state);
+$zipCode = mysqli_real_escape_string($conn,$data->zipCode);
+$phoneNumber = mysqli_real_escape_string($conn,$data->phoneNumber);
+$email = mysqli_real_escape_string($conn,$data->email);
+$totalCost = mysqli_real_escape_string($conn,$data->totalCost);
+$cName = mysqli_real_escape_string($conn,$data->cName);
 
-$query= "SELECT * FROM Customer WHERE CustomerName ='".$username."'";
+//get customer id
+$query= "SELECT * FROM Customer WHERE CustomerName = '".$cName."'";
 $result = mysqli_query($conn, $query);
+$row = mysqli_fetch_array($result ,MYSQLI_ASSOC);
+$cID = $row["Customerid"];
 
-$row=mysqli_fetch_array($result);
-if(!empty($row)){
+mysqli_query($conn,"INSERT INTO Orders(Storeid,Country, FirstName, LastName, Address,City,State,ZipCode,PhoneNumber,Email,TotalCost,Customerid) VALUES (1,'".$country."','".$firstName."','".$lastName."','".$address."','".$city."','".$state."','".$zipCode."','".$phoneNumber."','".$email."','".$totalCost."',".$cID.")");
 
-echo "username already taken";
+
+
+if(!empty(mysqli_error($conn))){
+			file_put_contents("errors.txt",mysqli_error($conn));
+		}
 }
-
-else{
-
-	echo "success";
-}
-	mysqli_query($conn,"INSERT INTO Customer(CustomerName, Address, Email, Password) VALUES ('".$username."','".$address."','".$email."','".$password."')");
-
-
-
 ?>

@@ -23,9 +23,11 @@
               </td>
               <td data-th="Price">${{cart.Price | number:2}}</td>
               <td data-th="Quantity">
-                <input class="form-control text-center" ng-model ="quantity" ng-init="quantity = cart.Quantity">
+              <input class="form-control text-center"  ng-model ="quantity" ng-init="quantity = cart.Quantity">
               </td>
               <td data-th="Subtotal" class="text-center">${{cart.Price * cart.Quantity | number: 2}}</td>
+              <td><button type = "button" class = "btn btn-default" ng-click = "updateCartItem(cart.ProductName,quantity)">Update Item</button></td>
+
               <td class="actions" data-th="">
                 <button class="btn btn-danger btn-sm" ng-click ="deleteItem(cart.ProductName)"><i class="fa fa-trash-o"></i></button> 
               </td>
@@ -38,7 +40,6 @@
             </tr>
             <tr>
               <td><a href="#products" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
-              <td><button type = "button" class = "btn btn-default">Update Cart</button></td>
               <td colspan="2" class="hidden-xs"></td>
               <td class="hidden-xs text-center"><strong>Total: ${{total | number: 2}}</strong></td>
               <td><a href="#checkout" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>

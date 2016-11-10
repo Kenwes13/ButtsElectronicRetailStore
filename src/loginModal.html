@@ -4,9 +4,9 @@
       <br>
       <div ng-hide="isLoggedIn" class="bs-example bs-example-tabs">
         <ul  id="myTab" class="nav nav-tabs">
-          <li  class="active"><a data-toggle="tab">Sign In</a></li>
-          <li class="" ><a data-toggle="tab">Register</a></li>
-          <li class="" ><a data-toggle="tab">Policy</a></li>
+          <li  class="active"><a target="_self" href="#signin" data-toggle="tab">Sign In</a></li>
+          <li class=""><a target="_self" href="#signup" data-toggle="tab">Register</a></li>
+          <li class=""><a target="_self" href="#why" data-toggle="tab">Policy</a></li>
         </ul>
       </div>
       <div ng-hide="isLoggedIn" class="modal-body">
@@ -15,7 +15,7 @@
             <p>Some Customer Policy</p>
           </div>
           <div class="tab-pane fade active in" id="signin">
-            <form class="form-horizontal">
+            <form id= "login-form" class="form-horizontal">
               <fieldset>
                 <!-- Sign In Form -->
                 <!-- Text input-->
@@ -35,8 +35,9 @@
                 </div>
 
                 <!-- Multiple Checkboxes (inline) -->
+                <br />
 
-                {{msg}}
+                <div class = "well">{{msg}}</div>
                 <!-- Button -->
                 <div class="control-group">
                   <label class="control-label" for="signin"></label>
@@ -90,7 +91,9 @@
                     <input ng-model ="reenterpassword" id="reenterpassword" class="form-control" name="reenterpassword" type="password" placeholder="********" class="input-large" required>
                   </div>
                 </div>
-                {{msg}}
+                <br />
+                <div class = "well">{{msg}}</div>
+
                 <!-- Button -->
                 <div class="control-group">
                   <label class="control-label" for="confirmsignup"></label>
@@ -159,7 +162,7 @@
             required: true,
             email: true,
             remote: {
-              url: "checkcredentials.php",
+              url: "./model/checkcredentials.php",
               type: "post"
             }
           },
@@ -170,16 +173,22 @@
           reenterpassword:{
             required:true,
             equalTo: "#password"
+
           },
           userid: {
             required: true,
-            minlength: 5
+            minlength: 5,
+            remote: {
+              url: "./model/checkcredentials.php",
+              type: "post"
+            }
           }
         },
         messages: {
           username:{
             required:"Please enter a username.",
-            minlength: "Your username must consist of at least 5 characters"
+            minlength: "Your username must consist of at least 5 characters",
+            remote:"This username is already taken."
           },
           email: {
             required:"Please enter an email address.",
@@ -196,5 +205,7 @@
           }
         }
       });
+
+
     });
 </script>

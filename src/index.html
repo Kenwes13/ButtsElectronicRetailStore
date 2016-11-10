@@ -101,10 +101,14 @@
            $cookies.put('isLoggedIn', true);
           console.log("ran");
           console.log($cookies.get('username').toString());
+
         }
         $scope.logOut = function(){
           $cookies.remove('username');
           $cookies.remove('isLoggedIn');
+          $cookies.remove('empIsLoggedIn');
+          $cookies.remove('managerIsLoggedIn');
+
           location.reload();
           location.href="#home";
 
@@ -137,14 +141,34 @@
         };
         $scope.verifyCustomer =function(){
           $http.post("./model/verifyCustomer.php",{'uName':$scope.username,'pWord':$scope.password}).success(function(data){
-           $scope.msg=data;
-           if(data =="success"){
+             if(data =="customer"){
+
             $cookies.put('isLoggedIn', true);
             $cookies.put('username', $scope.username);
             location.reload();
             console.log($cookies.get('username').toString());
+                        console.log($cookies.get('empIsLoggedIn').toString());
           }
-
+          else if(data == "employee"){
+            $cookies.put('isLoggedIn', true);
+            $cookies.put('username', $scope.username);
+            $cookies.put('empIsLoggedIn', true);
+            location.reload();
+            console.log($cookies.get('username').toString());
+             console.log($cookies.get('empIsLoggedIn').toString());
+          }
+          else if(data == "manager"){
+            $cookies.put('isLoggedIn', true);
+            $cookies.put('username', $scope.username);
+            $cookies.put('empIsLoggedIn', true);
+            $cookies.put('managerIsLoggedIn', true);
+            location.reload();
+            console.log($cookies.get('username').toString());
+             console.log($cookies.get('empIsLoggedIn').toString());
+          }
+          else{
+          $scope.msg = data;
+        }
         });
         }
         $scope.getCustomer = function(){
@@ -191,6 +215,9 @@
     })
       .controller("MainController", function($scope, $http, myService, localStorageService,$cookies,Upload){
         $scope.isLoggedIn = $cookies.get('isLoggedIn');
+        $scope.empIsLoggedIn = $cookies.get('empIsLoggedIn');
+        $scope.managerIsLoggedIn = $cookies.get('managerIsLoggedIn');
+
         //main.page search box dropdown
         $scope.subjects = ['PCs', 'Consoles', 'TVs', 'Laptops'];
         $scope.selectedItem;
@@ -199,8 +226,27 @@
           $scope.selectedItem = item;
 
         }
-
-
+        //update employee attribute of a customer
+        $scope.updateEmployee = function(customer){
+            $http.post("./model/updateEmployee.php", {'username':customer}).success(function(data){
+            $scope.msg=data;
+            $scope.displayCustomers();
+          });
+        }
+        //update employee attribute of a customer
+        $scope.updateManager = function(customer){
+            $http.post("./model/updateManager.php", {'username':customer}).success(function(data){
+            $scope.msg=data;
+            $scope.displayCustomers();
+          });
+        }
+        //display customers
+        $scope.displayCustomers = function(){
+            $http.post("./model/getAllCustomers.php").success(function(result){
+                $scope.data = result;
+                console.log("test "+$cookies.get('username'));
+            });
+          }
 
           //display products
           $scope.displayData = function(){
@@ -233,7 +279,7 @@
           //inserting products
           $scope.insertProduct=function(){
            $http.post("./model/addProduct.php",{'pName':$scope.productName,'price':$scope.price, 'cate':$scope.category, 'desc':$scope.description, 'imgdir':imageURL}).success(function(data){
-                console.log(data);
+
                 $scope.msg = data;
             })
           }
@@ -283,20 +329,37 @@
               }
               console.log($scope.cartData);
           })
-            $scope.deleteItem = function(itemToDelete) {
 
                 var delQuery = "DELETE FROM Cart WHERE ProductName =";
 
                 console.log(delQuery);
+
                 $http.post("./model/updateCart.php", {
-                    'query': delQuery,
-                    'item' : itemToDelete
+
+                    'item' : itemToDelete,
+                    'username': $cookies.get('username')
+
                 }).success(function(result){
-                    location.reload();
+                  console.log(itemToDelete);
+                    $scope.displayCart();
                 });
 
-            };
-        }
+            }
+              $scope.updateCartItem = function(itemToUpdate, quantity) {
+
+
+                $http.post("./model/updateCart.php", {
+                    'item' : itemToUpdate,
+                    'quantity': quantity.toString(),
+                    'username': $cookies.get('username')
+                }).success(function(result){
+                      console.log(itemToUpdate);
+                      console.log(quantity);
+
+                    $scope.displayCart();
+                });
+
+            }
       })
         .controller("CheckoutController", function($http, $scope, $cookies){
           $scope.isLoggedIn = $cookies.get('isLoggedIn');
@@ -314,11 +377,126 @@
           })
          }
          $scope.placeOrder = function(){
-          $http.post("./model/placeOrder.php",{'country':$scope.country,'firstName':$scope.firstName,'lastName':$scope.lastName,'address':$scope.address,'city':$scope.city,'state':$scope.state,'zipCode':$scope.zipCode,'phoneNumber':$scope.phoneNumber,'email':$scope.email,'totalCost':$scope.total + 8.99,'cID':$cookies.get('username')}).success(function(data){
+          $http.post("./model/placeOrder.php",{'country':$scope.country,'firstName':$scope.firstName,'lastName':$scope.lastName,'address':$scope.address,'city':$scope.city,'state':$scope.state,'zipCode':$scope.zipCode,'phoneNumber':$scope.phoneNumber,'email':$scope.email,'totalCost':$scope.total + 8.99,'cName':$cookies.get('username')}).success(function(data){
 
           });
         }
       })
+        .controller("TrackingController", function($http, $scope, $cookies) {
+          var user = $cookies.get('username');
+          var address;
+          var geocoder = new google.maps.Geocoder();
+          var myLatLng = new google.maps.LatLng(37.799993,-122.4087077);
+          var end = new google.maps.LatLng(37.292759,-121.851698);
+          $scope.tmap = new google.maps.Map(document.getElementById("tmap"), {
+            zoom: 14,
+            center: new google.maps.LatLng(37.799993,-122.4087077),
+          });
+
+
+          $http.post("./model/getCustomer.php", {
+                'uName': $cookies.get('username')
+            }).success(function(data){
+                address = "434 Green Street San Francisco, CA 94133";
+                codeAddress(address);
+                getDirections($scope.tmap, address);
+            });
+
+           //Find shortest distance to a store
+          /*for(var i = 0; i < locations.length; i++) {
+            if(google.maps.geometry.spherical.computeDistanceBetween(myLatLng, new google.maps.LatLng(locations[i].lat, locations[i].lng)) < shortestDistance) {
+              shortestDistance = google.maps.geometry.spherical.computeDistanceBetween(myLatLng, new google.maps.LatLng(locations[i].lat, locations[i].lng));
+              index = i;
+            }
+          }*/
+          function moveMarker(map, marker, latlng) {
+              marker.setPosition(latlng);
+              map.panTo(latlng);
+          }
+
+          function autoRefresh(map, pathCoords) {
+              var i, route, marker;
+
+              route = new google.maps.Polyline({
+                  path: [],
+                  geodesic : true,
+                  strokeColor: '#FF0000',
+                  strokeOpacity: 1.0,
+                  strokeWeight: 2,
+                  editable: false,
+                  map:map
+              });
+
+              var marker=new google.maps.Marker({map:$scope.tmap, icon:"http://maps.google.com/mapfiles/ms/micons/blue.png"});
+              for (i = 0; i < pathCoords.length; i++) {
+                  setTimeout(function(coords) {
+                      route.getPath().push(coords);
+                      moveMarker(map, marker, coords);
+                      console.log(pathCoords.length);
+                  }, 100 * i, pathCoords[i]);
+              }
+          }
+
+          function codeAddress(address) {
+            geocoder.geocode( { 'address': address}, function(results, status) {
+              if (status == 'OK') {
+                $scope.tmap.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                    map: $scope.tmap,
+                    position: results[0].geometry.location
+                });
+              } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+              }
+            });
+          }
+
+
+          function getDirections(map, address) {
+              var service = new google.maps.DistanceMatrixService();
+              service.getDistanceMatrix({
+                origins : [end],
+                destinations: [address],
+                travelMode: 'DRIVING',
+                avoidHighways: false
+              }, callback);
+          function callback(response, status) {
+            if (status == 'OK') {
+              var origins = response.originAddresses;
+              var destinations = response.destinationAddresses;
+
+              for (var i = 0; i < origins.length; i++) {
+                var results = response.rows[i].elements;
+                for (var j = 0; j < results.length; j++) {
+                  var element = results[j];
+                  var distance = element.distance.text;
+                  var duration = element.duration.text;
+                  console.log(duration);
+                  var from = origins[i];
+                  var to = destinations[j];
+                }
+              }
+            }
+          }
+              var directionsService = new google.maps.DirectionsService();
+             directionsDisplay = new google.maps.DirectionsRenderer({
+                  map: $scope.tmap
+                  });
+              var request = {
+                  origin: end ,
+                  destination: address,
+                  travelMode: google.maps.TravelMode.DRIVING,
+              };
+              directionsService.route(request, function(result, status) {
+                  if (status == google.maps.DirectionsStatus.OK) {
+                      directionsDisplay.setDirections(result);
+                      autoRefresh(map, result.routes[0].overview_path);
+                  }
+              });
+          }
+
+
+        })
     app.config(function($routeProvider) {
       $routeProvider
         .when("/", {
@@ -352,10 +530,14 @@
         .when("/checkout", {
           templateUrl: "checkout.html"
         })
-//
-//        .otherwise({
-//          redirectTo: '/'
-//        })
+        .when("/tracking", {
+          templateUrl: "tracking.html",
+          controller: "TrackingController"
+        })
+        .otherwise({
+          redirectTo: '/'
+        })
+
     });
   </script>
 <style>

@@ -1,0 +1,1 @@
+UPDATE Cart SET Quantity = 4 WHERE ProductName = 'Wii' AND Customerid = 1
