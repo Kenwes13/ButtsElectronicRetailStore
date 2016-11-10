@@ -16,8 +16,8 @@ if(isset($_FILES['file'])){
     $errors[]='File size cannot exceed 2 MB';
     }
     if(empty($errors)==true){
-        move_uploaded_file($file_tmp,"images/".$file_name);
-        echo "model/images/" . $file_name;
+        move_uploaded_file($file_tmp,"../resources/images/".$file_name);
+        echo "resources/images/" . $file_name;
     }else{
         print_r($errors);
     }
