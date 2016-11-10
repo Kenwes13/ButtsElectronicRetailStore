@@ -55,7 +55,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li ng-show="isLoggedIn"><a ng-click="logOut()" ><span class="glyphicon glyphicon-user"></span> Log Out</a></li>
 
-        <li><a href="#login" ng-click="open()"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
+        <li><a  ng-click="open()"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
         <li><a ng-show = "isLoggedIn" href="#cart"><span class="glyphicon glyphicon-log-in"></span> Cart</a></li>
         <li><a ng-hide = "isLoggedIn" onclick="swal('Please log in to view your shopping cart')"><span class="glyphicon glyphicon-log-in"></span> Cart</a></li>
       </ul>
@@ -286,7 +286,7 @@
             $scope.deleteItem = function(itemToDelete) {
 
                 var delQuery = "DELETE FROM Cart WHERE ProductName =";
-                
+
                 console.log(delQuery);
                 $http.post("./model/updateCart.php", {
                     'query': delQuery,
@@ -352,10 +352,10 @@
         .when("/checkout", {
           templateUrl: "checkout.html"
         })
-
-        .otherwise({
-          redirectTo: '/'
-        })
+//
+//        .otherwise({
+//          redirectTo: '/'
+//        })
     });
   </script>
 <style>

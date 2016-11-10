@@ -4,9 +4,9 @@
       <br>
       <div ng-hide="isLoggedIn" class="bs-example bs-example-tabs">
         <ul  id="myTab" class="nav nav-tabs">
-          <li  class="active"><a href="#signin" data-toggle="tab">Sign In</a></li>
-          <li class=""><a href="#signup" data-toggle="tab">Register</a></li>
-          <li class=""><a href="#why" data-toggle="tab">Policy</a></li>
+          <li  class="active"><a data-toggle="tab">Sign In</a></li>
+          <li class="" ><a data-toggle="tab">Register</a></li>
+          <li class="" ><a data-toggle="tab">Policy</a></li>
         </ul>
       </div>
       <div ng-hide="isLoggedIn" class="modal-body">
@@ -123,9 +123,9 @@
                             <i class="glyphicon glyphicon-envelope"></i>{{customer.Email}}
                             <br />
                             <br />
-                            
+
                         <!-- Split button -->
-                      
+
                     </div>
                 </div>
             </div>
@@ -151,7 +151,7 @@
   </div>
 </div>
 <script >
-    
+
     $().ready(function (){
       $("#signup-form").validate({
         rules: {
