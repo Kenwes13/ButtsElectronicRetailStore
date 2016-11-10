@@ -1,3 +1,4 @@
+<div class="container" ng-controller="MainController" ng-init="displayCustomers()">
 <div ng-show="empIsLoggedIn" class="container">
 <div class="page-header">
     <h1>Add Products To Store Here</h1>
@@ -30,6 +31,7 @@
 
     <label>image<input class = "form-control" type = "file" id = "image"  name = "image" ng-model = "image" ngf-select="onFileSelect($file)"></label>
 </div>
+{{msg}}
 <button ng-click="insertProduct()" >Insert Product</button>
  <input type="reset"  value="Add Another Product" />
 </form>
@@ -46,6 +48,25 @@
   
 </div>
 
+<div ng-show="managerIsLoggedIn" class="row" >
+        <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="customer in data track by $index">
+
+          <div class="thumbnail">
+            <div class="caption">
+              
+           
+
+              <p>{{customer.Address}}</p>
+              <p>{{customer.CustomerName}}</p>
+              <p>{{customer.Email}}</p>
+              <p>Employee status: <button ng-click = "updateEmployee(customer.CustomerName)">{{customer.IsEmployee}}</button></p>
+              <p>Manager status: <button ng-click = "updateManager(customer.CustomerName)">{{customer.IsManager}}</button></p>
+            </div>
+           
+          </div>
+        </div>
+      </div>
+</div>
 <script >
     
     $().ready(function (){

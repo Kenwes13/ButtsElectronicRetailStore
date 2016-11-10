@@ -18,12 +18,18 @@ if(empty($row)){
 
 echo "Username or password incorrect";
 }
-else if($row["IsEmployee"]==0){
-	echo "customer";
+else if($row["IsManager"]==1){
+	echo "manager";
+
 }
 else if($row["IsEmployee"]==1){
 	echo "employee";
 
 }
+else if($row["IsEmployee"]==0){
+	echo "customer";
+}
+
+
 }
 ?>

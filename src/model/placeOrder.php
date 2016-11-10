@@ -25,6 +25,8 @@ $cID = $row["Customerid"];
 
 mysqli_query($conn,"INSERT INTO Orders(Storeid,Country, FirstName, LastName, Address,City,State,ZipCode,PhoneNumber,Email,TotalCost,Customerid) VALUES (1,'".$country."','".$firstName."','".$lastName."','".$address."','".$city."','".$state."','".$zipCode."','".$phoneNumber."','".$email."','".$totalCost."',".$cID.")");
 
+
+
 if(!empty(mysqli_error($conn))){
 			file_put_contents("errors.txt",mysqli_error($conn));
 		}

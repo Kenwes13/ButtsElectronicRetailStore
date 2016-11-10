@@ -106,7 +106,9 @@
         $scope.logOut = function(){
           $cookies.remove('username');
           $cookies.remove('isLoggedIn');
-           $cookies.remove('empIsLoggedIn');
+          $cookies.remove('empIsLoggedIn');
+          $cookies.remove('managerIsLoggedIn');
+
           location.reload();
           location.href="#home";
 
@@ -150,7 +152,16 @@
           else if(data == "employee"){
             $cookies.put('isLoggedIn', true);
             $cookies.put('username', $scope.username);
-               $cookies.put('empIsLoggedIn', true);
+            $cookies.put('empIsLoggedIn', true);
+            location.reload();
+            console.log($cookies.get('username').toString());
+             console.log($cookies.get('empIsLoggedIn').toString());
+          }
+          else if(data == "manager"){
+            $cookies.put('isLoggedIn', true);
+            $cookies.put('username', $scope.username);
+            $cookies.put('empIsLoggedIn', true);
+            $cookies.put('managerIsLoggedIn', true);
             location.reload();
             console.log($cookies.get('username').toString());
              console.log($cookies.get('empIsLoggedIn').toString());
@@ -204,7 +215,9 @@
     })
       .controller("MainController", function($scope, $http, myService, localStorageService,$cookies,Upload){
         $scope.isLoggedIn = $cookies.get('isLoggedIn');
-          $scope.empIsLoggedIn = $cookies.get('empIsLoggedIn');
+        $scope.empIsLoggedIn = $cookies.get('empIsLoggedIn');
+        $scope.managerIsLoggedIn = $cookies.get('managerIsLoggedIn');
+
         //main.page search box dropdown
         $scope.subjects = ['PCs', 'Consoles', 'TVs', 'Laptops'];
         $scope.selectedItem;
@@ -213,8 +226,27 @@
           $scope.selectedItem = item;
 
         }
-
-
+        //update employee attribute of a customer
+        $scope.updateEmployee = function(customer){
+            $http.post("./model/updateEmployee.php", {'username':customer}).success(function(data){
+            $scope.msg=data;
+            $scope.displayCustomers();
+          });
+        }
+        //update employee attribute of a customer
+        $scope.updateManager = function(customer){
+            $http.post("./model/updateManager.php", {'username':customer}).success(function(data){
+            $scope.msg=data;
+            $scope.displayCustomers();
+          });
+        }
+        //display customers
+        $scope.displayCustomers = function(){
+            $http.get("./model/getAllCustomers.php").success(function(result){
+                $scope.data = result;
+                console.log($scope.data);
+            })
+          }
 
           //display products
           $scope.displayData = function(){
@@ -297,20 +329,37 @@
               }
               console.log($scope.cartData);
           })
-            $scope.deleteItem = function(itemToDelete) {
 
-                var delQuery = "DELETE FROM Cart WHERE ProductName =";
+        }
+        $scope.deleteItem = function(itemToDelete) {
+
                 
-                console.log(delQuery);
                 $http.post("./model/updateCart.php", {
-                    'query': delQuery,
-                    'item' : itemToDelete
+                    
+                    'item' : itemToDelete,
+                    'username': $cookies.get('username')
+
                 }).success(function(result){
-                    location.reload();
+                  console.log(itemToDelete);
+                    $scope.displayCart();
                 });
 
-            };
-        }
+            }
+              $scope.updateCartItem = function(itemToUpdate, quantity) {
+
+               
+                $http.post("./model/updateCart.php", {
+                    'item' : itemToUpdate,
+                    'quantity': quantity.toString(),
+                    'username': $cookies.get('username')
+                }).success(function(result){
+                      console.log(itemToUpdate);
+                      console.log(quantity);
+
+                    $scope.displayCart();
+                });
+
+            }
       })
         .controller("CheckoutController", function($http, $scope, $cookies){
           $scope.isLoggedIn = $cookies.get('isLoggedIn');

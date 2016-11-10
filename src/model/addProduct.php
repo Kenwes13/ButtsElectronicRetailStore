@@ -32,7 +32,7 @@ $imageDirectory =mysqli_real_escape_string($conn,$data->imgdir);
 
 $query = "INSERT INTO Product(ProductName,Price,Description, Category, ImageDirectory, CreatedAt) VALUES ('".$productName."',".$price." , '".$description."', '".$category."','".$imageDirectory."',NOW())";
 $result = mysqli_query($conn, $query);
-echo ($result);
+echo $productName." successfully addded.";
 }
 
 ?>
