@@ -3,6 +3,8 @@ include "connectdb.php";
 
 $data = json_decode(file_get_contents("php://input"));
 
+if(isset($data->country)&&isset($data->firstName)&&isset($data->lastName)&&isset($data->address)&&isset($data->city)&&isset($data->state)&&isset($data->zipCode)&&isset($data->phoneNumber)&&isset($data->email)&&isset($data->totalCost)&&isset($data->cName)){
+
 $country = mysqli_real_escape_string($conn,$data->country);
 $firstName = mysqli_real_escape_string($conn,$data->firstName);
 $lastName = mysqli_real_escape_string($conn,$data->lastName);
@@ -26,5 +28,5 @@ mysqli_query($conn,"INSERT INTO Orders(Storeid,Country, FirstName, LastName, Add
 if(!empty(mysqli_error($conn))){
 			file_put_contents("errors.txt",mysqli_error($conn));
 		}
-
+}
 ?>
