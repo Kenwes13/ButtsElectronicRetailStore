@@ -101,10 +101,12 @@
            $cookies.put('isLoggedIn', true);
           console.log("ran");
           console.log($cookies.get('username').toString());
+
         }
         $scope.logOut = function(){
           $cookies.remove('username');
           $cookies.remove('isLoggedIn');
+           $cookies.remove('empIsLoggedIn');
           location.reload();
           location.href="#home";
 
@@ -137,14 +139,25 @@
         };
         $scope.verifyCustomer =function(){
           $http.post("./model/verifyCustomer.php",{'uName':$scope.username,'pWord':$scope.password}).success(function(data){
-           $scope.msg=data;
-           if(data =="success"){
+             if(data =="customer"){
+
             $cookies.put('isLoggedIn', true);
             $cookies.put('username', $scope.username);
             location.reload();
             console.log($cookies.get('username').toString());
+                        console.log($cookies.get('empIsLoggedIn').toString());
           }
-
+          else if(data == "employee"){
+            $cookies.put('isLoggedIn', true);
+            $cookies.put('username', $scope.username);
+               $cookies.put('empIsLoggedIn', true);
+            location.reload();
+            console.log($cookies.get('username').toString());
+             console.log($cookies.get('empIsLoggedIn').toString());
+          }
+          else{
+          $scope.msg = data;
+        }
         });
         }
         $scope.getCustomer = function(){
@@ -191,6 +204,7 @@
     })
       .controller("MainController", function($scope, $http, myService, localStorageService,$cookies,Upload){
         $scope.isLoggedIn = $cookies.get('isLoggedIn');
+          $scope.empIsLoggedIn = $cookies.get('empIsLoggedIn');
         //main.page search box dropdown
         $scope.subjects = ['PCs', 'Consoles', 'TVs', 'Laptops'];
         $scope.selectedItem;
@@ -233,7 +247,7 @@
           //inserting products
           $scope.insertProduct=function(){
            $http.post("./model/addProduct.php",{'pName':$scope.productName,'price':$scope.price, 'cate':$scope.category, 'desc':$scope.description, 'imgdir':imageURL}).success(function(data){
-                console.log(data);
+               
                 $scope.msg = data;
             })
           }
@@ -314,7 +328,7 @@
           })
          }
          $scope.placeOrder = function(){
-          $http.post("./model/placeOrder.php",{'country':$scope.country,'firstName':$scope.firstName,'lastName':$scope.lastName,'address':$scope.address,'city':$scope.city,'state':$scope.state,'zipCode':$scope.zipCode,'phoneNumber':$scope.phoneNumber,'email':$scope.email,'totalCost':$scope.total + 8.99,'cID':$cookies.get('username')}).success(function(data){
+          $http.post("./model/placeOrder.php",{'country':$scope.country,'firstName':$scope.firstName,'lastName':$scope.lastName,'address':$scope.address,'city':$scope.city,'state':$scope.state,'zipCode':$scope.zipCode,'phoneNumber':$scope.phoneNumber,'email':$scope.email,'totalCost':$scope.total + 8.99,'cName':$cookies.get('username')}).success(function(data){
 
           });
         }
