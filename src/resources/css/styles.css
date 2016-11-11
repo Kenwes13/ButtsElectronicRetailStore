@@ -5,3 +5,16 @@ html, body {
   margin: 0; }
 
 li { cursor: pointer; cursor: hand; }
+
+.mainText {
+	background-color: rgba(0,0,0,.3);
+	width: 25%;
+	margin: auto;
+	padding:10px;
+	box-shadow: 0px 0px 20px #000000;
+	color: white;
+	text-shadow: 10px 10px 20px #000000;
+}
+.mainText >h4 {
+	opacity: 1;
+}
