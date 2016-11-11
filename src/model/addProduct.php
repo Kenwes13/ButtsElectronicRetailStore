@@ -11,7 +11,9 @@ if(isset($_POST['productName'])){
 	$row=mysqli_fetch_array($result);
 	if(!empty($row)){
 
-		echo json_encode("Product name already taken, please choose another name.");
+		echo "false";
+	}else{
+		echo "true";
 	}
 
 
