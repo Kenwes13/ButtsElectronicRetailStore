@@ -389,11 +389,37 @@
           })
          }
          $scope.placeOrder = function(){
-          $http.post("./model/placeOrder.php",{'country':$scope.country,'firstName':$scope.firstName,'lastName':$scope.lastName,'address':$scope.address,'city':$scope.city,'state':$scope.state,'zipCode':$scope.zipCode,'phoneNumber':$scope.phoneNumber,'email':$scope.email,'totalCost':$scope.total + 8.99,'cName':$cookies.get('username')}).success(function(data){
-
-          });
+            $http.post("./model/placeOrder.php",
+              {'country':$scope.country,
+              'firstName':$scope.firstName,
+              'lastName':$scope.lastName,
+              'address':$scope.address,
+              'city':$scope.city,
+              'state':$scope.state,
+              'zipCode':$scope.zipCode,
+              'phoneNumber':$scope.phoneNumber,
+              'email':$scope.email,
+              'totalCost':$scope.total + 8.99,
+              'cName':$cookies.get('username')}).success(function(data){
+                console.log(data);
+                location.href="#postorder";
+            });          
         }
       })
+        .controller("PostorderController", function($http, $scope, $cookies){
+            $http.post("./model/getorders.php", {
+                'cName':$cookies.get('username')
+            }).success(function(result){
+                console.log(result);
+                $scope.order = result;
+              $scope.total = 0;
+            for(var i = 0; i<result.length; i++) {
+              console.log(result[i].Price);
+              $scope.total += parseInt(result[i].Price) * parseInt(result[i].Quantity);
+              console.log($scope.total);
+            }
+            });            
+        })
         .controller("TrackingController", function($http, $scope, $cookies) {
           var user = $cookies.get('username');
           var address;
@@ -409,8 +435,8 @@
           $http.post("./model/getCustomer.php", {
                 'uName': $cookies.get('username')
             }).success(function(data){
-                address = "434 Green Street San Francisco, CA 94133";
-                codeAddress(address);
+              console.log(data);
+                //codeAddress(address);
                 getDirections($scope.tmap, address);
             });
 
@@ -545,6 +571,9 @@
         .when("/tracking", {
           templateUrl: "tracking.html",
           controller: "TrackingController"
+        })
+        .when("/postorder", {
+          templateUrl: "postorder.html",
         })
         .otherwise({
           redirectTo: '/'
