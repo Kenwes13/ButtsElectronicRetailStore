@@ -31,4 +31,19 @@ if(!empty(mysqli_error($conn))){
 			file_put_contents("errors.txt",mysqli_error($conn));
 		}
 }
+
+$query = "SELECT * FROM Cart, Product WHERE Cart.ProductName = Product.ProductName AND Cart.Customerid = ".$cID."";
+$result = mysqli_query($conn, $query);
+while($row=mysqli_fetch_array($result)){
+	$data = $row;
+	$ProductName = $row["ProductName"];
+	$Customerid = $row["Customerid"];
+	$Quantity = $row["Quantity"];
+	$insert_query = "INSERT INTO orderhistory VALUES ('".$ProductName."', '".$Customerid."', '".$Quantity."')";
+	$insert_result = mysqli_query($conn, $insert_query);
+}
+
+$query = "DELETE FROM CART WHERE Customerid = ".$cID."";
+$result = mysqli_query($conn, $query);
+echo json_encode($result);
 ?>
