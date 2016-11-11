@@ -255,8 +255,20 @@
                 console.log($scope.data);
             })
           }
+          //Select Category left side list of main.html
+        $scope.Category = function (cate) {
+          $http.post("./model/displaybycategory.php",{'category':cate}).success(function (result, data) {
+          $scope.data = result;
+          $scope.msg = data;
+          console.log(data);
+          console.log($scope.data);
+
+        })
+        }
+
           $scope.displaySearchData = function(){
-          $http.post("./model/search.php",{'name':$scope.searchbyname, 'category':$scope.selectedItem}).success(function(result,data){
+          $http.post("./model/search.php",{'name':$scope.searchbyname, 'category':$scope.selectedItem})
+            .success(function(result,data){
               $scope.data = result;
               $scope.msg = data;
               console.log(data);

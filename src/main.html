@@ -29,11 +29,12 @@
 
   <div class="row">
     <div class="col-md-3">
-      <p class="lead">Shop Name</p>
+      <p class="lead">EMQ Store</p>
       <div class="list-group">
-        <a href="#" class="list-group-item">Category 1</a>
-        <a href="#" class="list-group-item">Category 2</a>
-        <a href="#" class="list-group-item">Category 3</a>
+        <a class="list-group-item" ng-click="Category('TVs')">TVs</a>
+        <a class="list-group-item" ng-click="Category('Consoles')">Consoles</a>
+        <a class="list-group-item" ng-click="Category('Laptops')">Laptops</a>
+        <a class="list-group-item" ng-click="Category('PCs')">PCs</a>
       </div>
     </div>
 
@@ -57,10 +58,10 @@
                 <img class="slide-image" src="https://i.kinja-img.com/gawker-media/image/upload/s--IjvN5_OW--/c_scale,fl_progressive,q_80,w_800/czxlqvu1euytfjdimmut.png" alt="">
               </div>
             </div>
-            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+            <a class="left carousel-control" target="_self" href="#carousel-example-generic" data-slide="prev">
               <span class="glyphicon glyphicon-chevron-left"></span>
             </a>
-            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+            <a class="right carousel-control" target="_self" href="#carousel-example-generic" data-slide="next">
               <span class="glyphicon glyphicon-chevron-right"></span>
             </a>
           </div>
@@ -68,9 +69,9 @@
       </div>
 
 
-      <div ng-hide="data.fail" class="row">
+      <div class="row">
         <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="product in data track by $index">
-          <div class="thumbnail">
+          <div ng-hide="data.fail" class="thumbnail">
             <img ng-src="{{product.ImageDirectory}}" alt="">
             <div class="caption">
               <h4 class="pull-right">${{product.Price}}</h4>
@@ -90,9 +91,9 @@
             </div>
           </div>
         </div>
+        <h1 ng-show="data.fail">Sorry,no result is found.</h1>
       </div>
       </div>
-
     </div>
   </div>
 
