@@ -3,7 +3,7 @@ include "connectdb.php";
 
 $data = json_decode(file_get_contents("php://input"));
 
-if(isset($data->country)&&isset($data->firstName)&&isset($data->lastName)&&isset($data->address)&&isset($data->city)&&isset($data->state)&&isset($data->zipCode)&&isset($data->phoneNumber)&&isset($data->email)&&isset($data->totalCost)&&isset($data->cName)){
+if(isset($data->country)&&isset($data->firstName)&&isset($data->lastName)&&isset($data->address)&&isset($data->city)&&isset($data->state)&&isset($data->zipCode)&&isset($data->phoneNumber)&&isset($data->email)&&isset($data->totalCost)&&isset($data->cName)&&isset($data->storeid)){
 
 	$country = mysqli_real_escape_string($conn,$data->country);
 	$firstName = mysqli_real_escape_string($conn,$data->firstName);
