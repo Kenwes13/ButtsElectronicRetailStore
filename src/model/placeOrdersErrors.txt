@@ -1,0 +1,1 @@
+UPDATE Store_Product SET Quantity = Quantity - 1 WHERE Productid = 32 AND Storeid = 1UPDATE Store_Product SET UnitsinStock = UnitsinStock - 1 WHERE Productid = 32 AND Storeid = 1UPDATE Store_Product SET UnitsinStock = UnitsinStock - 8 WHERE Productid = 32 AND Storeid = 2

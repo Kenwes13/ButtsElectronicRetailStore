@@ -57,7 +57,37 @@
           </div>
         </div>
         <!--REVIEW ORDER END-->
+      
+      <!--DISPLAY STORES WITH INVENTORY THAT SATISFIES CART-->
+      
+      <h4>The following stores have the items in your cart in stock. </h4>
+      <h4>Please select a store to deliver from.</h4>
+      <br />
+      <div class = "form-group" ng-init="displayStoresWithProducts()">
+      <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="store in storeProductsData track by $index">
+      <label>
+        <div  class="thumbnail">
+          <div class="caption">
+
+
+
+            <span>{{store.Address}}</span>
+            <span>{{store.City}}</span>
+            <span>{{store.State}}</span>
+            <span>{{store.Zipcode}}</span>
+
+          </div>
+
+        </div>
+        
+        <input type = "radio" ng-model="storeScope.store" name = "store" class = "form-control" value ="{{store.Storeid}}" required/>
+        </label>
+        <br />
       </div>
+      </div>
+    
+    <!--END DISPLAY STORES-->
+    </div>
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-pull-6 col-sm-pull-6">
         <!--SHIPPING METHOD-->
         <div class="panel panel-info" id = "shipping">

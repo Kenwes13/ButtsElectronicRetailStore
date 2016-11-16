@@ -1,44 +1,76 @@
-<div class="container" ng-controller="MainController" ng-init="displayCustomers()">
-<div ng-show="empIsLoggedIn" class="container">
-<div class="page-header">
-    <h1>Add Products To Store Here</h1>
-  </div>
-<form  id="addProductForm">
-    <div class= "form-group">
-        <label>product name</label><input class = "form-control" type="text" id = "productName"  name = "productName" ng-model="productName" required>
+<div class="container" ng-controller="MainController" >
+  <!--SHOW IF EMPLOYEE LOGGED IN-->
+  <div ng-show="empIsLoggedIn" class="container">
+    <div class="page-header">
+      <h1>Add Products To Store Here</h1>
     </div>
-    <div class= "form-group">
+    <form  id="addProductForm">
+      <div class= "form-group">
+        <label>product name</label><input class = "form-control" type="text" id = "productName"  name = "productName" ng-model="productName" required>
+      </div>
+      <div class= "form-group">
 
         <label>price</label><input class = "form-control" type="number" id = "price"  name = "price" ng-model="price" required>
+      </div>
+      <div class= "form-group">
+
+        <label>quantity</label><input class = "form-control" type="number" id = "quantity"  name = "quantity" ng-model="quantity" required>
+      </div>
+
+      <div class="form-group">
+        <label >Description
+          <textarea class="form-control" rows="5"   id = "description"  name = "description" ng-model="description" required></textarea>
+        </label>
+      </div>
+
+      <div class= "form-group">
+
+        <label>category</label><select class = "form-control" id = "category"  name = "category" type="text" ng-model="category" required>
+        <option value = "laptops">Laptops</option>
+        <option value = "PCs">PCs</option>
+        <option value = "Consoles">Consoles</option>
+        <option value = "Graphics Cards">TVs</option>
+        <option value = "Quadcopter">TVs</option>
+        <option value = "3D Printers">TVs</option>
+        <option value = "Computer Monitors">TVs</option>
+        <option value = "Microcontrollers">TVs</option>
+        <option value = "Consoles">TVs</option>
+      </select>
     </div>
+    <div class= "form-group">
 
-    <div class="form-group">
-      <label >Description
-      <textarea class="form-control" rows="5"   id = "description"  name = "description" ng-model="description" required></textarea>
-      </label>
-  </div>
+      <label>image<input class = "form-control" type = "file" id = "image"  name = "image" ng-model = "image" ngf-select="onFileSelect($file)"></label>
+    </div>
+     <input type="reset"  value="Add Another Product" />
+    <div class = "form-group" ng-init="displayStores()">
+      <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="store in storeData track by $index">
 
-  <div class= "form-group">
+        <div  class="thumbnail">
+          <div class="caption">
 
-    <label>category</label><select class = "form-control" id = "category"  name = "category" type="text" ng-model="category" required>
-    <option value = "laptops">Laptops</option>
-    <option value = "PCs">PCs</option>
-    <option value = "Consoles">Consoles</option>
-    <option value = "TVs">TVs</option>
-</select>
-</div>
-<div class= "form-group">
 
-    <label>image<input class = "form-control" type = "file" id = "image"  name = "image" ng-model = "image" ngf-select="onFileSelect($file)"></label>
-</div>
-{{msg}}
-<button ng-click="insertProduct()" >Insert Product</button>
- <input type="reset"  value="Add Another Product" />
-</form>
+
+            <span>{{store.Address}}</span>
+            <span>{{store.City}}</span>
+            <span>{{store.State}}</span>
+            <span>{{store.Zipcode}}</span>
+
+          </div>
+
+        </div>
+        <button ng-click="insertProduct(store.Storeid, store.Address, store.City, store.State ,quantity)" >Add Product(s) To Store</button>
+
+      </div>
+    </div>
+    {{msg}}
+   
+  </form>
+
+
 </div>
 
 <!--SHOW IF EMPLOYEE NOT LOGGED IN-->
-<div ng-hide="empIsLoggedIn" class = "container">
+<div ng-hide="empIsLoggedIn" class = "container" >
 
 
   <div class="page-header">
@@ -47,71 +79,80 @@
   <p>Please log in as an employee to access this page.</p>
   
 </div>
+<!--SHOW IF MANAGER IS LOGGED IN-->
+<div  ng-show="managerIsLoggedIn" class="container"  ng-init="displayCustomers()">
+  <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="customer in data track by $index">
 
-<div  ng-show="managerIsLoggedIn" class="row" >
-        <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="customer in data track by $index">
+    <div  class="thumbnail">
+      <div class="caption">
 
-          <div  class="thumbnail">
-            <div class="caption">
-              
-           
 
-              <p>{{customer.Address}}</p>
-              <p>{{customer.CustomerName}}</p>
-              <p>{{customer.Email}}</p>
-              <p>Employee status: <button ng-click = "updateEmployee(customer.CustomerName)">{{customer.IsEmployee}}</button></p>
-              <p>Manager status: <button ng-click = "updateManager(customer.CustomerName)">{{customer.IsManager}}</button></p>
-            </div>
-           
-          </div>
-        </div>
+
+        <p>{{customer.Address}}</p>
+        <p>{{customer.CustomerName}}</p>
+        <p>{{customer.Email}}</p>
+        <p>Employee status: <button ng-click = "updateEmployee(customer.CustomerName)">{{customer.IsEmployee}}</button></p>
+        <p>Manager status: <button ng-click = "updateManager(customer.CustomerName)">{{customer.IsManager}}</button></p>
       </div>
+
+    </div>
+  </div>
 </div>
+</div>
+
+
 <script >
-    
-    $().ready(function (){
-      $("#addProductForm").validate({
-        rules: {
-          productName: {
-            required: true,
-             remote: {
-              url: "./model/addProduct.php",
-              type: "post"
-            }
-        
-          },
-          price:{
-            required: true,
-            
-          },
-          description:{
-            required:true,
-            
-          },
-          category: {
-            required: true,
-          
+
+  $().ready(function (){
+    $("#addProductForm").validate({
+      rules: {
+        productName: {
+          required: true,
+          remote: {
+            url: "./model/addProduct.php",
+            type: "post"
           }
+
         },
-        messages: {
-          productName:{
-            required:"Please enter a product name.",
-            remote:"Product name is already taken."
-            
-          },
-          price: {
-            required:"Please enter a price.",
-           
-          },
-          description:{
-            required:"Please enter a description.",
-            
-          },
-          category:{
-            required: "Please enter a category.",
-            
-          }
+        price:{
+          required: true,
+
+        },
+        quantity:{
+          required: true,
+
+        },
+        description:{
+          required:true,
+
+        },
+        category: {
+          required: true,
+          
         }
-      });
+      },
+      messages: {
+        productName:{
+          required:"Please enter a product name.",
+          remote:"Product name is already taken."
+
+        },
+        price: {
+          required:"Please enter a price.",
+
+        },
+        quantity:{
+          required:"Please enter in a quantity",
+        },
+        description:{
+          required:"Please enter a description.",
+
+        },
+        category:{
+          required: "Please enter a category.",
+
+        }
+      }
     });
+  });
 </script>

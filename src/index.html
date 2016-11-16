@@ -167,7 +167,7 @@
              console.log($cookies.get('empIsLoggedIn').toString());
           }
           else{
-          $scope.msg = data;
+          $scope.loginMsg = data;
         }
         });
         }
@@ -247,7 +247,12 @@
                 console.log("test "+$cookies.get('username'));
             });
           }
+          $scope.displayStores = function(){
+             $http.post("./model/getAllStores.php").success(function(result){
+                $scope.storeData = result;
 
+             });
+          }
           //display products
           $scope.displayData = function(){
             $http.get("./model/select.php").success(function(result){
@@ -289,8 +294,8 @@
           });
         };
           //inserting products
-          $scope.insertProduct=function(){
-           $http.post("./model/addProduct.php",{'pName':$scope.productName,'price':$scope.price, 'cate':$scope.category, 'desc':$scope.description, 'imgdir':imageURL}).success(function(data){
+          $scope.insertProduct=function(storeid,address,city,state,quantity){
+           $http.post("./model/addProduct.php",{'quantity':quantity,'storeid':storeid,'address':address,'city':city,'state':state,'pName':$scope.productName,'price':$scope.price, 'cate':$scope.category, 'desc':$scope.description, 'imgdir':imageURL}).success(function(data){
 
                 $scope.msg = data;
             })
@@ -375,6 +380,13 @@
       })
         .controller("CheckoutController", function($http, $scope, $cookies){
           $scope.isLoggedIn = $cookies.get('isLoggedIn');
+          $scope.storeScope = {store: ""};
+          $scope.displayStoresWithProducts = function(){
+             $http.post("./model/getAllStoresWithProductsInCart.php",{'cName':$cookies.get('username')}).success(function(result){
+                $scope.storeProductsData = result;
+
+             });
+          }
 
           $scope.displayCart = function() {
            $http.post("./model/retrieveCart.php",{'cName':$cookies.get('username')}).success(function(result){
@@ -400,7 +412,7 @@
               'phoneNumber':$scope.phoneNumber,
               'email':$scope.email,
               'totalCost':$scope.total + 8.99,
-              'cName':$cookies.get('username')}).success(function(data){
+              'cName':$cookies.get('username'),'storeid':$scope.storeScope.store}).success(function(data){
                 console.log(data);
                 location.href="#postorder";
             });          
