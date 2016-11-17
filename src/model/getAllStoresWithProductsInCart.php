@@ -37,8 +37,8 @@ else{
 
 echo json_encode($dataStoresResult);
 }
-
+//testing purposes
 if(!empty(mysqli_error($conn))){
-			file_put_contents("getStoresProductsErrors.txt",mysqli_error($conn));
+			//file_put_contents("getStoresProductsErrors.txt",mysqli_error($conn));
 		}
 ?>
