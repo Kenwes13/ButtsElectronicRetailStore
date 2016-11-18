@@ -30,11 +30,8 @@
   <div class="row">
     <div class="col-md-3">
       <p class="lead">EMQ Store</p>
-      <div class="list-group">
-        <a class="list-group-item" ng-click="Category('TVs')">TVs</a>
-        <a class="list-group-item" ng-click="Category('Consoles')">Consoles</a>
-        <a class="list-group-item" ng-click="Category('Laptops')">Laptops</a>
-        <a class="list-group-item" ng-click="Category('PCs')">PCs</a>
+      <div class="list-group" ng-repeat="category in subjects">
+        <a class="list-group-item" ng-click="Category(category)">{{category}}</a>
       </div>
     </div>
 
