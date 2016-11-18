@@ -432,41 +432,54 @@
             }
             });
         })
-        .controller("TrackingController", function($http, $scope, $cookies) {
+.controller("TrackingController", function($http, $scope, $cookies) {
+          var locations = [
+            {lat:37.655508 , lng:-122.070641, label:"25453 Mission Blvd, Hayward, CA 94544", phone:"510-555-5555", gm:"Batman"},
+            {lat:37.815671, lng:-122.287572, label:"2107 Poplar St, Oakland, CA 94607", phone:"510-555-5556", gm:"Superman"},
+            {lat:38.005712 ,lng:-122.089431 ,label:"4596 Pacheco Blvd, Martinez, CA 94553", phone:"925-555-5555", gm:"Wonder Woman"},
+            {lat:37.978347,lng:-122.322537, label:"3139 Garrity Way, Richmond, CA 94806", phone:"510-555-5557", gm:"Green Lantern"},
+            {lat:37.292759,lng:-121.851698, label:"Goble Lane San Jose, CA 95111", phone:"408-555-5555", gm:"Flash"},
+            {lat:37.388079,lng:-121.967919, label:"2386 Mission College Blvd Santa Clara, CA 95054", phone:"408-555-5556", gm:"Black Canary"},
+            {lat:37.545165,lng:-122.295469 ,label:"Across from 900 Yates Way San Mateo, CA 94403", phone:"650-555-5555", gm:"Aquaman"},
+            {lat:37.655331,lng:-122.429529 ,label:"Across from 816 Antoinette Ln South San Francisco, CA 94080", phone:"418-555-5555", gm:"Zatanna"},
+            {lat:37.770352,lng:-122.419098 ,label:"1695 Mission St San Francisco, CA 94103", phone:"418-555-5554", gm:"Hawkgirl"},
+            {lat:37.737660, lng:-122.475911,label:"2699 19th Ave San Francisco, CA 94116", phone:"418-555-5553", gm:"Martian Manhunter"}
+          ];          
           var user = $cookies.get('username');
           var address;
           var geocoder = new google.maps.Geocoder();
           var myLatLng = new google.maps.LatLng(37.799993,-122.4087077);
           var end = new google.maps.LatLng(37.292759,-121.851698);
+          var index = 0;
+          var shortestDistance = 100000;
+          var closestStore;
           $scope.tmap = new google.maps.Map(document.getElementById("tmap"), {
             zoom: 14,
             center: new google.maps.LatLng(37.799993,-122.4087077),
           });
-
-
-          $http.post("./model/getCustomer.php", {
-                'uName': $cookies.get('username')
-            }).success(function(data){
-              console.log(data);
-                //codeAddress(address);
-                getDirections($scope.tmap, address);
-            });
-
-           //Find shortest distance to a store
-          /*for(var i = 0; i < locations.length; i++) {
+          for(var i = 0; i < locations.length; i++) {
             if(google.maps.geometry.spherical.computeDistanceBetween(myLatLng, new google.maps.LatLng(locations[i].lat, locations[i].lng)) < shortestDistance) {
               shortestDistance = google.maps.geometry.spherical.computeDistanceBetween(myLatLng, new google.maps.LatLng(locations[i].lat, locations[i].lng));
               index = i;
             }
-          }*/
+          }
+          closestStore = new google.maps.LatLng(locations[index].lat, locations[index].lng);
+          console.log(locations[index].lat +","+ locations[index].lng);
+          $http.post("./model/getCustomer.php", {
+                'uName': $cookies.get('username')
+            }).success(function(data){
+              console.log(data);
+                address = data.Address;
+                codeAddress(address);
+                getDirections($scope.tmap, address);
+            });
+           //Find shortest distance to a store
           function moveMarker(map, marker, latlng) {
               marker.setPosition(latlng);
               map.panTo(latlng);
           }
-
           function autoRefresh(map, pathCoords) {
               var i, route, marker;
-
               route = new google.maps.Polyline({
                   path: [],
                   geodesic : true,
@@ -476,17 +489,15 @@
                   editable: false,
                   map:map
               });
-
               var marker=new google.maps.Marker({map:$scope.tmap, icon:"http://maps.google.com/mapfiles/ms/micons/blue.png"});
               for (i = 0; i < pathCoords.length; i++) {
                   setTimeout(function(coords) {
                       route.getPath().push(coords);
                       moveMarker(map, marker, coords);
-                      console.log(pathCoords.length);
+                      //console.log(pathCoords.length);
                   }, 100 * i, pathCoords[i]);
               }
           }
-
           function codeAddress(address) {
             geocoder.geocode( { 'address': address}, function(results, status) {
               if (status == 'OK') {
@@ -500,12 +511,10 @@
               }
             });
           }
-
-
           function getDirections(map, address) {
               var service = new google.maps.DistanceMatrixService();
               service.getDistanceMatrix({
-                origins : [end],
+                origins : [closestStore],
                 destinations: [address],
                 travelMode: 'DRIVING',
                 avoidHighways: false
@@ -514,14 +523,15 @@
             if (status == 'OK') {
               var origins = response.originAddresses;
               var destinations = response.destinationAddresses;
-
               for (var i = 0; i < origins.length; i++) {
                 var results = response.rows[i].elements;
                 for (var j = 0; j < results.length; j++) {
                   var element = results[j];
                   var distance = element.distance.text;
                   var duration = element.duration.text;
-                  console.log(duration);
+                  $scope.$apply(function(){
+                      $scope.duration = duration;
+                  });
                   var from = origins[i];
                   var to = destinations[j];
                 }
@@ -533,7 +543,7 @@
                   map: $scope.tmap
                   });
               var request = {
-                  origin: end ,
+                  origin: closestStore ,
                   destination: address,
                   travelMode: google.maps.TravelMode.DRIVING,
               };
@@ -544,8 +554,6 @@
                   }
               });
           }
-
-
         })
     app.config(function($routeProvider) {
       $routeProvider
