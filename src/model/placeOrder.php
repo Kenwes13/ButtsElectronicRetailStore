@@ -26,7 +26,7 @@ if(isset($data->country)&&isset($data->firstName)&&isset($data->lastName)&&isset
 
 
 
-	mysqli_query($conn,"INSERT INTO Orders(Storeid,Country, FirstName, LastName, Address,City,State,ZipCode,PhoneNumber,Email,TotalCost,Customerid) VALUES (1,'".$country."','".$firstName."','".$lastName."','".$address."','".$city."','".$state."','".$zipCode."','".$phoneNumber."','".$email."','".$totalCost."',".$cID.")");
+	mysqli_query($conn,"INSERT INTO Orders(Storeid,Country, FirstName, LastName, Address,City,State,ZipCode,PhoneNumber,Email,TotalCost,Customerid) VALUES (".$storeid.",'".$country."','".$firstName."','".$lastName."','".$address."','".$city."','".$state."','".$zipCode."','".$phoneNumber."','".$email."','".$totalCost."',".$cID.")");
 
 
 
