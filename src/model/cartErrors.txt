@@ -1,1 +1,1 @@
-UPDATE Cart SET Quantity = 4 WHERE ProductName = 'Iphone' AND Customerid = 2
+UPDATE Cart SET Quantity = 3 WHERE ProductName = 'Apple iPhone 7' AND Customerid = 1

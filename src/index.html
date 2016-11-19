@@ -433,7 +433,7 @@
             }
             });
         })
-.controller("TrackingController", function($http, $scope, $cookies) {
+      .controller("TrackingController", function($http, $scope, $cookies) {
           var locations = [
             {lat:37.655508 , lng:-122.070641, label:"25453 Mission Blvd, Hayward, CA 94544", phone:"510-555-5555", gm:"Batman"},
             {lat:37.815671, lng:-122.287572, label:"2107 Poplar St, Oakland, CA 94607", phone:"510-555-5556", gm:"Superman"},
@@ -447,18 +447,16 @@
             {lat:37.737660, lng:-122.475911,label:"2699 19th Ave San Francisco, CA 94116", phone:"418-555-5553", gm:"Martian Manhunter"}
           ];          
           var user = $cookies.get('username');
-          var address;
+          var custAddress;
+          var storeAddress;
           var geocoder = new google.maps.Geocoder();
           var myLatLng = new google.maps.LatLng(37.799993,-122.4087077);
           var end = new google.maps.LatLng(37.292759,-121.851698);
-          var index = 0;
-          var shortestDistance = 100000;
-          var closestStore;
           $scope.tmap = new google.maps.Map(document.getElementById("tmap"), {
             zoom: 14,
             center: new google.maps.LatLng(37.799993,-122.4087077),
           });
-          for(var i = 0; i < locations.length; i++) {
+          /*for(var i = 0; i < locations.length; i++) {
             if(google.maps.geometry.spherical.computeDistanceBetween(myLatLng, new google.maps.LatLng(locations[i].lat, locations[i].lng)) < shortestDistance) {
               shortestDistance = google.maps.geometry.spherical.computeDistanceBetween(myLatLng, new google.maps.LatLng(locations[i].lat, locations[i].lng));
               index = i;
@@ -466,14 +464,51 @@
           }
           closestStore = new google.maps.LatLng(locations[index].lat, locations[index].lng);
           console.log(locations[index].lat +","+ locations[index].lng);
-          $http.post("./model/getCustomer.php", {
-                'uName': $cookies.get('username')
+            */
+          $http.post("./model/getTrackingInfo.php", {
+                'cName': $cookies.get('username')
             }).success(function(data){
-              console.log(data);
-                address = data.Address;
-                codeAddress(address);
-                getDirections($scope.tmap, address);
+                console.log(data);
+                custAddress = data.CustAddress;
+                storeAddress = data.Address + " " + data.City+ " " + data.State;
+                getDirections($scope.tmap, data.CustAddress, storeAddress);
+                console.log(storeAddress);
+                for(var i = 0; i<data.CustAddress.length; i++) {
+                custAddress = custAddress.replace(" ","+");
+                }
+                for(var i = 0; i<storeAddress.length; i++) {
+                storeAddress = storeAddress.replace(" ","+");
+                }                
+                
+                getTraffic(custAddress, storeAddress);              
+                //codeAddress(data.Address);
+
             });
+
+
+            
+          function getTraffic(custAddress, storeAddress){
+            $.ajax({
+              url: './proxy.php',
+              type: 'POST',
+              dataType: 'json',
+              data: {
+                'custAddress': custAddress,
+                'storeAddress': storeAddress
+              },
+              success: function(data) {
+                console.log(data.routes[0].legs[0].duration_in_traffic.text);
+                $scope.$apply(function(){
+                      $scope.duration = data.routes[0].legs[0].duration_in_traffic.text;
+                  });
+              },
+              error: function(error) {
+                console.log(error);
+              }
+            });
+        }
+         
+
            //Find shortest distance to a store
           function moveMarker(map, marker, latlng) {
               marker.setPosition(latlng);
@@ -502,6 +537,7 @@
           function codeAddress(address) {
             geocoder.geocode( { 'address': address}, function(results, status) {
               if (status == 'OK') {
+                console.log(results[0].geometry.location);
                 $scope.tmap.setCenter(results[0].geometry.location);
                 var marker = new google.maps.Marker({
                     map: $scope.tmap,
@@ -512,10 +548,12 @@
               }
             });
           }
-          function getDirections(map, address) {
+
+
+          function getDirections(map, address, storeAddress) {
               var service = new google.maps.DistanceMatrixService();
               service.getDistanceMatrix({
-                origins : [closestStore],
+                origins : [storeAddress],
                 destinations: [address],
                 travelMode: 'DRIVING',
                 avoidHighways: false
@@ -530,9 +568,6 @@
                   var element = results[j];
                   var distance = element.distance.text;
                   var duration = element.duration.text;
-                  $scope.$apply(function(){
-                      $scope.duration = duration;
-                  });
                   var from = origins[i];
                   var to = destinations[j];
                 }
@@ -544,12 +579,13 @@
                   map: $scope.tmap
                   });
               var request = {
-                  origin: closestStore ,
+                  origin: storeAddress ,
                   destination: address,
                   travelMode: google.maps.TravelMode.DRIVING,
               };
               directionsService.route(request, function(result, status) {
                   if (status == google.maps.DirectionsStatus.OK) {
+                    console.log(result);
                       directionsDisplay.setDirections(result);
                       autoRefresh(map, result.routes[0].overview_path);
                   }
