@@ -9,11 +9,11 @@ $result = mysqli_query($conn, $query);
 $row = mysqli_fetch_array($result ,MYSQLI_ASSOC);
 $cID = $row["Customerid"];
 
-$query = "SELECT * FROM orderhistory, Product WHERE orderhistory.ProductName = Product.ProductName AND orderhistory.Customerid = ".$cID."";
+$query = "SELECT * FROM Orders, Stores, Customer WHERE Orders.Storeid = Stores.Storeid AND Customer.Customerid =" .$cID."";
 //$query = "SELECT * FROM orderhistory";
 $result = mysqli_query($conn, $query);
 while($row=mysqli_fetch_array($result)){
-	$dataResult[] = $row;
+	$dataResult = $row;
 }
 echo json_encode($dataResult);	
 ?>

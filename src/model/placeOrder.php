@@ -21,12 +21,13 @@ if(isset($data->country)&&isset($data->firstName)&&isset($data->lastName)&&isset
 //get customer id
 	$query= "SELECT * FROM Customer WHERE CustomerName = '".$cName."'";
 	$result = mysqli_query($conn, $query);
+	echo json_encode($result);
 	$row = mysqli_fetch_array($result ,MYSQLI_ASSOC);
 	$cID = $row["Customerid"];
 
 
 
-	mysqli_query($conn,"INSERT INTO Orders(Storeid,Country, FirstName, LastName, Address,City,State,ZipCode,PhoneNumber,Email,TotalCost,Customerid) VALUES (1,'".$country."','".$firstName."','".$lastName."','".$address."','".$city."','".$state."','".$zipCode."','".$phoneNumber."','".$email."','".$totalCost."',".$cID.")");
+	mysqli_query($conn,"INSERT INTO Orders(Storeid,Country, FirstName, LastName, CustAddress, State,ZipCode,PhoneNumber,Email,TotalCost,Customerid) VALUES (".$storeid.",'".$country."','".$firstName."','".$lastName."','".$address. ' ' .$city."','".$state."','".$zipCode."','".$phoneNumber."','".$email."','".$totalCost."',".$cID.")");
 
 
 
@@ -35,14 +36,16 @@ if(isset($data->country)&&isset($data->firstName)&&isset($data->lastName)&&isset
 	}
 }
 
-$query = "SELECT * FROM Cart, Product WHERE Cart.ProductName = Product.ProductName AND Cart.Customerid = ".$cID."";
-$result = mysqli_query($conn, $query);
+//$query = "SELECT * FROM Cart, Product WHERE Cart.ProductName = Product.ProductName AND Cart.Customerid = ".$cID."";
+$query2 = "SELECT * FROM Cart, Product, store_product WHERE Cart.ProductName = Product.ProductName AND Product.Productid = store_product.Productid AND Cart.Customerid = ".$cID."";
+$result = mysqli_query($conn, $query2);
 while($row=mysqli_fetch_array($result)){
 	$data = $row;
 	$ProductName = $row["ProductName"];
 	$Customerid = $row["Customerid"];
 	$Quantity = $row["Quantity"];
-	$insert_query = "INSERT INTO orderhistory VALUES ('".$ProductName."', '".$Customerid."', '".$Quantity."')";
+	$Storeid = $row["Storeid"];
+	$insert_query = "INSERT INTO orderhistory VALUES ('".$ProductName."', '".$Customerid."', '".$Quantity."', '".$Storeid."')";
 	$insert_result = mysqli_query($conn, $insert_query);
 }
 

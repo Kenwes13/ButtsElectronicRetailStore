@@ -1,0 +1,1 @@
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '0','CA','94133','4152548801','james101994@yahoo.com','1006.99',1)' at line 1
