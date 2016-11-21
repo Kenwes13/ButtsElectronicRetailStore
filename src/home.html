@@ -42,7 +42,7 @@
   </a>
 </div>
 
-<div class="container text-center">
+<div class="container text-center" ng-controller="MainController" ng-init="displayDatabyRating()">
   <h3>What We Do</h3><br>
   <div class="row">
     <div class="col-sm-4">
@@ -55,17 +55,11 @@
     </div>
     <div class="col-sm-4">
       <div class="well text-left" >
-        <h4>Best Seller</h4>
+        <h4>Rating Rank</h4>
       </div>
-      <div class="well text-left" >
-        <p>1st PlayStation 4 Pro</p>
-        <p>2nd Sony 55 4k TV</p>
-        <p>3rd Macbook Pro 13-inch</p>
-        <p>4th Macbook Air</p>
-        <p>5th Sumsung Galaxy Note7</p>
-        <p>6th HP desktop</p>
-        <p>7th Dell 15-inch Gaming Laptop</p>
-        <p>8th Nikon - D3300 DSLR Camera with 18-55mm VR Lens </p>
+      <div class="well text-left">
+        <p ng-repeat="product in data track by $index" >{{$index+1}}.{{product.ProductName}}</p>
+
       </div>
     </div>
   </div>
