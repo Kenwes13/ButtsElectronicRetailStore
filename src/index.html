@@ -477,7 +477,7 @@
       }).success(function(data){
         console.log(data);
         custAddress = data.CustAddress;
-        storeAddress = data.Address + " " + data.City+ " " + data.State;
+        storeAddress = data.StoreAddress + " " + data.City+ " " + data.State;
         getDirections($scope.tmap, data.CustAddress, storeAddress);
         console.log(storeAddress);
         for(var i = 0; i<data.CustAddress.length; i++) {

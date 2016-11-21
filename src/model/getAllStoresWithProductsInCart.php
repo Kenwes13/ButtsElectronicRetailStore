@@ -23,7 +23,7 @@ while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
 
 
 // GET STORES WITH PRODUCTS IN STOCK THAT ARE IN CART
-$query= "SELECT Storeid,Address, Zipcode, City, State, Productid, Quantity,UnitsinStock,count(*) as Count from (SELECT * FROM Cart WHERE Customerid = ".$Customerid.") AS CustomerCart NATURAL JOIN Product NATURAL JOIN Stores NATURAL JOIN Store_Product WHERE Quantity<=UnitsinStock group by Storeid HAVING Count=".$count;
+$query= "SELECT Storeid,StoreAddress, Zipcode, City, State, Productid, Quantity,UnitsinStock,count(*) as Count from (SELECT * FROM Cart WHERE Customerid = ".$Customerid.") AS CustomerCart NATURAL JOIN Product NATURAL JOIN Stores NATURAL JOIN Store_Product WHERE Quantity<=UnitsinStock group by Storeid HAVING Count=".$count;
 $result = mysqli_query($conn, $query);
 
 while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
