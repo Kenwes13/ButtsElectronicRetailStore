@@ -23,9 +23,15 @@
   <script src="../node_modules/angular-local-storage/src/angular-local-storage.js"></script>
   <script src="../node_modules/ng-file-upload/dist/ng-file-upload-shim.js"></script> <!-- for no html5 browsers support -->
   <script src="../node_modules/ng-file-upload/dist/ng-file-upload.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="../node_modules/angular-jk-rating-stars/dist/jk-rating-stars.min.css" />
+  <script src="../node_modules/angular-jk-rating-stars/dist/jk-rating-stars.min.js"></script>
+  <script src="https://code.angularjs.org/1.5.0/angular-animate.min.js"></script>
+  <script src="https://code.angularjs.org/1.5.0/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.5/angular-material.min.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.5/angular-material.min.css" />
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
   <!-- Optional theme -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
@@ -80,7 +86,7 @@
       {lat:37.770352,lng:-122.419098 ,label:"1695 Mission St San Francisco, CA 94103", phone:"418-555-5554", gm:"Hawkgirl"},
       {lat:37.737660, lng:-122.475911,label:"2699 19th Ave San Francisco, CA 94116", phone:"418-555-5553", gm:"Martian Manhunter"}
     ];
-    var app = angular.module("myApp", ["ngMap","ngRoute","ui.bootstrap", "LocalStorageModule","ngCookies","ngFileUpload"]);
+    var app = angular.module("myApp", ["ngMap","ngRoute","ui.bootstrap", "LocalStorageModule","ngCookies","ngFileUpload","jkAngularRatingStars","ngMaterial"]);
     app.factory('myService', function(){
         var datatopass = {};
         function set(data){
@@ -312,7 +318,17 @@
         //$scope.name = myService.get();
         $scope.name = localStorageService.get("prod");
         //console.log($scope.prod);
-
+          //rating system
+          $scope.firstRate = 0;
+          $scope.readOnly = true;
+          $scope.onItemRating = function(rating){
+            //alert('On Rating: ' + rating);
+            $http.post("./model/setRating.php",{
+              'name':$scope.name,'rate':rating
+            }).success(function (data) {
+              console.log(data);
+            })
+          };
 
         $scope.displayDetails = function() {
           $http.post("./model/productpage.php",{
@@ -444,7 +460,7 @@
             {lat:37.655331,lng:-122.429529 ,label:"Across from 816 Antoinette Ln South San Francisco, CA 94080", phone:"418-555-5555", gm:"Zatanna"},
             {lat:37.770352,lng:-122.419098 ,label:"1695 Mission St San Francisco, CA 94103", phone:"418-555-5554", gm:"Hawkgirl"},
             {lat:37.737660, lng:-122.475911,label:"2699 19th Ave San Francisco, CA 94116", phone:"418-555-5553", gm:"Martian Manhunter"}
-          ];          
+          ];
           var user = $cookies.get('username');
           var address;
           var geocoder = new google.maps.Geocoder();
@@ -637,43 +653,14 @@
     }
   }
 
-
 </style>
-<footer class="container-fluid text-center">
-  <div class="footer-left">
+<footer class="footer">
 
-    <h3>E M Q</h3>
-
-
-    <p class="footer-company-name">EMQ &copy; 2016</p>
+  <div class="container text-center text-muted">
+    <p>E M Q</p>
+    <p>EMQ &copy; 2016</p>
   </div>
 
-  <div class="footer-center">
-
-    <div>
-      <i class="fa fa-map-marker"></i>
-      <p><span>1 Washington Sq, San Jose, CA 95192</span> USA</p>
-    </div>
-
-    <div>
-      <i class="fa fa-phone"></i>
-      <p>+1 000-000-0000</p>
-    </div>
-
-    <div>
-      <i class="fa fa-envelope"></i>
-      <p><a href="#">support@emq.com</a></p>
-    </div>
-
-  </div>
-
-  <div class="footer-right">
-
-    <p class="footer-company-about">
-      <span>SJSU CS160 Project</span>
-    </p>
-
-  </div>
 </footer>
 
 </body>

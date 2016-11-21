@@ -1,15 +1,7 @@
-<!doctype html>
-<html class="no-js" lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Foundation | Welcome</title>
-<link rel="stylesheet" href="http://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
-<link href='http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
-
+  <link rel="stylesheet" href="http://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
+  <!--<link href='http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>-->
 </head>
-<body>
-
 <div ng-controller="ProductPageController" ng-init="displayDetails()">
 <br>
 <br>
@@ -31,7 +23,7 @@
 </div>
 </div>
 </div>
-<div class="medium-6 large-5 columns">
+<div class="medium-6 large-5 columns" >
 <h3>{{product.ProductName}}</h3>
 <h5>${{product.Price | number : 2}}</h5>
 <p>{{product.Description}}</p>
@@ -46,6 +38,24 @@
 <a ng-show="isLoggedIn" href="#cart" ng-click ="addToCart()" class="button large expanded" >Add To Cart</a>
 <a ng-hide="isLoggedIn" onclick = "swal('You must log in before you add to cart')" class="button large expanded" >Add To Cart</a>
 </div>
+</div>
 
-</body>
-</html>
+  <div layout="column">
+  <h3>Rate This Product</h3>
+  <jk-rating-stars class="my-custom-buttons" rating="firstRate" on-rating="onItemRating(rating)" ></jk-rating-stars>
+  <div style="width: 100px">{{firstRate}} Stars</div>
+
+</div>
+</div>
+<style>
+  .my-custom-buttons .button{
+    background-color: #ffffff;
+  }
+  .my-custom-buttons .button .material-icons{
+    color: #DCDCDC;
+  }
+
+</style>
+
+
+

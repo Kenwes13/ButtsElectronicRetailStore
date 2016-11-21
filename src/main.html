@@ -78,13 +78,7 @@
             </div>
             <div class="ratings">
               <p class="pull-right">{{product.Category}}</p>
-              <p>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-              </p>
+              <jk-rating-stars class="change-size" rating=product.Rating read-only=true></jk-rating-stars>
             </div>
           </div>
         </div>
@@ -93,6 +87,11 @@
       </div>
     </div>
   </div>
+<style>
+  .change-size .button .material-icons {
+    font-size: 20px;
+  }
+</style>
 
 <script>
   $(document).ready(function(e){
