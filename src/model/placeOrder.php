@@ -36,16 +36,15 @@ if(isset($data->country)&&isset($data->firstName)&&isset($data->lastName)&&isset
 	}
 }
 
-//$query = "SELECT * FROM Cart, Product WHERE Cart.ProductName = Product.ProductName AND Cart.Customerid = ".$cID."";
-$query2 = "SELECT * FROM Cart, Product, store_product WHERE Cart.ProductName = Product.ProductName AND Product.Productid = store_product.Productid AND Cart.Customerid = ".$cID."";
-$result = mysqli_query($conn, $query2);
+$query = "SELECT * FROM Cart, Product WHERE Cart.ProductName = Product.ProductName AND Cart.Customerid = ".$cID."";
+$result = mysqli_query($conn, $query);
 while($row=mysqli_fetch_array($result)){
 	$data = $row;
 	$ProductName = $row["ProductName"];
 	$Customerid = $row["Customerid"];
 	$Quantity = $row["Quantity"];
 	$Storeid = $row["Storeid"];
-	$insert_query = "INSERT INTO orderhistory VALUES ('".$ProductName."', '".$Customerid."', '".$Quantity."', '".$Storeid."')";
+	$insert_query = "INSERT INTO orderhistory VALUES ('".$ProductName."', '".$Customerid."', '".$Quantity."')";
 	$insert_result = mysqli_query($conn, $insert_query);
 }
 
