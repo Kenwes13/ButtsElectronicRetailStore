@@ -33,3 +33,5 @@ testem.log
 Thumbs.db
 
 src/model/connectdb.php
+
+*.txt
