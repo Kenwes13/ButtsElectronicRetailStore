@@ -266,6 +266,12 @@
           console.log($scope.data);
         })
       }
+      $scope.displayDatabyRating = function(){
+        $http.get("./model/selectbyRating.php").success(function(result){
+          $scope.data = result;
+          console.log($scope.data);
+        })
+      }
       //Select Category left side list of main.html
       $scope.Category = function (cate) {
         $http.post("./model/displaybycategory.php",{'category':cate}).success(function (result, data) {
@@ -312,6 +318,8 @@
         myService.set(product);
         return localStorageService.set("prod", product);
       }
+
+
     })
     .controller("ProductPageController", function($scope, myService,$http, localStorageService,$cookies) {
       $scope.isLoggedIn = $cookies.get('isLoggedIn');
