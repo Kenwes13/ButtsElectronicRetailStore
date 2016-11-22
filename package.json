@@ -9,7 +9,8 @@
     "angular-route": "^1.5.8",
     "express": "^4.10.6",
     "http-server": "^0.9.0",
-    "mysql": "^2.11.1"
+    "mysql": "^2.11.1",
+    "ng-file-upload": "^12.2.13"
   },
   "devDependencies": {
     "grunt-contrib-uglify": "~0.6.0",
