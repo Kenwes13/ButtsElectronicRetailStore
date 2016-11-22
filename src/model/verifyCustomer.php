@@ -10,7 +10,7 @@ $password = mysqli_real_escape_string($conn,$data->pWord);
 
 
 
-//$query= "SELECT * FROM Customer WHERE Password = '".$password."' and CustomerName ='".$username."'";
+//$query= "SELECT * FROM Customer WHERE Password = '".$password."' AND CustomerName ='".$username."'";
 $query = "SELECT * FROM Customer WHERE CustomerName= '".$username."' ";
 $result = mysqli_query($conn, $query);
 
@@ -33,8 +33,12 @@ else if($row["IsEmployee"]==0){
 	echo "customer";
 }
 
-}
 
+}
+else{
+	echo "Username or password incorrect";
+
+}
 
 }
 ?>
