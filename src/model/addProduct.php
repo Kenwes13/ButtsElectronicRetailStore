@@ -21,7 +21,7 @@ if(isset($_POST['productName'])){
 
 
 }
-else if(isset($data->pName)&&isset($data->price)&&isset($data->cate)&&isset($data->desc)&&isset($data->imgdir)&&isset($data->storeid)&&isset($data->quantity)){
+if(isset($data->pName)&&isset($data->price)&&isset($data->cate)&&isset($data->desc)&&isset($data->imgdir)&&isset($data->storeid)&&isset($data->quantity)){
 		$productName = mysqli_real_escape_string($conn,$data->pName);
 		$price = mysqli_real_escape_string($conn,$data->price);
 		$category = mysqli_real_escape_string($conn,$data->cate);
@@ -34,8 +34,26 @@ else if(isset($data->pName)&&isset($data->price)&&isset($data->cate)&&isset($dat
 		$state=mysqli_real_escape_string($conn,$data->state);
 		$quantity=mysqli_real_escape_string($conn,$data->quantity);
 
-		$query = "INSERT INTO Product(ProductName,Price,Description, Category, ImageDirectory, CreatedAt) VALUES ('".$productName."',".$price." , '".$description."', '".$category."','".$imageDirectory."',NOW())";
+		
+
+		$query= "SELECT * FROM Product WHERE ProductName ='".$productName."'";
 		$result = mysqli_query($conn, $query);
+
+		$row=mysqli_fetch_array($result);
+		if(!empty($row)){
+
+			$query = "UPDATE Product SET Price = ".$price." , Description='".$description."', Category= '".$category."',ImageDirectory= '".$imageDirectory."', CreatedAt = NOW() WHERE ProductName ='".$productName."'";
+			$result = mysqli_query($conn, $query);
+		}else{
+			$query = "INSERT INTO Product(ProductName,Price,Description, Category, ImageDirectory, CreatedAt) VALUES ('".$productName."',".$price." , '".$description."', '".$category."','".$imageDirectory."',NOW())";
+			$result = mysqli_query($conn, $query);
+		}
+
+
+
+
+
+	
 
 
 		
