@@ -312,6 +312,19 @@
           $scope.msg = data;
         })
       }
+       $scope.checkQuantity=function(storeid,address,city,state){
+        $http.post("./model/checkQuantity.php",{'storeid':storeid,'pName':$scope.productName}).success(function(data){
+          if(data[0].UnitsinStock==undefined){
+                      console.log("ran");
+
+            $scope.msgQuantity = "The "+address+", "+city+", "+state+", "+" location has  0 "+$scope.productName+"s in stock.";
+          }
+          else{
+          $scope.msgQuantity = "The "+address+", "+city+", "+state+", "+" location has "+data[0].UnitsinStock+" "+$scope.productName+"(s) in stock.";
+          console.log($scope.msgQuantity);
+        }
+        })
+      }
       var product = {};
       $scope.getProduct = function(prodNames) {
         product = prodNames;
