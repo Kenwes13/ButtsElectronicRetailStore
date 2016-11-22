@@ -250,6 +250,7 @@
       $scope.displayCustomers = function(){
         $http.post("./model/getAllCustomers.php").success(function(result){
           $scope.data = result;
+          console.log($scope.data);
           console.log("test "+$cookies.get('username'));
         });
       }

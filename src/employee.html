@@ -69,11 +69,15 @@
             <span>{{store.State}}</span>
             <span>{{store.Zipcode}}</span>
 
+            
+          </div>
+          <div>
+             <button ng-click="insertProduct(store.Storeid, store.StoreAddress, store.City, store.State ,quantity)" >Add Product(s) To Store</button>
+         <button   immediate="true" ng-click="checkQuantity(store.Storeid,store.StoreAddress, store.City, store.State)" >Check How Many of the Specified Item is in Stock (fill in product name field first)</button>
           </div>
 
         </div>
-        <button ng-click="insertProduct(store.Storeid, store.StoreAddress, store.City, store.State ,quantity)" >Add Product(s) To Store</button>
-         <button   immediate="true" ng-click="checkQuantity(store.Storeid,store.StoreAddress, store.City, store.State)" >Check How Many of the Specified Item is in Stock (fill in product name field first)</button>
+       
       </div>
     </div>
     </div>
@@ -97,7 +101,7 @@
 </div>
 <!--SHOW IF MANAGER IS LOGGED IN-->
 <div  ng-show="managerIsLoggedIn" class="container"  ng-init="displayCustomers()">
-  <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="customer in data track by $index">
+  <div ng-hide= "data.fail" class="col-sm-4 col-lg-4 col-md-4" ng-repeat="customer in data track by $index">
 
     <div  class="thumbnail">
       <div class="caption">
