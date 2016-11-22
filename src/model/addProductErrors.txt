@@ -1,1 +1,1 @@
-INSERT IGNORE INTO Store_Product(Storeid,Productid,UnitsinStock) VALUES(8,1,100)
+INSERT IGNORE INTO Store_Product(Storeid,Productid,UnitsinStock) VALUES(10,8,10)
