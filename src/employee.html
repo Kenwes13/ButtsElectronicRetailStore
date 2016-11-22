@@ -37,88 +37,91 @@
         <option value = "Consoles">Consoles</option>
         <option value = "TVs">TVs</option>
       </select>
-    </div>
-    <div class= "form-group">
+      </div>
+      <div class= "form-group">
 
-      <label>image<input class = "form-control" type = "file" id = "image"  name = "image" ng-model = "image" ngf-select="onFileSelect($file)"></label>
-    </div>
-     <input type="reset"  value="Add Another Product" />
-     <br />
-     <div class="container">
-    <div class="panel panel-default">
-    {{msg}}
-
-    </div>
-    </div>
-    <div class="container">
-<div class="panel panel-default">
-   {{msgQuantity}}
-</div>
-</div>
-  <div class = "container">
-    <div class = "form-group container" ng-init="displayStores()">
-      <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="store in storeData track by $index">
-
-        <div  class="thumbnail">
-          <div class="caption">
-
-
-
-            <span>{{store.StoreAddress}}</span>
-            <span>{{store.City}}</span>
-            <span>{{store.State}}</span>
-            <span>{{store.Zipcode}}</span>
-
-          </div>
+        <label>image<input class = "form-control" type = "file" id = "image"  name = "image" ng-model = "image" ngf-select="onFileSelect($file)"></label>
+      </div>
+      <input type="reset"  value="Add Another Product" />
+      <br />
+      <div class="container">
+        <div class="panel panel-default">
+          {{msg}}
 
         </div>
-        <button ng-click="insertProduct(store.Storeid, store.StoreAddress, store.City, store.State ,quantity)" >Add Product(s) To Store</button>
-         <button   immediate="true" ng-click="checkQuantity(store.Storeid,store.StoreAddress, store.City, store.State)" >Check How Many of the Specified Item is in Stock (fill in product name field first)</button>
+      </div>
+      <div class="container">
+        <div class="panel panel-default">
+          {{msgQuantity}}
+        </div>
+      </div>
+      <div class = "container">
+        <div class = "form-group container" ng-init="displayStores()">
+          <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="store in storeData track by $index">
+
+            <div  class="thumbnail">
+              <div class="caption">
+
+
+
+                <span>{{store.StoreAddress}}</span>
+                <span>{{store.City}}</span>
+                <span>{{store.State}}</span>
+                <span>{{store.Zipcode}}</span>
+
+
+              </div>
+              <div>
+                <button ng-click="insertProduct(store.Storeid, store.StoreAddress, store.City, store.State ,quantity)" >Add Product(s) To Store</button>
+                <button   immediate="true" ng-click="checkQuantity(store.Storeid,store.StoreAddress, store.City, store.State)" >Check How Many of the Specified Item is in Stock (fill in product name field first)</button>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <br />
+
+
+    </form>
+
+
+  </div>
+
+  <!--SHOW IF EMPLOYEE NOT LOGGED IN-->
+  <div ng-hide="empIsLoggedIn" class = "container" >
+
+
+    <div class="page-header">
+      <h1>This page is for employees only</h1>
+    </div>
+    <p>Please log in as an employee to access this page.</p>
+
+  </div>
+  <!--SHOW IF MANAGER IS LOGGED IN-->
+  <div  ng-show="managerIsLoggedIn" class="container"  ng-init="displayCustomers()">
+    <div ng-hide= "data.fail" class="col-sm-4 col-lg-4 col-md-4" ng-repeat="customer in data track by $index">
+
+      <div  class="thumbnail">
+        <div class="caption">
+
+
+
+          <p>{{customer.Address}}</p>
+          <p>{{customer.CustomerName}}</p>
+          <p>{{customer.Email}}</p>
+          <p>Employee status: <button ng-click = "updateEmployee(customer.CustomerName)">{{customer.IsEmployee}}</button></p>
+          <p>Manager status: <button ng-click = "updateManager(customer.CustomerName)">{{customer.IsManager}}</button></p>
+        </div>
+
       </div>
     </div>
-    </div>
-    <br />
-   
-
-  </form>
-
-
-</div>
-
-<!--SHOW IF EMPLOYEE NOT LOGGED IN-->
-<div ng-hide="empIsLoggedIn" class = "container" >
-
-
-  <div class="page-header">
-    <h1>This page is for employees only</h1>
   </div>
-  <p>Please log in as an employee to access this page.</p>
-
-</div>
-<!--SHOW IF MANAGER IS LOGGED IN-->
-<div  ng-show="managerIsLoggedIn" class="container"  ng-init="displayCustomers()">
-  <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="customer in data track by $index">
-
-    <div  class="thumbnail">
-      <div class="caption">
-
-
-
-        <p>{{customer.Address}}</p>
-        <p>{{customer.CustomerName}}</p>
-        <p>{{customer.Email}}</p>
-        <p>Employee status: <button ng-click = "updateEmployee(customer.CustomerName)">{{customer.IsEmployee}}</button></p>
-        <p>Manager status: <button ng-click = "updateManager(customer.CustomerName)">{{customer.IsManager}}</button></p>
-      </div>
-
-    </div>
-  </div>
-</div>
 </div>
 
 
 <script >
-
   $().ready(function (){
     $("#addProductForm").validate({
       rules: {
@@ -128,45 +131,36 @@
             url: "./model/addProduct.php",
             type: "post"
           }
-
         },
         price:{
           required: true,
-
         },
         quantity:{
           required: true,
-
         },
         description:{
           required:true,
-
         },
         category: {
           required: true,
-
         }
       },
       messages: {
         productName:{
           required:"Please enter a product name.",
           remote:"Product name is already taken, inserting into store will update product information."
-
         },
         price: {
           required:"Please enter a price.",
-
         },
         quantity:{
           required:"Please enter in a quantity",
         },
         description:{
           required:"Please enter a description.",
-
         },
         category:{
           required: "Please enter a category.",
-
         }
       }
     });
