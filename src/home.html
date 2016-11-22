@@ -43,7 +43,7 @@
 </div>
 
 <div class="container text-center" ng-controller="MainController" ng-init="displayDatabyRating()">
-  <h3>What We Do</h3><br>
+  <h3>NEW PRODUCTS</h3><br>
   <div class="row">
     <div class="col-sm-4">
       <img src="http://s7d2.scene7.com/is/image/SamsungUS/Pdpdefault-un49k6250afxza-600x600-C1-052016?$product-details-png$" class="img-responsive" style="width:100%" alt="Image">
@@ -58,7 +58,7 @@
         <h4>Rating Rank</h4>
       </div>
       <div class="well text-left">
-        <p ng-repeat="product in data track by $index" >{{$index+1}}.{{product.ProductName}} {{product.Ratedtimes}} people rated.</p>
+        <p ng-repeat="product in data track by $index" >{{$index+1}}.{{product.ProductName}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{product.Ratedtimes}} people rated.</p>
 
       </div>
     </div>

@@ -387,22 +387,22 @@
           console.log($scope.cartData);
         })
       }
-      $scope.deleteItem = function(itemToDelete) {
-
-
-        console.log(delQuery);
-
-        $http.post("./model/updateCart.php", {
-
-          'item' : itemToDelete,
-          'username': $cookies.get('username')
-
-        }).success(function(result){
-          console.log(itemToDelete);
-          $scope.displayCart();
-        });
-
-      }
+//      $scope.deleteItem = function(itemToDelete) {
+//
+//
+//        console.log(delQuery);
+//
+//        $http.post("./model/updateCart.php", {
+//
+//          'item' : itemToDelete,
+//          'username': $cookies.get('username')
+//
+//        }).success(function(result){
+//          console.log(itemToDelete);
+//          $scope.displayCart();
+//        });
+//
+//      }
       $scope.updateCartItem = function(itemToUpdate, quantity) {
 
 
