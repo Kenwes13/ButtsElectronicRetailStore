@@ -63,8 +63,8 @@
       <h4>The following stores have the items in your cart in stock. </h4>
       <h4>Please select a store to deliver from.</h4>
       <br />
-      <div class = "form-group" ng-init="displayStoresWithProducts()">
-      <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="store in storeProductsData track by $index">
+      <div  class = "form-group" ng-init="displayStoresWithProducts()">
+      <div ng-hide="storeProductsData.fail" class="col-sm-4 col-lg-4 col-md-4" ng-repeat="store in storeProductsData track by $index">
       <label>
         <div  class="thumbnail">
           <div class="caption">
@@ -83,6 +83,14 @@
         <input type = "radio" ng-model="storeScope.store" name = "store" class = "form-control" value ="{{store.Storeid}}" required/>
         </label>
         <br />
+      </div>
+      <div ng-show ="storeProductsData.fail">
+      <div  class="thumbnail">
+          <div class="caption">
+
+        <span>There are no stores with the items in your cart in stock. Sorry.</span>
+        </div>
+        </div>
       </div>
       </div>
 

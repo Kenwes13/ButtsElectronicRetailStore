@@ -389,7 +389,7 @@
       $scope.deleteItem = function(itemToDelete) {
 
 
-        console.log(delQuery);
+        
 
         $http.post("./model/updateCart.php", {
 
@@ -424,6 +424,7 @@
       $scope.displayStoresWithProducts = function(){
         $http.post("./model/getAllStoresWithProductsInCart.php",{'cName':$cookies.get('username')}).success(function(result){
           $scope.storeProductsData = result;
+          console.log($scope.storeProductsData);
 
         });
       }
