@@ -10,13 +10,20 @@ $password = mysqli_real_escape_string($conn,$data->pWord);
 
 
 
-$query= "SELECT * FROM Customer WHERE Password = '".$password."' and CustomerName ='".$username."'";
+//$query= "SELECT * FROM Customer WHERE Password = '".$password."' and CustomerName ='".$username."'";
+$query = "SELECT * FROM Customer WHERE CustomerName= '".$username."' ";
 $result = mysqli_query($conn, $query);
 
 $row=mysqli_fetch_array($result);
+
 if(empty($row)){
 
 echo "Username or password incorrect";
+}
+else if(password_verify($password, $row['Password'])){
+
+echo "Username or password incorrect";
+
 }
 else if($row["IsManager"]==1){
 	echo "manager";
