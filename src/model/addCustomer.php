@@ -28,6 +28,7 @@ else{
 }
 $hash =password_hash($password,PASSWORD_BCRYPT);
 mysqli_query($conn,"INSERT INTO Customer(CustomerName, Address, Email, Password) VALUES ('".$username."','".$address."','".$email."','".$hash."')");
+echo "INSERT INTO Customer(CustomerName, Address, Email, Password) VALUES ('".$username."','".$address."','".$email."','".$hash."')";
 
 }
 }

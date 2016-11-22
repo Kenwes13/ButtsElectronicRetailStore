@@ -17,12 +17,12 @@ $isEmployee = $row["IsEmployee"];
 
 if($isEmployee==0){
 
-mysqli_query($conn,"UPDATE Customer SET IsEmployee = 1");
+mysqli_query($conn,"UPDATE Customer SET IsEmployee = 1 WHERE CustomerName='".$username."'");
 
 }
 else{
-mysqli_query($conn,"UPDATE Customer SET IsEmployee = 0");
-mysqli_query($conn,"UPDATE Customer SET IsManager = 0");
+mysqli_query($conn,"UPDATE Customer SET IsEmployee = 0  WHERE CustomerName='".$username."'");
+mysqli_query($conn,"UPDATE Customer SET IsManager = 0  WHERE CustomerName='".$username."'");
 
 }
 	
