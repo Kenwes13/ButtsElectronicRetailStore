@@ -43,7 +43,7 @@
       <label>image<input class = "form-control" type = "file" id = "image"  name = "image" ng-model = "image" ngf-select="onFileSelect($file)"></label>
     </div>
      <input type="reset"  value="Add Another Product" />
-    <div class = "form-group" ng-init="displayStores()">
+    <div class = "form-group container" ng-init="displayStores()">
       <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="store in storeData track by $index">
 
         <div  class="thumbnail">

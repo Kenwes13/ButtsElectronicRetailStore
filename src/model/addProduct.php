@@ -38,8 +38,7 @@ else if(isset($data->pName)&&isset($data->price)&&isset($data->cate)&&isset($dat
 		$result = mysqli_query($conn, $query);
 
 
-		echo $query;
-
+		
 		$query= "SELECT Productid FROM Product WHERE  ProductName ='".$productName."' LIMIT 1";
 		$productResult = mysqli_query($conn, $query);
 
