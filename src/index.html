@@ -32,8 +32,7 @@
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.5/angular-material.min.css" />
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <link rel="stylesheet" href="http://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
-  <link href='http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
+
   <!-- Optional theme -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
@@ -387,22 +386,24 @@
           console.log($scope.cartData);
         })
       }
-//      $scope.deleteItem = function(itemToDelete) {
-//
-//
-//        console.log(delQuery);
-//
-//        $http.post("./model/updateCart.php", {
-//
-//          'item' : itemToDelete,
-//          'username': $cookies.get('username')
-//
-//        }).success(function(result){
-//          console.log(itemToDelete);
-//          $scope.displayCart();
-//        });
-//
-//      }
+
+      $scope.deleteItem = function(itemToDelete) {
+
+
+
+
+        $http.post("./model/updateCart.php", {
+
+          'item' : itemToDelete,
+          'username': $cookies.get('username')
+
+        }).success(function(result){
+          console.log(itemToDelete);
+          $scope.displayCart();
+        });
+
+      }
+
       $scope.updateCartItem = function(itemToUpdate, quantity) {
 
 
@@ -425,6 +426,7 @@
       $scope.displayStoresWithProducts = function(){
         $http.post("./model/getAllStoresWithProductsInCart.php",{'cName':$cookies.get('username')}).success(function(result){
           $scope.storeProductsData = result;
+          console.log($scope.storeProductsData);
 
         });
       }

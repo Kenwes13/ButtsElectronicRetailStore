@@ -29,7 +29,7 @@ $result = mysqli_query($conn, $query);
 while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
 	$dataStoresResult[] = $row;
 }
-if(empty($data)){
+if(empty($dataStoresResult)){
 	$dataStoresResult["fail"] = true;
 echo json_encode($dataStoresResult);
 }
