@@ -34,7 +34,7 @@ if(isset($data->country)&&isset($data->firstName)&&isset($data->lastName)&&isset
 	if(!empty(mysqli_error($conn))){
 		file_put_contents("errors.txt",mysqli_error($conn));
 	}
-}
+
 
 $query = "SELECT * FROM Cart, Product WHERE Cart.ProductName = Product.ProductName AND Cart.Customerid = ".$cID."";
 $result = mysqli_query($conn, $query);
@@ -67,5 +67,10 @@ $result = mysqli_query($conn, $query);
 echo json_encode($result);
 if(!empty(mysqli_error($conn))){
 	file_put_contents("placeOrdersErrors.txt",mysqli_error($conn));
+}
+}
+else{
+	$result["fail"] = true;
+echo json_encode($result);
 }
 ?>

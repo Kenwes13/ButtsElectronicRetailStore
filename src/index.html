@@ -455,7 +455,12 @@
             'totalCost':$scope.total + 8.99,
             'cName':$cookies.get('username'),'storeid':$scope.storeScope.store}).success(function(data){
           console.log(data);
+          if(!data.fail){
           location.href="#postorder";
+        }
+        else{
+          $scope.msg="Please fill in all field and pick a store.";
+        }
         });
       }
     })
