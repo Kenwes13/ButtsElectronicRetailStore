@@ -2,7 +2,7 @@
 include "connectdb.php";
 
 
-$query= "SELECT * FROM Product ORDER BY Rating DESC  ";
+$query= "SELECT * FROM Product ORDER BY Rating DESC LIMIT 20  ";
 $result = mysqli_query($conn, $query);
 
 while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
