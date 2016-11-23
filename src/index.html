@@ -457,7 +457,8 @@
             'totalCost':$scope.total + 8.99,
             'cName':$cookies.get('username'),'storeid':$scope.storeScope.store}).success(function(data){
           console.log(data);
-          if(!data.fail){
+          console.log("cardNumber = "+$scope.cardNumber);
+          if(!data.fail && typeof $scope.cardNumber!== "undefined"&& typeof $scope.cardCode!== "undefined"&& typeof $scope.expMonth!== "undefined"&& typeof $scope.expYear!== "undefined"&& typeof $scope.cardType!== "undefined"){
           location.href="#postorder";
         }
         else{

@@ -232,7 +232,7 @@
             <div class="form-group">
               <div class="col-md-12"><strong>Card Type:</strong></div>
               <div class="col-md-12">
-                <select id="CreditCardType" name="CreditCardType" class="form-control" required>
+                <select id="CreditCardType" name="CreditCardType" class="form-control" ng-model = "cardType" required>
                   <option value="5">Visa</option>
                   <option value="6">MasterCard</option>
                   <option value="7">American Express</option>
@@ -242,18 +242,18 @@
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>Credit Card Number:</strong></div>
-              <div class="col-md-12"><input type="text" class="form-control" id = "car_number" name="car_number"  required/></div>
+              <div class="col-md-12"><input ng-model = "cardNumber" type="text" class="form-control" id = "car_number" name="car_number"  required/></div>
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>Card CVV:</strong></div>
-              <div class="col-md-12"><input type="text" class="form-control" id = "car_code" name="car_code" required/></div>
+              <div class="col-md-12"><input ng-model = "cardCode" type="text" class="form-control" id = "car_code" name="car_code" required/></div>
             </div>
             <div class="form-group">
               <div class="col-md-12">
                 <strong>Expiration Date</strong>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <select class="form-control" name="" required>
+                <select class="form-control" ng-model = "expMonth" name="" required>
                   <option value="">Month</option>
                   <option value="01">01</option>
                   <option value="02">02</option>
@@ -270,7 +270,7 @@
                 </select>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <select class="form-control" name="" required>
+                <select class="form-control" name="" ng-model = "expYear" required>
                   <option value="">Year</option>
                   <option value="2015">2015</option>
                   <option value="2016">2016</option>
@@ -323,7 +323,9 @@
 <script >
 
     $().ready(function (){
+        
       $("#checkoutForm").validate({
+
         rules: {
         
           car_number:{
