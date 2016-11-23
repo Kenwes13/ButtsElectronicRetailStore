@@ -38,12 +38,17 @@ if(isset($data->country)&&isset($data->firstName)&&isset($data->lastName)&&isset
 
 $query = "SELECT * FROM Cart, Product WHERE Cart.ProductName = Product.ProductName AND Cart.Customerid = ".$cID."";
 $result = mysqli_query($conn, $query);
+
 while($row=mysqli_fetch_array($result)){
 	$data = $row;
 	$ProductName = $row["ProductName"];
 	$Customerid = $row["Customerid"];
 	$Quantity = $row["Quantity"];
 	$Storeid = $row["Storeid"];
+	$ProductName = str_replace("'", "\'", $ProductName);
+
+		file_put_contents("placeOrdersErrors.txt", $ProductName);
+
 	$insert_query = "INSERT INTO orderhistory VALUES ('".$ProductName."', '".$Customerid."', '".$Quantity."')";
 	$insert_result = mysqli_query($conn, $insert_query);
 }
@@ -57,7 +62,7 @@ while($row=mysqli_fetch_array($result)){
 	$Quantity = $row["Quantity"];
 	$update_query = "UPDATE Store_Product SET UnitsinStock = UnitsinStock - ".$Quantity." WHERE Productid = ".$Productid." AND Storeid = ".$storeid;
 	$insert_result = mysqli_query($conn, $update_query);
-	file_put_contents("placeOrdersErrors.txt", $update_query, FILE_APPEND);
+	//file_put_contents("placeOrdersErrors.txt", $update_query, FILE_APPEND);
 }
 
 
