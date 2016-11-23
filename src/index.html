@@ -386,10 +386,11 @@
           console.log($scope.cartData);
         })
       }
+
       $scope.deleteItem = function(itemToDelete) {
 
 
-        
+
 
         $http.post("./model/updateCart.php", {
 
@@ -402,6 +403,7 @@
         });
 
       }
+
       $scope.updateCartItem = function(itemToUpdate, quantity) {
 
 

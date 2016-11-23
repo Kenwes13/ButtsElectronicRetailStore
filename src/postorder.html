@@ -10,7 +10,7 @@
           <div class="panel-body" ng-repeat = "ord in order track by $index">
             <div class="form-group">
               <div class="col-sm-3 col-xs-3">
-                <img class="img-responsive" src="//c1.staticflickr.com/1/466/19681864394_c332ae87df_t.jpg" />
+                <img class="img-responsive" ng-src="{{ord.ImageDirectory}}" />
               </div>
               <div class="col-sm-6 col-xs-6">
                 <div class="col-xs-12">{{ord.ProductName}}</div>
@@ -40,6 +40,6 @@
                 <strong>Order Total</strong>
                 <div class="pull-right"><span>$</span><span>{{total + 8.99 |number: 2}}</span></div>
               </div>
-            </div>          
+            </div>
         </div>
         </div>
