@@ -16,7 +16,7 @@
     </div>
   </div>
   <div class="row cart-body">
-    <form class="form-horizontal" method="post">
+    <form id = "checkoutForm" class="form-horizontal" method="post">
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-push-6 col-sm-push-6">
         <!--REVIEW ORDER-->
         <div class="panel panel-info">
@@ -108,7 +108,7 @@
             <div class="form-group">
               <div class="col-md-12"><strong>Country:</strong></div>
               <div class="col-md-12">
-                <select ng-model = "country" class="form-control" name="">
+                <select ng-model = "country" class="form-control" name="" required>
                   <option value="US">United States</option>
                 </select>
               </div>
@@ -116,30 +116,30 @@
             <div class="form-group">
               <div class="col-md-6 col-xs-12">
                 <strong>First Name:</strong>
-                <input ng-model = "firstName" type="text" name="first_name" class="form-control" value="" />
+                <input ng-model = "firstName" type="text" name="first_name" class="form-control" value="" required/>
               </div>
               <div class="span1"></div>
               <div class="col-md-6 col-xs-12">
                 <strong>Last Name:</strong>
-                <input ng-model = "lastName" type="text" name="last_name" class="form-control" value="" />
+                <input ng-model = "lastName" type="text" name="last_name" class="form-control" value="" required/>
               </div>
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>Address:</strong></div>
               <div class="col-md-12">
-                <input  ng-model = "address" type="text" name="address" class="form-control" value="" />
+                <input  ng-model = "address" type="text" name="address" class="form-control" value="" required/>
               </div>
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>City:</strong></div>
               <div class="col-md-12">
-                <input  ng-model = "city" type="text" name="city" class="form-control" value="" />
+                <input  ng-model = "city" type="text" name="city" class="form-control" value="" required/>
               </div>
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>State:</strong></div>
               <div class="col-md-12">
-                <select  ng-model = "state" class="form-control" name="">
+                <select  ng-model = "state" class="form-control" name="" required>
                   <option value="CA">California</option>
                 </select>
               </div>
@@ -147,16 +147,16 @@
             <div class="form-group">
               <div class="col-md-12"><strong>Zip / Postal Code:</strong></div>
               <div class="col-md-12">
-                <input  ng-model = "zipCode" type="text" name="zip_code" class="form-control" value="" />
+                <input  ng-model = "zipCode" type="text" name="zip_code" class="form-control" value="" required/>
               </div>
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>Phone Number:</strong></div>
-              <div class="col-md-12"><input  ng-model = "phoneNumber" type="text" name="phone_number" class="form-control" value="" /></div>
+              <div class="col-md-12"><input  ng-model = "phoneNumber" type="text" name="phone_number" class="form-control" value="" required/></div>
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>Email Address:</strong></div>
-              <div class="col-md-12"><input  ng-model = "email" type="text" name="email_address" class="form-control" value="" /></div>
+              <div class="col-md-12"><input  ng-model = "email" type="text" name="email_address" class="form-control" value="" required/></div>
             </div>
           </div>
         </div>
@@ -232,7 +232,7 @@
             <div class="form-group">
               <div class="col-md-12"><strong>Card Type:</strong></div>
               <div class="col-md-12">
-                <select id="CreditCardType" name="CreditCardType" class="form-control">
+                <select id="CreditCardType" name="CreditCardType" class="form-control" required>
                   <option value="5">Visa</option>
                   <option value="6">MasterCard</option>
                   <option value="7">American Express</option>
@@ -242,18 +242,18 @@
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>Credit Card Number:</strong></div>
-              <div class="col-md-12"><input type="text" class="form-control" name="car_number" value="" /></div>
+              <div class="col-md-12"><input type="text" class="form-control" id = "car_number" name="car_number"  required/></div>
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>Card CVV:</strong></div>
-              <div class="col-md-12"><input type="text" class="form-control" name="car_code" value="" /></div>
+              <div class="col-md-12"><input type="text" class="form-control" id = "car_code" name="car_code" required/></div>
             </div>
             <div class="form-group">
               <div class="col-md-12">
                 <strong>Expiration Date</strong>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <select class="form-control" name="">
+                <select class="form-control" name="" required>
                   <option value="">Month</option>
                   <option value="01">01</option>
                   <option value="02">02</option>
@@ -270,7 +270,7 @@
                 </select>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <select class="form-control" name="">
+                <select class="form-control" name="" required>
                   <option value="">Year</option>
                   <option value="2015">2015</option>
                   <option value="2016">2016</option>
@@ -320,6 +320,31 @@
 
 </div>
 
+<script >
+
+    $().ready(function (){
+      $("#checkoutForm").validate({
+        rules: {
+        
+          car_number:{
+            required: true,
+            minlength: 16,
+            maxlength: 16,
+          }
+        },
+        messages: {
+       
+          car_number:{
+            required:"Please enter a valid credit card number.",
+            minlength:"Your card number must be 16 characters",
+            maxlength:"Your card number must be 16 characters"
+          }
+        }
+      });
+
+
+    });
+</script>
 
 
 
