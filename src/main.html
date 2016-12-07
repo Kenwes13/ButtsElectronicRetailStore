@@ -72,7 +72,7 @@
             <img ng-src="{{product.ImageDirectory}}" alt="">
             <div class="caption">
               <h4 class="pull-right">${{product.Price}}</h4>
-              <h4><a href="#productDetails" ng-click = "getProduct(product.ProductName)">{{product.ProductName}}</a>
+              <h4><a href="#productDetails/{{product.Productid}}" ng-click = "getProduct(product.ProductName)">{{product.ProductName}}</a>
               </h4>
               <p>{{product.Description}}</p>
             </div>

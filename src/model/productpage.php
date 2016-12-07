@@ -2,9 +2,9 @@
 include "connectdb.php";
 $data = json_decode(file_get_contents("php://input"));
 
-$productName = mysqli_real_escape_string($conn,$data->name);
+$pid = mysqli_real_escape_string($conn,$data->pid);
 
-$query= "SELECT * FROM Product WHERE ProductName = '".$productName."'";
+$query= "SELECT * FROM Product WHERE Productid = ".$pid."";
 $result = mysqli_query($conn, $query);
 
 while($row=mysqli_fetch_array($result)){

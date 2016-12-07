@@ -219,7 +219,7 @@
       google.maps.event.trigger(selectedMarker, 'click');
     }
   })
-    .controller("MainController", function($scope, $http, myService, localStorageService,$cookies,Upload){
+    .controller("MainController", function($scope, $http, myService, localStorageService,$cookies,Upload,$routeParams){
       $scope.isLoggedIn = $cookies.get('isLoggedIn');
       $scope.empIsLoggedIn = $cookies.get('empIsLoggedIn');
       $scope.managerIsLoggedIn = $cookies.get('managerIsLoggedIn');
@@ -329,17 +329,19 @@
       }
       var product = {};
       $scope.getProduct = function(prodNames) {
-        product = prodNames;
-        myService.set(product);
-        return localStorageService.set("prod", product);
+      //  product = prodNames;
+
+       // myService.set($routeParams.product);
+       // return localStorageService.set("prod", product);
       }
 
 
     })
-    .controller("ProductPageController", function($scope, myService,$http, localStorageService,$cookies) {
+    .controller("ProductPageController", function($scope, myService,$http, localStorageService,$cookies,$routeParams) {
       $scope.isLoggedIn = $cookies.get('isLoggedIn');
       //$scope.name = myService.get();
-      $scope.name = localStorageService.get("prod");
+      //$scope.name = localStorageService.get("prod");
+      $scope.pid = $routeParams.product_id;
       //console.log($scope.prod);
       //rating system
       $scope.firstRate = 0;
@@ -347,7 +349,7 @@
       $scope.onItemRating = function(rating){
         //alert('On Rating: ' + rating);
         $http.post("./model/setRating.php",{
-          'name':$scope.name,'rate':rating
+          'pid':$scope.pid,'rate':rating
         }).success(function (data) {
           console.log(data);
         })
@@ -355,7 +357,7 @@
 
       $scope.displayDetails = function() {
         $http.post("./model/productpage.php",{
-          'name': $scope.name
+          'pid': $scope.pid
         }).success(function(data){
           console.log(data);
           $scope.product = data;
@@ -364,7 +366,7 @@
       $scope.addToCart = function(){
         //var query = "INSERT INTO Cart(ProductName, Quantity) VALUES ('"+".$pName."+"', '"+".$quantity."+"')";
         $http.post("./model/addToCart.php", {
-          'pName': $scope.name,
+          'pid': $scope.pid,
           'cName': $cookies.get('username'),
           'quantity': $scope.quantity
         }).success(function(data){
@@ -652,10 +654,10 @@
         templateUrl: "employee.html",
         controller: "MainController"
       })
-      .when("/productDetails", {
-        templateUrl: "Product-page.html",
-        controller: "ProductPageController"
-      })
+      //.when("/productDetails", {
+        //templateUrl: "Product-page.html",
+        //controller: "ProductPageController"
+      //})
       .when("/checkout", {
         templateUrl: "checkout.html"
       })
@@ -665,6 +667,10 @@
       })
       .when("/postorder", {
         templateUrl: "postorder.html",
+      })
+      .when("/productDetails/:product_id", {
+        templateUrl: "Product-page.html",
+        controller: "ProductPageController"
       })
       .otherwise({
         redirectTo: '/'

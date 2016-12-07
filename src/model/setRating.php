@@ -2,11 +2,11 @@
 include "connectdb.php";
 $data = json_decode(file_get_contents("php://input"));
 
-$pname = mysqli_real_escape_string($conn,$data->name);
+$pid = mysqli_real_escape_string($conn,$data->pid);
 $prating= mysqli_real_escape_string($conn,$data->rate);
 $currentRatedTimes = 0;
 $currentRating = 0.0;
-$result = mysqli_query($conn,"SELECT Rating FROM Product WHERE ProductName ='".$pname."' ");
+$result = mysqli_query($conn,"SELECT Rating FROM Product WHERE Productid =".$pid." ");
 if (mysqli_num_rows($result) > 0) {
     // output data of each row
     while($row = mysqli_fetch_assoc($result)) {
@@ -17,7 +17,7 @@ if (mysqli_num_rows($result) > 0) {
     echo "0 results";
 }
 
-$result= mysqli_query($conn,"SELECT Ratedtimes FROM Product WHERE ProductName ='".$pname."' ");
+$result= mysqli_query($conn,"SELECT Ratedtimes FROM Product WHERE Productid =".$pid." ");
 if (mysqli_num_rows($result) > 0) {
     // output data of each row
     while($row = mysqli_fetch_assoc($result)) {
@@ -30,7 +30,7 @@ if (mysqli_num_rows($result) > 0) {
 $newRating = ($currentRating * $currentRatedTimes + $prating)/($currentRatedTimes+1);
 echo $newRating;
 
-$query = "UPDATE Product SET Rating ='".$newRating."', Ratedtimes = Ratedtimes+1 WHERE ProductName ='".$pname."' ";
+$query = "UPDATE Product SET Rating ='".$newRating."', Ratedtimes = Ratedtimes+1 WHERE Productid =".$pid." ";
 
 mysqli_query($conn, $query);
 

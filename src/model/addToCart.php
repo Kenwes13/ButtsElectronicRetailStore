@@ -2,20 +2,26 @@
 include "connectdb.php";
 $data = json_decode(file_get_contents("php://input"));
 
-$pName = mysqli_real_escape_string($conn,$data->pName);
+$pid = mysqli_real_escape_string($conn,$data->pid);
 $cName = mysqli_real_escape_string($conn,$data->cName);
 $quantity = mysqli_real_escape_string($conn,$data->quantity);
 //$query = $_POST['query'];
 
 
+$queryProductName= "SELECT ProductName FROM Product WHERE Productid =".$pid." LIMIT 1";
+$resultProductName = mysqli_query($conn, $queryProductName);
 
-$query= "SELECT * FROM Cart NATURAL JOIN Customer WHERE CustomerName = '".$cName."' AND ProductName ='".$pName."'";
+$rowProductName=mysqli_fetch_array($resultProductName);
+file_put_contents("testProductId.txt", $rowProductName['ProductName']);
+//echo json_encode($row);
+
+$query= "SELECT * FROM Cart NATURAL JOIN Customer WHERE CustomerName = '".$cName."' AND ProductName ='".$rowProductName['ProductName']."'";
 $result = mysqli_query($conn, $query);
 
 $row=mysqli_fetch_array($result ,MYSQLI_ASSOC);
 if(!empty($row)){
 $cID = $row["Customerid"];
-$query = "UPDATE Cart SET Quantity = Quantity+".$quantity." WHERE ProductName = '".$pName."' AND Customerid = ".$cID."";
+$query = "UPDATE Cart SET Quantity = Quantity+".$quantity." WHERE ProductName = '".$rowProductName['ProductName']."' AND Customerid = ".$cID."";
 $result = mysqli_query($conn, $query);
 
 }
@@ -25,7 +31,7 @@ $result = mysqli_query($conn, $query);
 $row=mysqli_fetch_array($result ,MYSQLI_ASSOC);
 
 
-$query = "INSERT INTO Cart(ProductName, Customerid , Quantity) VALUES ('".$pName."',".$row["Customerid"]." ,".$quantity.")";
+$query = "INSERT INTO Cart(ProductName, Customerid , Quantity) VALUES ('".$rowProductName['ProductName']."',".$row["Customerid"]." ,".$quantity.")";
 $result = mysqli_query($conn, $query);
 }
 
