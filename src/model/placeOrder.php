@@ -47,7 +47,7 @@ while($row=mysqli_fetch_array($result)){
 	$Storeid = $row["Storeid"];
 	$ProductName = str_replace("'", "\'", $ProductName);
 
-		file_put_contents("placeOrdersErrors.txt", $ProductName);
+		//file_put_contents("placeOrdersErrors.txt", $ProductName);
 
 	$insert_query = "INSERT INTO orderhistory VALUES ('".$ProductName."', '".$Customerid."', '".$Quantity."')";
 	$insert_result = mysqli_query($conn, $insert_query);
