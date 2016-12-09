@@ -23,7 +23,7 @@
               </td>
               <td data-th="Price">${{cart.Price | number:2}}</td>
               <td data-th="Quantity">
-              <input class="form-control text-center"  ng-model ="quantity" ng-init="quantity = cart.Quantity">
+              <input class="form-control text-center" id = "amount" ng-model ="quantity" ng-init="quantity = cart.Quantity">
               </td>
               <td data-th="Subtotal" class="text-center">${{cart.Price * cart.Quantity | number: 2}}</td>
               <td><button type = "button" class = "btn btn-default" ng-click = "updateCartItem(cart.ProductName,quantity)">Update Item</button></td>
@@ -47,3 +47,25 @@
           </tfoot>
         </table>
 </div>
+<script>
+$(document).ready(function() {
+    $("#amount").keydown(function (e) {
+      if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                   // Allow: Ctrl+A
+                  (e.keyCode == 65 && e.ctrlKey === true) ||
+                   // Allow: Ctrl+C
+                  (e.keyCode == 67 && e.ctrlKey === true) ||
+                   // Allow: Ctrl+X
+                  (e.keyCode == 88 && e.ctrlKey === true) ||
+                   // Allow: home, end, left, right
+                  (e.keyCode >= 35 && e.keyCode <= 39)) {
+                       // let it happen, don't do anything
+                       return;
+              }
+
+      if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+      });
+    });
+</script>
