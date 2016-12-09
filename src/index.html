@@ -424,7 +424,7 @@
     })
     .controller("CheckoutController", function($http, $scope, $cookies){
       $scope.isLoggedIn = $cookies.get('isLoggedIn');
-      $scope.storeScope = {store: ""};
+      $scope.storeScope = {};
       $scope.displayStoresWithProducts = function(){
         $http.post("./model/getAllStoresWithProductsInCart.php",{'cName':$cookies.get('username')}).success(function(result){
           $scope.storeProductsData = result;
