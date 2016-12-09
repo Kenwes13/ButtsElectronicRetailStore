@@ -382,7 +382,7 @@
           $scope.total = 0;
           for(var i = 0; i<result.length; i++) {
             console.log(result[i].Price);
-            $scope.total += parseInt(result[i].Price) * parseInt(result[i].Quantity);
+            $scope.total += parseFloat(result[i].Price) * parseFloat(result[i].Quantity);
             console.log($scope.total);
           }
           console.log($scope.cartData);
@@ -439,7 +439,7 @@
           $scope.total = 0;
           for(var i = 0; i<result.length; i++) {
             console.log(result[i].Price);
-            $scope.total += parseInt(result[i].Price) * parseInt(result[i].Quantity);
+            $scope.total += parseFloat(result[i].Price) * parseFloat(result[i].Quantity);
             console.log($scope.total);
           }
           console.log($scope.cartData);
@@ -478,7 +478,7 @@
         $scope.total = 0;
         for(var i = 0; i<result.length; i++) {
           console.log(result[i].Price);
-          $scope.total += parseInt(result[i].Price) * parseInt(result[i].Quantity);
+          $scope.total += parseFloat(result[i].Price) * parseFloat(result[i].Quantity);
           console.log($scope.total);
         }
       });
