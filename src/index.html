@@ -339,21 +339,36 @@
     })
     .controller("ProductPageController", function($scope, myService,$http, localStorageService,$cookies,$routeParams) {
       $scope.isLoggedIn = $cookies.get('isLoggedIn');
-      //$scope.name = myService.get();
+      $scope.name = $cookies.get('username');
       //$scope.name = localStorageService.get("prod");
       $scope.pid = $routeParams.product_id;
+      $scope.message="Rate this Product";
       //console.log($scope.prod);
       //rating system
+      $scope.hasRated = false;
       $scope.firstRate = 0;
-      $scope.readOnly = true;
+      $scope.readOnly = false;
       $scope.onItemRating = function(rating){
         //alert('On Rating: ' + rating);
         $http.post("./model/setRating.php",{
-          'pid':$scope.pid,'rate':rating
+          'pid':$scope.pid,'rate':rating,'cname':$cookies.get('username')
         }).success(function (data) {
+          $scope.readOnly = true
+          $scope.message = "Thank for rating"
           console.log(data);
         })
-      };
+      }
+
+      $scope.notRated = function() {
+        $http.post("./model/ratingCheck.php",{
+          'pid': $scope.pid,'cName':$scope.name
+        }).success(function(data){
+          if(data == "false") $scope.hasRated = true;
+          console.log(data);
+
+        })
+      }
+
 
       $scope.displayDetails = function() {
         $http.post("./model/productpage.php",{

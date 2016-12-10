@@ -2,7 +2,7 @@
   <link rel="stylesheet" href="http://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
   <link href='http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
 </head>
-<div ng-controller="ProductPageController" ng-init="displayDetails()">
+<div ng-controller="ProductPageController" ng-init="displayDetails()" ng-init="notRated()">
 <br>
 <br>
 <div class="row">
@@ -39,13 +39,15 @@
 <a ng-hide="isLoggedIn" onclick = "swal('You must log in before you add to cart')" class="button large expanded" >Add To Cart</a>
 </div>
 </div>
-
-  <div layout="column">
-  <h3>Rate This Product</h3>
-  <jk-rating-stars class="my-custom-buttons" rating="firstRate" on-rating="onItemRating(rating)" ></jk-rating-stars>
+  <div ng-show="isLoggedIn && !hasRated"layout="column" ng-init="notRated()">
+  <h3>{{message}}</h3>
+  <jk-rating-stars class="my-custom-buttons" rating="firstRate" on-rating="onItemRating(rating)"read-only=readOnly ></jk-rating-stars>
   <div style="width: 100px">{{firstRate}} Stars</div>
-
 </div>
+  <div ng-show="!isLoggedIn || hasRated" layout="column" ng-init="notRated()">
+    <h3>Product Rate</h3>
+    <jk-rating-stars class="my-custom-buttons" rating=product.Rating read-only=true></jk-rating-stars>
+  </div>
 </div>
 <style>
   .my-custom-buttons .button{
