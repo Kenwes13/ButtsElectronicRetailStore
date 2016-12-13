@@ -472,11 +472,13 @@
             'phoneNumber':$scope.phoneNumber,
             'email':$scope.email,
             'totalCost':$scope.total + 8.99,
-            'cName':$cookies.get('username'),'storeid':$scope.storeScope.store}).success(function(data){
-          console.log(data);
+            'cName':$cookies.get('username'),'storeid':$scope.storeScope.store
+          }).success(function(data){
+              $scope.orderid = data;
+              console.log(data);
           console.log("cardNumber = "+$scope.cardNumber);
           if(!data.fail && typeof $scope.cardNumber!== "undefined"&& typeof $scope.cardCode!== "undefined"&& typeof $scope.expMonth!== "undefined"&& typeof $scope.expYear!== "undefined"&& typeof $scope.cardType!== "undefined"){
-          location.href="#postorder";
+            location.href="#orderDetails/"+$scope.orderid;
         }
         else{
           $scope.msg="Please fill in all field and pick a store.";
@@ -484,9 +486,10 @@
         });
       }
     })
-    .controller("PostorderController", function($http, $scope, $cookies){
+    .controller("PostorderController", function($http, $scope, $cookies,$routeParams){
+      $scope.ord = $routeParams.order_id;
       $http.post("./model/getorders.php", {
-        'cName':$cookies.get('username')
+        'orderid':$scope.ord
       }).success(function(result){
         console.log(result);
         $scope.order = result;
@@ -686,6 +689,10 @@
       .when("/productDetails/:product_id", {
         templateUrl: "Product-page.html",
         controller: "ProductPageController"
+      })
+      .when("/orderDetails/:order_id", {
+        templateUrl: "postorder.html",
+        controller: "PostorderController"
       })
       .otherwise({
         redirectTo: '/'

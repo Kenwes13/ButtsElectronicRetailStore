@@ -21,20 +21,19 @@ if(isset($data->country)&&isset($data->firstName)&&isset($data->lastName)&&isset
 //get customer id
 	$query= "SELECT * FROM Customer WHERE CustomerName = '".$cName."'";
 	$result = mysqli_query($conn, $query);
-	echo json_encode($result);
+	//echo json_encode($result);
 	$row = mysqli_fetch_array($result ,MYSQLI_ASSOC);
 	$cID = $row["Customerid"];
 
 
 
 	mysqli_query($conn,"INSERT INTO Orders(Storeid,Country, FirstName, LastName, CustAddress, State,ZipCode,PhoneNumber,Email,TotalCost,Customerid) VALUES (".$storeid.",'".$country."','".$firstName."','".$lastName."','".$address. ' ' .$city."','".$state."','".$zipCode."','".$phoneNumber."','".$email."','".$totalCost."',".$cID.")");
-
+  $orderid = mysqli_insert_id($conn);
 
 
 	if(!empty(mysqli_error($conn))){
 		file_put_contents("errors.txt",mysqli_error($conn));
 	}
-
 
 $query = "SELECT * FROM Cart, Product WHERE Cart.ProductName = Product.ProductName AND Cart.Customerid = ".$cID."";
 $result = mysqli_query($conn, $query);
@@ -42,13 +41,14 @@ $result = mysqli_query($conn, $query);
 while($row=mysqli_fetch_array($result)){
 	$data = $row;
 	$ProductName = $row["ProductName"];
+	$productid = $row["Productid"];
 	$Customerid = $row["Customerid"];
 	$Quantity = $row["Quantity"];
-	$Storeid = $row["Storeid"];
 	$ProductName = str_replace("'", "\'", $ProductName);
 
 		//file_put_contents("placeOrdersErrors.txt", $ProductName);
-
+  $order_query = "INSERT IGNORE INTO Order_Product (Order_id,Product_id,Quantity) VALUES('".$orderid."','".$productid."','".$Quantity."')";
+  $order_result = mysqli_query($conn, $order_query);
 	$insert_query = "INSERT INTO orderhistory VALUES ('".$ProductName."', '".$Customerid."', '".$Quantity."')";
 	$insert_result = mysqli_query($conn, $insert_query);
 }
@@ -69,7 +69,7 @@ while($row=mysqli_fetch_array($result)){
 
 $query = "DELETE FROM Cart WHERE Customerid = ".$cID."";
 $result = mysqli_query($conn, $query);
-echo json_encode($result);
+echo $orderid;
 if(!empty(mysqli_error($conn))){
 	file_put_contents("placeOrdersErrors.txt",mysqli_error($conn));
 }

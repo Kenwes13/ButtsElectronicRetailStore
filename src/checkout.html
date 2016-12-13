@@ -301,7 +301,7 @@
             </div>
             <div class="form-group">
               <div class="col-md-6 col-sm-6 col-xs-12">
-                <button ng-click = "placeOrder()" type="submit" class="btn btn-primary btn-submit-fix">Place Order</button>
+                <button ng-click ="placeOrder()" type="submit" class="btn btn-primary btn-submit-fix">Place Order</button>
               </div>
             </div>
             <div class = "well">{{msg}}
@@ -323,11 +323,11 @@
 <script >
 
     $().ready(function (){
-        
+
       $("#checkoutForm").validate({
 
         rules: {
-        
+
           car_number:{
             required: true,
             minlength: 16,
@@ -335,7 +335,7 @@
           }
         },
         messages: {
-       
+
           car_number:{
             required:"Please enter a valid credit card number.",
             minlength:"Your card number must be 16 characters",
