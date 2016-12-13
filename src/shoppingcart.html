@@ -1,355 +1,60 @@
-<div class="container wrapper" ng-controller = "CheckoutController" ng-init = (displayCart())>
-  <div class="row cart-head">
-    <div class="container">
-      <div class="row">
-        <p></p>
-      </div>
-      <div class="row">
-        <div style="display: table; margin: auto;">
-          <span class="step step_complete"> <a href="#cart" class="check-bc">Cart</a> <span class="step_line step_complete"> </span> <span class="step_line backline"> </span> </span>
-          <span class="step_thankyou check-bc step_complete">Thank you!</span>
-        </div>
-      </div>
-      <div class="row">
-        <p></p>
-      </div>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container" ng-controller = "CartController" ng-init = "displayCart()">
+  <table ng-show = "isLoggedIn" id="cart" class="table table-hover table-condensed">
+    <thead>
+    <tr>
+      <th style="width:50%">Product</th>
+      <th style="width:10%">Price</th>
+      <th style="width:8%">Quantity</th>
+      <th style="width:22%" class="text-center">Subtotal</th>
+      <th style="width:10%"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <div  >
+      <tr ng-hide="cartData.fail" ng-repeat ="cart in cartData track by $index">
+        <td data-th="Product">
+          <div class="row">
+            <div class="col-sm-2 hidden-xs"><img ng-src="{{cart.ImageDirectory}}" alt="..." class="img-responsive"/></div>
+            <div class="col-sm-10">
+              <h4 class="nomargin">{{cart.ProductName}}</h4>
+            </div>
+          </div>
+        </td>
+        <td data-th="Price">${{cart.Price | number:2}}</td>
+        <td data-th="Quantity">
+          <input class="form-control text-center" id = "amount" ng-model ="quantity" ng-init="quantity = cart.Quantity">
+        </td>
+        <td data-th="Subtotal" class="text-center">${{cart.Price * cart.Quantity | number: 2}}</td>
+        <td><button type = "button" class = "btn btn-default" ng-click = "updateCartItem(cart.ProductName,quantity)">Update Item</button></td>
+        <td class="actions" data-th="">
+          <button class="btn btn-danger btn-sm" ng-click ="deleteItem(cart.ProductName)"><i class="fa fa-trash-o"></i></button>
+        </td>
+      </tr>
     </div>
+    </tbody>
+    <tfoot>
+    <tr class="visible-xs">
+      <td class="text-center"><strong></strong></td>
+    </tr>
+    <tr>
+      <td><a href="#products" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+      <td colspan="2" class="hidden-xs"></td>
+      <td class="hidden-xs text-center"><strong>Total: ${{total | number: 2}}</strong></td>
+      <td><a href="#checkout" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+    </tr>
+    </tfoot>
+  </table>
+  <div ng-hide="isLoggedIn" class = "container" >
+    <div class="page-header">
+      <h1>This page is for customers only</h1>
+    </div>
+    <p>Please log in to access this page.</p>
   </div>
-  <div class="row cart-body">
-    <form id = "checkoutForm" class="form-horizontal" method="post">
-      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-push-6 col-sm-push-6">
-        <!--REVIEW ORDER-->
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            Review Order <div class="pull-right"><small><a class="afix-1" href="#">Edit Cart</a></small></div>
-          </div>
-          <div class="panel-body">
-            <div class="form-group" ng-repeat = "cart in cartData track by $index">
-              <div class="col-sm-3 col-xs-3">
-                <img class="img-responsive" ng-src="{{cart.ImageDirectory}}" />
-              </div>
-              <div class="col-sm-6 col-xs-6">
-                <div class="col-xs-12">{{cart.ProductName}}</div>
-                <div class="col-xs-12"><small>Quantity:<span>{{cart.Quantity}}</span></small></div>
-              </div>
-              <div class="col-sm-3 col-xs-3 text-right">
-                <h6><span>$</span>{{cart.Price | number :2}}</h6>
-              </div>
-            </div>
-            <div class="form-group"><hr /></div>
-            <div class="form-group">
-              <div class="col-xs-12">
-                <strong>Subtotal</strong>
-                <div class="pull-right"><span>$</span><span>{{total | number:2}}</span></div>
-              </div>
-              <div class="col-xs-12">
-                <small>Shipping</small>
-                <div class="pull-right"><span>+ $8.99</span></div>
-              </div>
-            </div>
-            <div class="form-group"><hr /></div>
-            <div class="form-group">
-              <div class="col-xs-12">
-                <strong>Order Total</strong>
-                <div class="pull-right"><span>$</span><span>{{total + 8.99 |number: 2}}</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--REVIEW ORDER END-->
-
-        <!--DISPLAY STORES WITH INVENTORY THAT SATISFIES CART-->
-
-        <h4>The following stores have the items in your cart in stock. </h4>
-        <h4>Please select a store to deliver from.</h4>
-        <br />
-        <div  class = "form-group" ng-init="displayStoresWithProducts()">
-          <div ng-hide="storeProductsData.fail" class="col-sm-4 col-lg-4 col-md-4" ng-repeat="store in storeProductsData track by $index">
-            <label>
-              <div  class="thumbnail">
-                <div class="caption">
-
-
-
-                  <span>{{store.StoreAddress}}</span>
-                  <span>{{store.City}}</span>
-                  <span>{{store.State}}</span>
-                  <span>{{store.Zipcode}}</span>
-
-                </div>
-
-              </div>
-
-              <input type = "radio" ng-model="storeScope.store" name = "store" class = "form-control" value ="{{store.Storeid}}" required/>
-            </label>
-            <br />
-          </div>
-          <div ng-show ="storeProductsData.fail">
-            <div  class="thumbnail">
-              <div class="caption">
-
-                <span>There are no stores with the items in your cart in stock. Sorry.</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!--END DISPLAY STORES-->
-      </div>
-      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-pull-6 col-sm-pull-6">
-        <!--SHIPPING METHOD-->
-        <div class="panel panel-info" id = "shipping">
-          <div class="panel-heading">Shipping Address</div>
-          <div class="panel-body">
-            <div class="form-group">
-              <div class="col-md-12">
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12"><strong>Country:</strong></div>
-              <div class="col-md-12">
-                <select ng-model = "country" class="form-control" name="" required>
-                  <option value="US">United States</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-6 col-xs-12">
-                <strong>First Name:</strong>
-                <input ng-model = "firstName" type="text" name="lettersOnly" class="form-control" value="" required/>
-              </div>
-              <div class="span1"></div>
-              <div class="col-md-6 col-xs-12">
-                <strong>Last Name:</strong>
-                <input ng-model = "lastName" type="text" name="lettersOnly" class="form-control" value="" required/>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12"><strong>Address:</strong></div>
-              <div class="col-md-12">
-                <input  ng-model = "address" type="text" name="address" class="form-control" value="" required/>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12"><strong>City:</strong></div>
-              <div class="col-md-12">
-                <input  ng-model = "city" type="text" name="lettersOnly" class="form-control" value="" required/>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12"><strong>State:</strong></div>
-              <div class="col-md-12">
-                <select  ng-model = "state" class="form-control" name="" required>
-                  <option value="CA">California</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12"><strong>Zip / Postal Code:</strong></div>
-              <div class="col-md-12">
-                <input  ng-model = "zipCode" type="text" name="number" class="form-control" value="" required/>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12"><strong>Phone Number:</strong></div>
-              <div class="col-md-12"><input  ng-model = "phoneNumber" type="text" name="number" class="form-control" value="" required/></div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12"><strong>Email Address:</strong></div>
-              <div class="col-md-12"><input  ng-model = "email" type="text" name="email_address" class="form-control" value="" required/></div>
-            </div>
-          </div>
-        </div>
-        <!--SHIPPING METHOD END-->
-        <!--BILLING METHOD-->
-        <div class="panel panel-info">
-          <div class="panel-heading">Billing Address</div>
-          <div class="panel-body">
-            <div class="form-group">
-              <div class="col-md-12">
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12"><strong>Country:</strong></div>
-              <div class="col-md-12">
-                <select class="form-control" name="">
-                  <option value="US">United States</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-6 col-xs-12">
-                <strong>First Name:</strong>
-                <input type="text" name="lettersOnly" class="form-control" value="" required />
-              </div>
-              <div class="span1"></div>
-              <div class="col-md-6 col-xs-12">
-                <strong>Last Name:</strong>
-                <input type="text" name="lettersOnly" class="form-control" value="" required />
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12"><strong>Address:</strong></div>
-              <div class="col-md-12">
-                <input type="text" name="address" class="form-control" value="" required/>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12"><strong>City:</strong></div>
-              <div class="col-md-12">
-                <input type="text" name="lettersOnly" class="form-control" value="" required/>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12"><strong>State:</strong></div>
-              <div class="col-md-12">
-                <select class="form-control" name="">
-                  <option value="CA">California</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12"><strong>Zip / Postal Code:</strong></div>
-              <div class="col-md-12">
-                <input type="text" name="number" class="form-control" value="" />
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12"><strong>Phone Number:</strong></div>
-              <div class="col-md-12"><input type="text" name="number" class="form-control" value="" /></div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12"><strong>Email Address:</strong></div>
-              <div class="col-md-12"><input type="text" name="email_address" class="form-control" value="" /></div>
-            </div>
-          </div>
-        </div>
-        <!--BILLING METHOD END-->
-        <!--CREDIT CART PAYMENT-->
-        <div class="panel panel-info">
-          <div class="panel-heading"><span><i class="glyphicon glyphicon-lock"></i></span> Secure Payment</div>
-          <div class="panel-body">
-            <div class="form-group">
-              <div class="col-md-12"><strong>Card Type:</strong></div>
-              <div class="col-md-12">
-                <select id="CreditCardType" name="CreditCardType" class="form-control" ng-model = "cardType" required>
-                  <option value="5">Visa</option>
-                  <option value="6">MasterCard</option>
-                  <option value="7">American Express</option>
-                  <option value="8">Discover</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12"><strong>Credit Card Number:</strong></div>
-              <div class="col-md-12"><input ng-model = "cardNumber" type="text" class="form-control" id = "car_number" name="number"  required/></div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12"><strong>Card CVV (ex: 123):</strong></div>
-              <div class="col-md-12"><input ng-model = "cardCode" type="text" class="form-control" name="number" required/></div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12">
-                <strong>Expiration Date</strong>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <select class="form-control" ng-model = "expMonth" name="" required>
-                  <option value="">Month</option>
-                  <option value="01">01</option>
-                  <option value="02">02</option>
-                  <option value="03">03</option>
-                  <option value="04">04</option>
-                  <option value="05">05</option>
-                  <option value="06">06</option>
-                  <option value="07">07</option>
-                  <option value="08">08</option>
-                  <option value="09">09</option>
-                  <option value="10">10</option>
-                  <option value="11">11</option>
-                  <option value="12">12</option>
-                </select>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <select class="form-control" name="" ng-model = "expYear" required>
-                  <option value="">Year</option>
-                  <option value="2015">2015</option>
-                  <option value="2016">2016</option>
-                  <option value="2017">2017</option>
-                  <option value="2018">2018</option>
-                  <option value="2019">2019</option>
-                  <option value="2020">2020</option>
-                  <option value="2021">2021</option>
-                  <option value="2022">2022</option>
-                  <option value="2023">2023</option>
-                  <option value="2024">2024</option>
-                  <option value="2025">2025</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12">
-                <span>Pay secure using your credit card.</span>
-              </div>
-              <div class="col-md-12">
-                <ul class="cards">
-                  <li class="visa hand">Visa</li>
-                  <li class="mastercard hand">MasterCard</li>
-                  <li class="amex hand">Amex</li>
-                </ul>
-                <div class="clearfix"></div>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <button ng-click = "placeOrder()" type="submit" class="btn btn-primary btn-submit-fix">Place Order</button>
-              </div>
-            </div>
-            <div class = "well">{{msg}}
-            </div>
-          </div>
-        </div>
-        <!--CREDIT CART PAYMENT END-->
-      </div>
-
-    </form>
-  </div>
-  <div class="row cart-footer">
-
-  </div>
-
-
 </div>
-
-<script >
-
-  $().ready(function (){
-
-    $("#checkoutForm").validate({
-
-      rules: {
-
-        car_number:{
-          required: true,
-          minlength: 16,
-          maxlength: 16,
-        }
-      },
-      messages: {
-
-        car_number:{
-          required:"Please enter a valid credit card number.",
-          minlength:"Your card number must be 16 characters",
-          maxlength:"Your card number must be 16 characters"
-        }
-      }
-    });
-
-
-  });
-
-
+<script>
   $(document).ready(function() {
-    $('[name = "number"]').keydown(function (e) {
+    $("#amount").keydown(function (e) {
       if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
         // Allow: Ctrl+A
         (e.keyCode == 65 && e.ctrlKey === true) ||
@@ -362,35 +67,9 @@
         // let it happen, don't do anything
         return;
       }
-
       if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
         e.preventDefault();
       }
     });
   });
-
-  $(document).ready(function() {
-    $('[name = "lettersOnly"]').keydown(function (e) {
-      if ($.inArray(e.keyCode, [46, 8, 20, 9, 27, 13, 110, 190]) !== -1 ||
-        // Allow: Ctrl+A
-        (e.keyCode == 65 && e.ctrlKey === true) ||
-        // Allow: Ctrl+C
-        (e.keyCode == 67 && e.ctrlKey === true) ||
-        // Allow: Ctrl+X
-        (e.keyCode == 88 && e.ctrlKey === true) ||
-        // Allow: home, end, left, right
-        (e.keyCode >= 35 && e.keyCode <= 39)) {
-        // let it happen, don't do anything
-        return;
-      }
-
-      if (((e.keyCode < 65 || e.keyCode > 90))) {
-        e.preventDefault();
-      }
-    });
-  });
-
 </script>
-
-
-
