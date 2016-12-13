@@ -1,71 +1,75 @@
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container" ng-controller = "CartController" ng-init = "displayCart()">
-  <table id="cart" class="table table-hover table-condensed">
-            <thead>
-            <tr>
-              <th style="width:50%">Product</th>
-              <th style="width:10%">Price</th>
-              <th style="width:8%">Quantity</th>
-              <th style="width:22%" class="text-center">Subtotal</th>
-              <th style="width:10%"></th>
-            </tr>
-          </thead>
-          <tbody>
-          <div  >
-            <tr ng-hide="cartData.fail" ng-repeat ="cart in cartData track by $index">
-              <td data-th="Product">
-                <div class="row">
-                  <div class="col-sm-2 hidden-xs"><img ng-src="{{cart.ImageDirectory}}" alt="..." class="img-responsive"/></div>
-                  <div class="col-sm-10">
-                    <h4 class="nomargin">{{cart.ProductName}}</h4>
-                  </div>
-                </div>
-              </td>
-              <td data-th="Price">${{cart.Price | number:2}}</td>
-              <td data-th="Quantity">
-              <input class="form-control text-center" id = "amount" ng-model ="quantity" ng-init="quantity = cart.Quantity">
-              </td>
-              <td data-th="Subtotal" class="text-center">${{cart.Price * cart.Quantity | number: 2}}</td>
-              <td><button type = "button" class = "btn btn-default" ng-click = "updateCartItem(cart.ProductName,quantity)">Update Item</button></td>
-
-              <td class="actions" data-th="">
-                <button class="btn btn-danger btn-sm" ng-click ="deleteItem(cart.ProductName)"><i class="fa fa-trash-o"></i></button>
-              </td>
-            </tr>
+  <table ng-show = "isLoggedIn" id="cart" class="table table-hover table-condensed">
+    <thead>
+    <tr>
+      <th style="width:50%">Product</th>
+      <th style="width:10%">Price</th>
+      <th style="width:8%">Quantity</th>
+      <th style="width:22%" class="text-center">Subtotal</th>
+      <th style="width:10%"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <div  >
+      <tr ng-hide="cartData.fail" ng-repeat ="cart in cartData track by $index">
+        <td data-th="Product">
+          <div class="row">
+            <div class="col-sm-2 hidden-xs"><img ng-src="{{cart.ImageDirectory}}" alt="..." class="img-responsive"/></div>
+            <div class="col-sm-10">
+              <h4 class="nomargin">{{cart.ProductName}}</h4>
             </div>
-          </tbody>
-          <tfoot>
-            <tr class="visible-xs">
-              <td class="text-center"><strong></strong></td>
-            </tr>
-            <tr>
-              <td><a href="#products" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
-              <td colspan="2" class="hidden-xs"></td>
-              <td class="hidden-xs text-center"><strong>Total: ${{total | number: 2}}</strong></td>
-              <td><a href="#checkout" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
-            </tr>
-          </tfoot>
-        </table>
+          </div>
+        </td>
+        <td data-th="Price">${{cart.Price | number:2}}</td>
+        <td data-th="Quantity">
+          <input class="form-control text-center" id = "amount" ng-model ="quantity" ng-init="quantity = cart.Quantity">
+        </td>
+        <td data-th="Subtotal" class="text-center">${{cart.Price * cart.Quantity | number: 2}}</td>
+        <td><button type = "button" class = "btn btn-default" ng-click = "updateCartItem(cart.ProductName,quantity)">Update Item</button></td>
+        <td class="actions" data-th="">
+          <button class="btn btn-danger btn-sm" ng-click ="deleteItem(cart.ProductName)"><i class="fa fa-trash-o"></i></button>
+        </td>
+      </tr>
+    </div>
+    </tbody>
+    <tfoot>
+    <tr class="visible-xs">
+      <td class="text-center"><strong></strong></td>
+    </tr>
+    <tr>
+      <td><a href="#products" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+      <td colspan="2" class="hidden-xs"></td>
+      <td class="hidden-xs text-center"><strong>Total: ${{total | number: 2}}</strong></td>
+      <td><a href="#checkout" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+    </tr>
+    </tfoot>
+  </table>
+  <div ng-hide="isLoggedIn" class = "container" >
+    <div class="page-header">
+      <h1>This page is for customers only</h1>
+    </div>
+    <p>Please log in to access this page.</p>
+  </div>
 </div>
 <script>
-$(document).ready(function() {
+  $(document).ready(function() {
     $("#amount").keydown(function (e) {
       if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-                   // Allow: Ctrl+A
-                  (e.keyCode == 65 && e.ctrlKey === true) ||
-                   // Allow: Ctrl+C
-                  (e.keyCode == 67 && e.ctrlKey === true) ||
-                   // Allow: Ctrl+X
-                  (e.keyCode == 88 && e.ctrlKey === true) ||
-                   // Allow: home, end, left, right
-                  (e.keyCode >= 35 && e.keyCode <= 39)) {
-                       // let it happen, don't do anything
-                       return;
-              }
-
+        // Allow: Ctrl+A
+        (e.keyCode == 65 && e.ctrlKey === true) ||
+        // Allow: Ctrl+C
+        (e.keyCode == 67 && e.ctrlKey === true) ||
+        // Allow: Ctrl+X
+        (e.keyCode == 88 && e.ctrlKey === true) ||
+        // Allow: home, end, left, right
+        (e.keyCode >= 35 && e.keyCode <= 39)) {
+        // let it happen, don't do anything
+        return;
+      }
       if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
-        }
-      });
+        e.preventDefault();
+      }
     });
+  });
 </script>

@@ -58,44 +58,44 @@
         </div>
         <!--REVIEW ORDER END-->
 
-      <!--DISPLAY STORES WITH INVENTORY THAT SATISFIES CART-->
+        <!--DISPLAY STORES WITH INVENTORY THAT SATISFIES CART-->
 
-      <h4>The following stores have the items in your cart in stock. </h4>
-      <h4>Please select a store to deliver from.</h4>
-      <br />
-      <div  class = "form-group" ng-init="displayStoresWithProducts()">
-      <div ng-hide="storeProductsData.fail" class="col-sm-4 col-lg-4 col-md-4" ng-repeat="store in storeProductsData track by $index">
-      <label>
-        <div  class="thumbnail">
-          <div class="caption">
-
-
-
-            <span>{{store.StoreAddress}}</span>
-            <span>{{store.City}}</span>
-            <span>{{store.State}}</span>
-            <span>{{store.Zipcode}}</span>
-
-          </div>
-
-        </div>
-
-        <input type = "radio" ng-model="storeScope.store" name = "store" class = "form-control" value ="{{store.Storeid}}" required/>
-        </label>
+        <h4>The following stores have the items in your cart in stock. </h4>
+        <h4>Please select a store to deliver from.</h4>
         <br />
-      </div>
-      <div ng-show ="storeProductsData.fail">
-      <div  class="thumbnail">
-          <div class="caption">
+        <div  class = "form-group" ng-init="displayStoresWithProducts()">
+          <div ng-hide="storeProductsData.fail" class="col-sm-4 col-lg-4 col-md-4" ng-repeat="store in storeProductsData track by $index">
+            <label>
+              <div  class="thumbnail">
+                <div class="caption">
 
-        <span>There are no stores with the items in your cart in stock. Sorry.</span>
-        </div>
-        </div>
-      </div>
-      </div>
 
-    <!--END DISPLAY STORES-->
-    </div>
+
+                  <span>{{store.StoreAddress}}</span>
+                  <span>{{store.City}}</span>
+                  <span>{{store.State}}</span>
+                  <span>{{store.Zipcode}}</span>
+
+                </div>
+
+              </div>
+
+              <input type = "radio" ng-model="storeScope.store" name = "store" class = "form-control" value ="{{store.Storeid}}" required/>
+            </label>
+            <br />
+          </div>
+          <div ng-show ="storeProductsData.fail">
+            <div  class="thumbnail">
+              <div class="caption">
+
+                <span>There are no stores with the items in your cart in stock. Sorry.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--END DISPLAY STORES-->
+      </div>
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-pull-6 col-sm-pull-6">
         <!--SHIPPING METHOD-->
         <div class="panel panel-info" id = "shipping">
@@ -116,12 +116,12 @@
             <div class="form-group">
               <div class="col-md-6 col-xs-12">
                 <strong>First Name:</strong>
-                <input ng-model = "firstName" type="text" name="first_name" class="form-control" value="" required/>
+                <input ng-model = "firstName" type="text" name="lettersOnly" class="form-control" value="" required/>
               </div>
               <div class="span1"></div>
               <div class="col-md-6 col-xs-12">
                 <strong>Last Name:</strong>
-                <input ng-model = "lastName" type="text" name="last_name" class="form-control" value="" required/>
+                <input ng-model = "lastName" type="text" name="lettersOnly" class="form-control" value="" required/>
               </div>
             </div>
             <div class="form-group">
@@ -133,7 +133,7 @@
             <div class="form-group">
               <div class="col-md-12"><strong>City:</strong></div>
               <div class="col-md-12">
-                <input  ng-model = "city" type="text" name="city" class="form-control" value="" required/>
+                <input  ng-model = "city" type="text" name="lettersOnly" class="form-control" value="" required/>
               </div>
             </div>
             <div class="form-group">
@@ -147,12 +147,12 @@
             <div class="form-group">
               <div class="col-md-12"><strong>Zip / Postal Code:</strong></div>
               <div class="col-md-12">
-                <input  ng-model = "zipCode" type="text" name="zip_code" class="form-control" value="" required/>
+                <input  ng-model = "zipCode" type="text" name="number" class="form-control" value="" required/>
               </div>
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>Phone Number:</strong></div>
-              <div class="col-md-12"><input  ng-model = "phoneNumber" type="text" name="phone_number" class="form-control" value="" required/></div>
+              <div class="col-md-12"><input  ng-model = "phoneNumber" type="text" name="number" class="form-control" value="" required/></div>
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>Email Address:</strong></div>
@@ -180,12 +180,12 @@
             <div class="form-group">
               <div class="col-md-6 col-xs-12">
                 <strong>First Name:</strong>
-                <input type="text" name="first_name" class="form-control" value="" required />
+                <input type="text" name="lettersOnly" class="form-control" value="" required />
               </div>
               <div class="span1"></div>
               <div class="col-md-6 col-xs-12">
                 <strong>Last Name:</strong>
-                <input type="text" name="last_name" class="form-control" value="" required />
+                <input type="text" name="lettersOnly" class="form-control" value="" required />
               </div>
             </div>
             <div class="form-group">
@@ -197,7 +197,7 @@
             <div class="form-group">
               <div class="col-md-12"><strong>City:</strong></div>
               <div class="col-md-12">
-                <input type="text" name="city" class="form-control" value="" required/>
+                <input type="text" name="lettersOnly" class="form-control" value="" required/>
               </div>
             </div>
             <div class="form-group">
@@ -211,12 +211,12 @@
             <div class="form-group">
               <div class="col-md-12"><strong>Zip / Postal Code:</strong></div>
               <div class="col-md-12">
-                <input type="text" name="zip_code" class="form-control" value="" />
+                <input type="text" name="number" class="form-control" value="" />
               </div>
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>Phone Number:</strong></div>
-              <div class="col-md-12"><input type="text" name="phone_number" class="form-control" value="" /></div>
+              <div class="col-md-12"><input type="text" name="number" class="form-control" value="" /></div>
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>Email Address:</strong></div>
@@ -242,11 +242,11 @@
             </div>
             <div class="form-group">
               <div class="col-md-12"><strong>Credit Card Number:</strong></div>
-              <div class="col-md-12"><input ng-model = "cardNumber" type="text" class="form-control" id = "car_number" name="car_number"  required/></div>
+              <div class="col-md-12"><input ng-model = "cardNumber" type="text" class="form-control" id = "car_number" name="number"  required/></div>
             </div>
             <div class="form-group">
-              <div class="col-md-12"><strong>Card CVV:</strong></div>
-              <div class="col-md-12"><input ng-model = "cardCode" type="text" class="form-control" id = "car_code" name="car_code" required/></div>
+              <div class="col-md-12"><strong>Card CVV (ex: 123):</strong></div>
+              <div class="col-md-12"><input ng-model = "cardCode" type="text" class="form-control" name="number" required/></div>
             </div>
             <div class="form-group">
               <div class="col-md-12">
@@ -322,30 +322,75 @@
 
 <script >
 
-    $().ready(function (){
+  $().ready(function (){
 
-      $("#checkoutForm").validate({
+    $("#checkoutForm").validate({
 
-        rules: {
+      rules: {
 
-          car_number:{
-            required: true,
-            minlength: 16,
-            maxlength: 16,
-          }
-        },
-        messages: {
+        car_number:{
+          required: true,
+          minlength: 16,
+          maxlength: 16,
 
-          car_number:{
-            required:"Please enter a valid credit card number.",
-            minlength:"Your card number must be 16 characters",
-            maxlength:"Your card number must be 16 characters"
-          }
         }
-      });
+      },
+      messages: {
 
-
+        car_number:{
+          required:"Please enter a valid credit card number.",
+          minlength:"Your card number must be 16 characters",
+          maxlength:"Your card number must be 16 characters"
+        }
+      }
     });
+
+
+  });
+
+
+  $(document).ready(function() {
+    $('[name = "number"]').keydown(function (e) {
+      if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+        // Allow: Ctrl+A
+        (e.keyCode == 65 && e.ctrlKey === true) ||
+        // Allow: Ctrl+C
+        (e.keyCode == 67 && e.ctrlKey === true) ||
+        // Allow: Ctrl+X
+        (e.keyCode == 88 && e.ctrlKey === true) ||
+        // Allow: home, end, left, right
+        (e.keyCode >= 35 && e.keyCode <= 39)) {
+        // let it happen, don't do anything
+        return;
+      }
+
+      if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+        e.preventDefault();
+      }
+    });
+  });
+
+  $(document).ready(function() {
+    $('[name = "lettersOnly"]').keydown(function (e) {
+      if ($.inArray(e.keyCode, [46, 8, 20, 9, 27, 13, 110, 190]) !== -1 ||
+        // Allow: Ctrl+A
+        (e.keyCode == 65 && e.ctrlKey === true) ||
+        // Allow: Ctrl+C
+        (e.keyCode == 67 && e.ctrlKey === true) ||
+        // Allow: Ctrl+X
+        (e.keyCode == 88 && e.ctrlKey === true) ||
+        // Allow: home, end, left, right
+        (e.keyCode >= 35 && e.keyCode <= 39)) {
+        // let it happen, don't do anything
+        return;
+      }
+
+      if (((e.keyCode < 65 || e.keyCode > 90))) {
+        e.preventDefault();
+      }
+    });
+  });
+
 </script>
 
 
