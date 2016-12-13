@@ -1,6 +1,6 @@
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container" ng-controller = "CartController" ng-init = "displayCart()">
-  <table id="cart" class="table table-hover table-condensed">
+  <table ng-show = "isLoggedIn" id="cart" class="table table-hover table-condensed">
             <thead>
             <tr>
               <th style="width:50%">Product</th>
@@ -46,6 +46,15 @@
             </tr>
           </tfoot>
         </table>
+  <div ng-hide="isLoggedIn" class = "container" >
+
+
+    <div class="page-header">
+      <h1>This page is for customers only</h1>
+    </div>
+    <p>Please log in to access this page.</p>
+
+  </div>
 </div>
 <script>
 $(document).ready(function() {
